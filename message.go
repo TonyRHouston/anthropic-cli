@@ -34,7 +34,7 @@ func createMessagesCreateSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"messages.content.text_block_param.text",
+		"messages.content.text",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -47,7 +47,7 @@ func createMessagesCreateSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"messages.content.text_block_param.type",
+		"messages.content.type",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -60,7 +60,7 @@ func createMessagesCreateSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"messages.content.text_block_param.cache_control.type",
+		"messages.content.cache_control.type",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -73,7 +73,7 @@ func createMessagesCreateSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"messages.content.image_block_param.source.data",
+		"messages.content.source.data",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -86,7 +86,7 @@ func createMessagesCreateSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"messages.content.image_block_param.source.media_type",
+		"messages.content.source.media_type",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -99,7 +99,7 @@ func createMessagesCreateSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"messages.content.image_block_param.source.type",
+		"messages.content.source.type",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -112,33 +112,7 @@ func createMessagesCreateSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"messages.content.image_block_param.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.#.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.image_block_param.cache_control.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.#.cache_control.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.tool_use_block_param.id",
+		"messages.content.id",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -151,7 +125,7 @@ func createMessagesCreateSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"messages.content.tool_use_block_param.name",
+		"messages.content.name",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -164,33 +138,7 @@ func createMessagesCreateSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"messages.content.tool_use_block_param.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.#.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.tool_use_block_param.cache_control.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.#.cache_control.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.tool_result_block_param.tool_use_id",
+		"messages.content.tool_use_id",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -203,33 +151,7 @@ func createMessagesCreateSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"messages.content.tool_result_block_param.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.#.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.tool_result_block_param.cache_control.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.#.cache_control.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.tool_result_block_param.content.text_block_param.text",
+		"messages.content.content.text",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -242,7 +164,7 @@ func createMessagesCreateSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"messages.content.tool_result_block_param.content.text_block_param.type",
+		"messages.content.content.type",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -255,7 +177,7 @@ func createMessagesCreateSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"messages.content.tool_result_block_param.content.text_block_param.cache_control.type",
+		"messages.content.content.cache_control.type",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -268,7 +190,7 @@ func createMessagesCreateSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"messages.content.tool_result_block_param.content.image_block_param.source.data",
+		"messages.content.content.source.data",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -281,7 +203,7 @@ func createMessagesCreateSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"messages.content.tool_result_block_param.content.image_block_param.source.media_type",
+		"messages.content.content.source.media_type",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -294,7 +216,7 @@ func createMessagesCreateSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"messages.content.tool_result_block_param.content.image_block_param.source.type",
+		"messages.content.content.source.type",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -306,34 +228,8 @@ func createMessagesCreateSubcommand(initialJson []byte) Subcommand {
 		},
 	)
 
-	flagSet.Func(
-		"messages.content.tool_result_block_param.content.image_block_param.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.#.content.#.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.tool_result_block_param.content.image_block_param.cache_control.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.#.content.#.cache_control.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
 	flagSet.BoolFunc(
-		"messages.content.tool_result_block_param.content.+text_block_param",
+		"messages.content.+content",
 		"",
 		func(_ string) error {
 			var jsonErr error
@@ -346,20 +242,7 @@ func createMessagesCreateSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.BoolFunc(
-		"messages.content.tool_result_block_param.content.+image_block_param",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.#.content.-1", map[string]interface{}{})
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"messages.content.tool_result_block_param.is_error",
+		"messages.content.is_error",
 		"",
 		func(_ string) error {
 			var jsonErr error
@@ -371,125 +254,8 @@ func createMessagesCreateSubcommand(initialJson []byte) Subcommand {
 		},
 	)
 
-	flagSet.Func(
-		"messages.content.document_block_param.source.data",
-		"",
-		func(string string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.#.source.data", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.document_block_param.source.media_type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.#.source.media_type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.document_block_param.source.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.#.source.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.document_block_param.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.#.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.document_block_param.cache_control.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.#.cache_control.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
 	flagSet.BoolFunc(
-		"messages.content.+text_block_param",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.-1", map[string]interface{}{})
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"messages.content.+image_block_param",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.-1", map[string]interface{}{})
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"messages.content.+tool_use_block_param",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.-1", map[string]interface{}{})
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"messages.content.+tool_result_block_param",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.-1", map[string]interface{}{})
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"messages.content.+document_block_param",
+		"messages.+content",
 		"",
 		func(_ string) error {
 			var jsonErr error
@@ -649,7 +415,7 @@ func createMessagesCreateSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"tool-choice.tool_choice_auto.type",
+		"tool-choice.type",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -662,7 +428,7 @@ func createMessagesCreateSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.BoolFunc(
-		"tool-choice.tool_choice_auto.disable_parallel_tool_use",
+		"tool-choice.disable_parallel_tool_use",
 		"",
 		func(_ string) error {
 			var jsonErr error
@@ -675,63 +441,11 @@ func createMessagesCreateSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"tool-choice.tool_choice_any.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "tool_choice.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"tool-choice.tool_choice_any.disable_parallel_tool_use",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "tool_choice.disable_parallel_tool_use", true)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"tool-choice.tool_choice_tool.name",
+		"tool-choice.name",
 		"",
 		func(string string) error {
 			var jsonErr error
 			json, jsonErr = jsonSet(json, "tool_choice.name", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"tool-choice.tool_choice_tool.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "tool_choice.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"tool-choice.tool_choice_tool.disable_parallel_tool_use",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "tool_choice.disable_parallel_tool_use", true)
 			if jsonErr != nil {
 				return jsonErr
 			}
@@ -851,7 +565,7 @@ func createMessagesCountTokensSubcommand(initialJson []byte) Subcommand {
 	var flagSet = flag.NewFlagSet("messages.count_tokens", flag.ExitOnError)
 
 	flagSet.Func(
-		"messages.content.text_block_param.text",
+		"messages.content.text",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -864,7 +578,7 @@ func createMessagesCountTokensSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"messages.content.text_block_param.type",
+		"messages.content.type",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -877,7 +591,7 @@ func createMessagesCountTokensSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"messages.content.text_block_param.cache_control.type",
+		"messages.content.cache_control.type",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -890,7 +604,7 @@ func createMessagesCountTokensSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"messages.content.image_block_param.source.data",
+		"messages.content.source.data",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -903,7 +617,7 @@ func createMessagesCountTokensSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"messages.content.image_block_param.source.media_type",
+		"messages.content.source.media_type",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -916,7 +630,7 @@ func createMessagesCountTokensSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"messages.content.image_block_param.source.type",
+		"messages.content.source.type",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -929,33 +643,7 @@ func createMessagesCountTokensSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"messages.content.image_block_param.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.#.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.image_block_param.cache_control.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.#.cache_control.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.tool_use_block_param.id",
+		"messages.content.id",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -968,7 +656,7 @@ func createMessagesCountTokensSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"messages.content.tool_use_block_param.name",
+		"messages.content.name",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -981,33 +669,7 @@ func createMessagesCountTokensSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"messages.content.tool_use_block_param.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.#.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.tool_use_block_param.cache_control.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.#.cache_control.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.tool_result_block_param.tool_use_id",
+		"messages.content.tool_use_id",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -1020,33 +682,7 @@ func createMessagesCountTokensSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"messages.content.tool_result_block_param.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.#.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.tool_result_block_param.cache_control.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.#.cache_control.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.tool_result_block_param.content.text_block_param.text",
+		"messages.content.content.text",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -1059,7 +695,7 @@ func createMessagesCountTokensSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"messages.content.tool_result_block_param.content.text_block_param.type",
+		"messages.content.content.type",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -1072,7 +708,7 @@ func createMessagesCountTokensSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"messages.content.tool_result_block_param.content.text_block_param.cache_control.type",
+		"messages.content.content.cache_control.type",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -1085,7 +721,7 @@ func createMessagesCountTokensSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"messages.content.tool_result_block_param.content.image_block_param.source.data",
+		"messages.content.content.source.data",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -1098,7 +734,7 @@ func createMessagesCountTokensSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"messages.content.tool_result_block_param.content.image_block_param.source.media_type",
+		"messages.content.content.source.media_type",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -1111,7 +747,7 @@ func createMessagesCountTokensSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"messages.content.tool_result_block_param.content.image_block_param.source.type",
+		"messages.content.content.source.type",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -1123,34 +759,8 @@ func createMessagesCountTokensSubcommand(initialJson []byte) Subcommand {
 		},
 	)
 
-	flagSet.Func(
-		"messages.content.tool_result_block_param.content.image_block_param.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.#.content.#.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.tool_result_block_param.content.image_block_param.cache_control.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.#.content.#.cache_control.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
 	flagSet.BoolFunc(
-		"messages.content.tool_result_block_param.content.+text_block_param",
+		"messages.content.+content",
 		"",
 		func(_ string) error {
 			var jsonErr error
@@ -1163,20 +773,7 @@ func createMessagesCountTokensSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.BoolFunc(
-		"messages.content.tool_result_block_param.content.+image_block_param",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.#.content.-1", map[string]interface{}{})
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"messages.content.tool_result_block_param.is_error",
+		"messages.content.is_error",
 		"",
 		func(_ string) error {
 			var jsonErr error
@@ -1188,125 +785,8 @@ func createMessagesCountTokensSubcommand(initialJson []byte) Subcommand {
 		},
 	)
 
-	flagSet.Func(
-		"messages.content.document_block_param.source.data",
-		"",
-		func(string string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.#.source.data", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.document_block_param.source.media_type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.#.source.media_type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.document_block_param.source.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.#.source.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.document_block_param.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.#.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.document_block_param.cache_control.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.#.cache_control.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
 	flagSet.BoolFunc(
-		"messages.content.+text_block_param",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.-1", map[string]interface{}{})
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"messages.content.+image_block_param",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.-1", map[string]interface{}{})
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"messages.content.+tool_use_block_param",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.-1", map[string]interface{}{})
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"messages.content.+tool_result_block_param",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "messages.#.content.-1", map[string]interface{}{})
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"messages.content.+document_block_param",
+		"messages.+content",
 		"",
 		func(_ string) error {
 			var jsonErr error
@@ -1358,7 +838,7 @@ func createMessagesCountTokensSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"system.union_member_0",
+		"system",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -1371,7 +851,7 @@ func createMessagesCountTokensSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"system.union_member_1.text",
+		"system.text",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -1384,7 +864,7 @@ func createMessagesCountTokensSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"system.union_member_1.type",
+		"system.type",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -1397,7 +877,7 @@ func createMessagesCountTokensSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"system.union_member_1.cache_control.type",
+		"system.cache_control.type",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -1410,7 +890,7 @@ func createMessagesCountTokensSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.BoolFunc(
-		"system.+union_member_1",
+		"+system",
 		"",
 		func(_ string) error {
 			var jsonErr error
@@ -1423,7 +903,7 @@ func createMessagesCountTokensSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"tool-choice.tool_choice_auto.type",
+		"tool-choice.type",
 		"",
 		func(string string) error {
 			var jsonErr error
@@ -1436,7 +916,7 @@ func createMessagesCountTokensSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.BoolFunc(
-		"tool-choice.tool_choice_auto.disable_parallel_tool_use",
+		"tool-choice.disable_parallel_tool_use",
 		"",
 		func(_ string) error {
 			var jsonErr error
@@ -1449,63 +929,11 @@ func createMessagesCountTokensSubcommand(initialJson []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"tool-choice.tool_choice_any.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "tool_choice.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"tool-choice.tool_choice_any.disable_parallel_tool_use",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "tool_choice.disable_parallel_tool_use", true)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"tool-choice.tool_choice_tool.name",
+		"tool-choice.name",
 		"",
 		func(string string) error {
 			var jsonErr error
 			json, jsonErr = jsonSet(json, "tool_choice.name", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"tool-choice.tool_choice_tool.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "tool_choice.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"tool-choice.tool_choice_tool.disable_parallel_tool_use",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			json, jsonErr = jsonSet(json, "tool_choice.disable_parallel_tool_use", true)
 			if jsonErr != nil {
 				return jsonErr
 			}
