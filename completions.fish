@@ -8,13 +8,13 @@ complete -c anthropic-cli --no-files \
   -a "--max-tokens-to-sample --model --prompt --metadata.user_id --stop-sequences --+stop_sequence --temperature --top-k --top-p"
 complete -c anthropic-cli --no-files \
   -n "__fish_seen_subcommand_from messages.create" \
-  -a "--max-tokens --messages.content.text --messages.content.type --messages.content.cache_control.type --messages.content.source.data --messages.content.source.media_type --messages.content.source.type --messages.content.id --messages.content.name --messages.content.tool_use_id --messages.content.content.text --messages.content.content.type --messages.content.content.cache_control.type --messages.content.content.source.data --messages.content.content.source.media_type --messages.content.content.source.type --messages.content.+content --messages.content.is_error --messages.+content --messages.role --+message --model --metadata.user_id --stop-sequences --+stop_sequence --system.text --system.type --system.cache_control.type --+system --temperature --tool-choice.type --tool-choice.disable_parallel_tool_use --tool-choice.name --tools.name --tools.cache_control.type --tools.description --+tool --top-k --top-p"
+  -a "--max-tokens --messages.content.text --messages.content.type --messages.content.cache_control.type --messages.content.citations.cited_text --messages.content.citations.document_index --messages.content.citations.document_title --messages.content.citations.end_char_index --messages.content.citations.start_char_index --messages.content.citations.type --messages.content.citations.end_page_number --messages.content.citations.start_page_number --messages.content.citations.end_block_index --messages.content.citations.start_block_index --messages.content.+citation --messages.content.source.data --messages.content.source.media_type --messages.content.source.type --messages.content.id --messages.content.name --messages.content.tool_use_id --messages.content.content.text --messages.content.content.type --messages.content.content.cache_control.type --messages.content.content.citations.cited_text --messages.content.content.citations.document_index --messages.content.content.citations.document_title --messages.content.content.citations.end_char_index --messages.content.content.citations.start_char_index --messages.content.content.citations.type --messages.content.content.citations.end_page_number --messages.content.content.citations.start_page_number --messages.content.content.citations.end_block_index --messages.content.content.citations.start_block_index --messages.content.content.+citation --messages.content.content.source.data --messages.content.content.source.media_type --messages.content.content.source.type --messages.content.+content --messages.content.is_error --messages.content.source.content --messages.content.source.content.text --messages.content.source.content.type --messages.content.source.content.cache_control.type --messages.content.source.content.citations.cited_text --messages.content.source.content.citations.document_index --messages.content.source.content.citations.document_title --messages.content.source.content.citations.end_char_index --messages.content.source.content.citations.start_char_index --messages.content.source.content.citations.type --messages.content.source.content.citations.end_page_number --messages.content.source.content.citations.start_page_number --messages.content.source.content.citations.end_block_index --messages.content.source.content.citations.start_block_index --messages.content.source.content.+citation --messages.content.source.content.source.data --messages.content.source.content.source.media_type --messages.content.source.content.source.type --messages.content.source.+content --messages.content.citations.enabled --messages.content.context --messages.content.title --messages.+content --messages.role --+message --model --metadata.user_id --stop-sequences --+stop_sequence --system.text --system.type --system.cache_control.type --system.citations.cited_text --system.citations.document_index --system.citations.document_title --system.citations.end_char_index --system.citations.start_char_index --system.citations.type --system.citations.end_page_number --system.citations.start_page_number --system.citations.end_block_index --system.citations.start_block_index --system.+citation --+system --temperature --tool-choice.type --tool-choice.disable_parallel_tool_use --tool-choice.name --tools.name --tools.cache_control.type --tools.description --+tool --top-k --top-p"
 complete -c anthropic-cli --no-files \
   -n "__fish_seen_subcommand_from messages.count_tokens" \
-  -a "--messages.content.text --messages.content.type --messages.content.cache_control.type --messages.content.source.data --messages.content.source.media_type --messages.content.source.type --messages.content.id --messages.content.name --messages.content.tool_use_id --messages.content.content.text --messages.content.content.type --messages.content.content.cache_control.type --messages.content.content.source.data --messages.content.content.source.media_type --messages.content.content.source.type --messages.content.+content --messages.content.is_error --messages.+content --messages.role --+message --model --system --system.text --system.type --system.cache_control.type --+system --tool-choice.type --tool-choice.disable_parallel_tool_use --tool-choice.name --tools.name --tools.cache_control.type --tools.description --+tool"
+  -a "--messages.content.text --messages.content.type --messages.content.cache_control.type --messages.content.citations.cited_text --messages.content.citations.document_index --messages.content.citations.document_title --messages.content.citations.end_char_index --messages.content.citations.start_char_index --messages.content.citations.type --messages.content.citations.end_page_number --messages.content.citations.start_page_number --messages.content.citations.end_block_index --messages.content.citations.start_block_index --messages.content.+citation --messages.content.source.data --messages.content.source.media_type --messages.content.source.type --messages.content.id --messages.content.name --messages.content.tool_use_id --messages.content.content.text --messages.content.content.type --messages.content.content.cache_control.type --messages.content.content.citations.cited_text --messages.content.content.citations.document_index --messages.content.content.citations.document_title --messages.content.content.citations.end_char_index --messages.content.content.citations.start_char_index --messages.content.content.citations.type --messages.content.content.citations.end_page_number --messages.content.content.citations.start_page_number --messages.content.content.citations.end_block_index --messages.content.content.citations.start_block_index --messages.content.content.+citation --messages.content.content.source.data --messages.content.content.source.media_type --messages.content.content.source.type --messages.content.+content --messages.content.is_error --messages.content.source.content --messages.content.source.content.text --messages.content.source.content.type --messages.content.source.content.cache_control.type --messages.content.source.content.citations.cited_text --messages.content.source.content.citations.document_index --messages.content.source.content.citations.document_title --messages.content.source.content.citations.end_char_index --messages.content.source.content.citations.start_char_index --messages.content.source.content.citations.type --messages.content.source.content.citations.end_page_number --messages.content.source.content.citations.start_page_number --messages.content.source.content.citations.end_block_index --messages.content.source.content.citations.start_block_index --messages.content.source.content.+citation --messages.content.source.content.source.data --messages.content.source.content.source.media_type --messages.content.source.content.source.type --messages.content.source.+content --messages.content.citations.enabled --messages.content.context --messages.content.title --messages.+content --messages.role --+message --model --system --system.text --system.type --system.cache_control.type --system.citations.cited_text --system.citations.document_index --system.citations.document_title --system.citations.end_char_index --system.citations.start_char_index --system.citations.type --system.citations.end_page_number --system.citations.start_page_number --system.citations.end_block_index --system.citations.start_block_index --system.+citation --+system --tool-choice.type --tool-choice.disable_parallel_tool_use --tool-choice.name --tools.name --tools.cache_control.type --tools.description --+tool"
 complete -c anthropic-cli --no-files \
   -n "__fish_seen_subcommand_from messages.batches.create" \
-  -a "--requests.custom_id --requests.params.max_tokens --requests.params.messages.content.text --requests.params.messages.content.type --requests.params.messages.content.cache_control.type --requests.params.messages.content.source.data --requests.params.messages.content.source.media_type --requests.params.messages.content.source.type --requests.params.messages.content.id --requests.params.messages.content.name --requests.params.messages.content.tool_use_id --requests.params.messages.content.content.text --requests.params.messages.content.content.type --requests.params.messages.content.content.cache_control.type --requests.params.messages.content.content.source.data --requests.params.messages.content.content.source.media_type --requests.params.messages.content.content.source.type --requests.params.messages.content.+content --requests.params.messages.content.is_error --requests.params.messages.+content --requests.params.messages.role --requests.params.+message --requests.params.model --requests.params.metadata.user_id --requests.params.stop_sequences --requests.params.+stop_sequence --requests.params.stream --requests.params.system.text --requests.params.system.type --requests.params.system.cache_control.type --requests.params.+system --requests.params.temperature --requests.params.tool_choice.type --requests.params.tool_choice.disable_parallel_tool_use --requests.params.tool_choice.name --requests.params.tools.name --requests.params.tools.cache_control.type --requests.params.tools.description --requests.params.+tool --requests.params.top_k --requests.params.top_p --+request"
+  -a "--requests.custom_id --requests.params.max_tokens --requests.params.messages.content.text --requests.params.messages.content.type --requests.params.messages.content.cache_control.type --requests.params.messages.content.citations.cited_text --requests.params.messages.content.citations.document_index --requests.params.messages.content.citations.document_title --requests.params.messages.content.citations.end_char_index --requests.params.messages.content.citations.start_char_index --requests.params.messages.content.citations.type --requests.params.messages.content.citations.end_page_number --requests.params.messages.content.citations.start_page_number --requests.params.messages.content.citations.end_block_index --requests.params.messages.content.citations.start_block_index --requests.params.messages.content.+citation --requests.params.messages.content.source.data --requests.params.messages.content.source.media_type --requests.params.messages.content.source.type --requests.params.messages.content.id --requests.params.messages.content.name --requests.params.messages.content.tool_use_id --requests.params.messages.content.content.text --requests.params.messages.content.content.type --requests.params.messages.content.content.cache_control.type --requests.params.messages.content.content.citations.cited_text --requests.params.messages.content.content.citations.document_index --requests.params.messages.content.content.citations.document_title --requests.params.messages.content.content.citations.end_char_index --requests.params.messages.content.content.citations.start_char_index --requests.params.messages.content.content.citations.type --requests.params.messages.content.content.citations.end_page_number --requests.params.messages.content.content.citations.start_page_number --requests.params.messages.content.content.citations.end_block_index --requests.params.messages.content.content.citations.start_block_index --requests.params.messages.content.content.+citation --requests.params.messages.content.content.source.data --requests.params.messages.content.content.source.media_type --requests.params.messages.content.content.source.type --requests.params.messages.content.+content --requests.params.messages.content.is_error --requests.params.messages.content.source.content --requests.params.messages.content.source.content.text --requests.params.messages.content.source.content.type --requests.params.messages.content.source.content.cache_control.type --requests.params.messages.content.source.content.citations.cited_text --requests.params.messages.content.source.content.citations.document_index --requests.params.messages.content.source.content.citations.document_title --requests.params.messages.content.source.content.citations.end_char_index --requests.params.messages.content.source.content.citations.start_char_index --requests.params.messages.content.source.content.citations.type --requests.params.messages.content.source.content.citations.end_page_number --requests.params.messages.content.source.content.citations.start_page_number --requests.params.messages.content.source.content.citations.end_block_index --requests.params.messages.content.source.content.citations.start_block_index --requests.params.messages.content.source.content.+citation --requests.params.messages.content.source.content.source.data --requests.params.messages.content.source.content.source.media_type --requests.params.messages.content.source.content.source.type --requests.params.messages.content.source.+content --requests.params.messages.content.citations.enabled --requests.params.messages.content.context --requests.params.messages.content.title --requests.params.messages.+content --requests.params.messages.role --requests.params.+message --requests.params.model --requests.params.metadata.user_id --requests.params.stop_sequences --requests.params.+stop_sequence --requests.params.stream --requests.params.system.text --requests.params.system.type --requests.params.system.cache_control.type --requests.params.system.citations.cited_text --requests.params.system.citations.document_index --requests.params.system.citations.document_title --requests.params.system.citations.end_char_index --requests.params.system.citations.start_char_index --requests.params.system.citations.type --requests.params.system.citations.end_page_number --requests.params.system.citations.start_page_number --requests.params.system.citations.end_block_index --requests.params.system.citations.start_block_index --requests.params.system.+citation --requests.params.+system --requests.params.temperature --requests.params.tool_choice.type --requests.params.tool_choice.disable_parallel_tool_use --requests.params.tool_choice.name --requests.params.tools.name --requests.params.tools.cache_control.type --requests.params.tools.description --requests.params.+tool --requests.params.top_k --requests.params.top_p --+request"
 complete -c anthropic-cli --no-files \
   -n "__fish_seen_subcommand_from messages.batches.retrieve" \
   -a "--message-batch-id"
@@ -41,13 +41,13 @@ complete -c anthropic-cli --no-files \
   -a "--after-id --before-id --limit"
 complete -c anthropic-cli --no-files \
   -n "__fish_seen_subcommand_from beta.messages.create" \
-  -a "--max-tokens --messages.content.text --messages.content.type --messages.content.cache_control.type --messages.content.source.data --messages.content.source.media_type --messages.content.source.type --messages.content.id --messages.content.name --messages.content.tool_use_id --messages.content.content.text --messages.content.content.type --messages.content.content.cache_control.type --messages.content.content.source.data --messages.content.content.source.media_type --messages.content.content.source.type --messages.content.+content --messages.content.is_error --messages.+content --messages.role --+message --model --metadata.user_id --stop-sequences --+stop_sequence --system.text --system.type --system.cache_control.type --+system --temperature --tool-choice.type --tool-choice.disable_parallel_tool_use --tool-choice.name --tools.input_schema.type --tools.name --tools.cache_control.type --tools.description --tools.type --tools.display_height_px --tools.display_width_px --tools.display_number --+tool --top-k --top-p --betas --+beta"
+  -a "--max-tokens --messages.content.text --messages.content.type --messages.content.cache_control.type --messages.content.citations.cited_text --messages.content.citations.document_index --messages.content.citations.document_title --messages.content.citations.end_char_index --messages.content.citations.start_char_index --messages.content.citations.type --messages.content.citations.end_page_number --messages.content.citations.start_page_number --messages.content.citations.end_block_index --messages.content.citations.start_block_index --messages.content.+citation --messages.content.source.data --messages.content.source.media_type --messages.content.source.type --messages.content.id --messages.content.name --messages.content.tool_use_id --messages.content.content.text --messages.content.content.type --messages.content.content.cache_control.type --messages.content.content.citations.cited_text --messages.content.content.citations.document_index --messages.content.content.citations.document_title --messages.content.content.citations.end_char_index --messages.content.content.citations.start_char_index --messages.content.content.citations.type --messages.content.content.citations.end_page_number --messages.content.content.citations.start_page_number --messages.content.content.citations.end_block_index --messages.content.content.citations.start_block_index --messages.content.content.+citation --messages.content.content.source.data --messages.content.content.source.media_type --messages.content.content.source.type --messages.content.+content --messages.content.is_error --messages.content.source.content --messages.content.source.content.text --messages.content.source.content.type --messages.content.source.content.cache_control.type --messages.content.source.content.citations.cited_text --messages.content.source.content.citations.document_index --messages.content.source.content.citations.document_title --messages.content.source.content.citations.end_char_index --messages.content.source.content.citations.start_char_index --messages.content.source.content.citations.type --messages.content.source.content.citations.end_page_number --messages.content.source.content.citations.start_page_number --messages.content.source.content.citations.end_block_index --messages.content.source.content.citations.start_block_index --messages.content.source.content.+citation --messages.content.source.content.source.data --messages.content.source.content.source.media_type --messages.content.source.content.source.type --messages.content.source.+content --messages.content.citations.enabled --messages.content.context --messages.content.title --messages.+content --messages.role --+message --model --metadata.user_id --stop-sequences --+stop_sequence --system.text --system.type --system.cache_control.type --system.citations.cited_text --system.citations.document_index --system.citations.document_title --system.citations.end_char_index --system.citations.start_char_index --system.citations.type --system.citations.end_page_number --system.citations.start_page_number --system.citations.end_block_index --system.citations.start_block_index --system.+citation --+system --temperature --tool-choice.type --tool-choice.disable_parallel_tool_use --tool-choice.name --tools.input_schema.type --tools.name --tools.cache_control.type --tools.description --tools.type --tools.display_height_px --tools.display_width_px --tools.display_number --+tool --top-k --top-p --betas --+beta"
 complete -c anthropic-cli --no-files \
   -n "__fish_seen_subcommand_from beta.messages.count_tokens" \
-  -a "--messages.content.text --messages.content.type --messages.content.cache_control.type --messages.content.source.data --messages.content.source.media_type --messages.content.source.type --messages.content.id --messages.content.name --messages.content.tool_use_id --messages.content.content.text --messages.content.content.type --messages.content.content.cache_control.type --messages.content.content.source.data --messages.content.content.source.media_type --messages.content.content.source.type --messages.content.+content --messages.content.is_error --messages.+content --messages.role --+message --model --system --system.text --system.type --system.cache_control.type --+system --tool-choice.type --tool-choice.disable_parallel_tool_use --tool-choice.name --tools.input_schema.type --tools.name --tools.cache_control.type --tools.description --tools.type --tools.display_height_px --tools.display_width_px --tools.display_number --+tool --betas --+beta"
+  -a "--messages.content.text --messages.content.type --messages.content.cache_control.type --messages.content.citations.cited_text --messages.content.citations.document_index --messages.content.citations.document_title --messages.content.citations.end_char_index --messages.content.citations.start_char_index --messages.content.citations.type --messages.content.citations.end_page_number --messages.content.citations.start_page_number --messages.content.citations.end_block_index --messages.content.citations.start_block_index --messages.content.+citation --messages.content.source.data --messages.content.source.media_type --messages.content.source.type --messages.content.id --messages.content.name --messages.content.tool_use_id --messages.content.content.text --messages.content.content.type --messages.content.content.cache_control.type --messages.content.content.citations.cited_text --messages.content.content.citations.document_index --messages.content.content.citations.document_title --messages.content.content.citations.end_char_index --messages.content.content.citations.start_char_index --messages.content.content.citations.type --messages.content.content.citations.end_page_number --messages.content.content.citations.start_page_number --messages.content.content.citations.end_block_index --messages.content.content.citations.start_block_index --messages.content.content.+citation --messages.content.content.source.data --messages.content.content.source.media_type --messages.content.content.source.type --messages.content.+content --messages.content.is_error --messages.content.source.content --messages.content.source.content.text --messages.content.source.content.type --messages.content.source.content.cache_control.type --messages.content.source.content.citations.cited_text --messages.content.source.content.citations.document_index --messages.content.source.content.citations.document_title --messages.content.source.content.citations.end_char_index --messages.content.source.content.citations.start_char_index --messages.content.source.content.citations.type --messages.content.source.content.citations.end_page_number --messages.content.source.content.citations.start_page_number --messages.content.source.content.citations.end_block_index --messages.content.source.content.citations.start_block_index --messages.content.source.content.+citation --messages.content.source.content.source.data --messages.content.source.content.source.media_type --messages.content.source.content.source.type --messages.content.source.+content --messages.content.citations.enabled --messages.content.context --messages.content.title --messages.+content --messages.role --+message --model --system --system.text --system.type --system.cache_control.type --system.citations.cited_text --system.citations.document_index --system.citations.document_title --system.citations.end_char_index --system.citations.start_char_index --system.citations.type --system.citations.end_page_number --system.citations.start_page_number --system.citations.end_block_index --system.citations.start_block_index --system.+citation --+system --tool-choice.type --tool-choice.disable_parallel_tool_use --tool-choice.name --tools.input_schema.type --tools.name --tools.cache_control.type --tools.description --tools.type --tools.display_height_px --tools.display_width_px --tools.display_number --+tool --betas --+beta"
 complete -c anthropic-cli --no-files \
   -n "__fish_seen_subcommand_from beta.messages.batches.create" \
-  -a "--requests.custom_id --requests.params.max_tokens --requests.params.messages.content.text --requests.params.messages.content.type --requests.params.messages.content.cache_control.type --requests.params.messages.content.source.data --requests.params.messages.content.source.media_type --requests.params.messages.content.source.type --requests.params.messages.content.id --requests.params.messages.content.name --requests.params.messages.content.tool_use_id --requests.params.messages.content.content.text --requests.params.messages.content.content.type --requests.params.messages.content.content.cache_control.type --requests.params.messages.content.content.source.data --requests.params.messages.content.content.source.media_type --requests.params.messages.content.content.source.type --requests.params.messages.content.+content --requests.params.messages.content.is_error --requests.params.messages.+content --requests.params.messages.role --requests.params.+message --requests.params.model --requests.params.metadata.user_id --requests.params.stop_sequences --requests.params.+stop_sequence --requests.params.stream --requests.params.system.text --requests.params.system.type --requests.params.system.cache_control.type --requests.params.+system --requests.params.temperature --requests.params.tool_choice.type --requests.params.tool_choice.disable_parallel_tool_use --requests.params.tool_choice.name --requests.params.tools.input_schema.type --requests.params.tools.name --requests.params.tools.cache_control.type --requests.params.tools.description --requests.params.tools.type --requests.params.tools.display_height_px --requests.params.tools.display_width_px --requests.params.tools.display_number --requests.params.+tool --requests.params.top_k --requests.params.top_p --+request --betas --+beta"
+  -a "--requests.custom_id --requests.params.max_tokens --requests.params.messages.content.text --requests.params.messages.content.type --requests.params.messages.content.cache_control.type --requests.params.messages.content.citations.cited_text --requests.params.messages.content.citations.document_index --requests.params.messages.content.citations.document_title --requests.params.messages.content.citations.end_char_index --requests.params.messages.content.citations.start_char_index --requests.params.messages.content.citations.type --requests.params.messages.content.citations.end_page_number --requests.params.messages.content.citations.start_page_number --requests.params.messages.content.citations.end_block_index --requests.params.messages.content.citations.start_block_index --requests.params.messages.content.+citation --requests.params.messages.content.source.data --requests.params.messages.content.source.media_type --requests.params.messages.content.source.type --requests.params.messages.content.id --requests.params.messages.content.name --requests.params.messages.content.tool_use_id --requests.params.messages.content.content.text --requests.params.messages.content.content.type --requests.params.messages.content.content.cache_control.type --requests.params.messages.content.content.citations.cited_text --requests.params.messages.content.content.citations.document_index --requests.params.messages.content.content.citations.document_title --requests.params.messages.content.content.citations.end_char_index --requests.params.messages.content.content.citations.start_char_index --requests.params.messages.content.content.citations.type --requests.params.messages.content.content.citations.end_page_number --requests.params.messages.content.content.citations.start_page_number --requests.params.messages.content.content.citations.end_block_index --requests.params.messages.content.content.citations.start_block_index --requests.params.messages.content.content.+citation --requests.params.messages.content.content.source.data --requests.params.messages.content.content.source.media_type --requests.params.messages.content.content.source.type --requests.params.messages.content.+content --requests.params.messages.content.is_error --requests.params.messages.content.source.content --requests.params.messages.content.source.content.text --requests.params.messages.content.source.content.type --requests.params.messages.content.source.content.cache_control.type --requests.params.messages.content.source.content.citations.cited_text --requests.params.messages.content.source.content.citations.document_index --requests.params.messages.content.source.content.citations.document_title --requests.params.messages.content.source.content.citations.end_char_index --requests.params.messages.content.source.content.citations.start_char_index --requests.params.messages.content.source.content.citations.type --requests.params.messages.content.source.content.citations.end_page_number --requests.params.messages.content.source.content.citations.start_page_number --requests.params.messages.content.source.content.citations.end_block_index --requests.params.messages.content.source.content.citations.start_block_index --requests.params.messages.content.source.content.+citation --requests.params.messages.content.source.content.source.data --requests.params.messages.content.source.content.source.media_type --requests.params.messages.content.source.content.source.type --requests.params.messages.content.source.+content --requests.params.messages.content.citations.enabled --requests.params.messages.content.context --requests.params.messages.content.title --requests.params.messages.+content --requests.params.messages.role --requests.params.+message --requests.params.model --requests.params.metadata.user_id --requests.params.stop_sequences --requests.params.+stop_sequence --requests.params.stream --requests.params.system.text --requests.params.system.type --requests.params.system.cache_control.type --requests.params.system.citations.cited_text --requests.params.system.citations.document_index --requests.params.system.citations.document_title --requests.params.system.citations.end_char_index --requests.params.system.citations.start_char_index --requests.params.system.citations.type --requests.params.system.citations.end_page_number --requests.params.system.citations.start_page_number --requests.params.system.citations.end_block_index --requests.params.system.citations.start_block_index --requests.params.system.+citation --requests.params.+system --requests.params.temperature --requests.params.tool_choice.type --requests.params.tool_choice.disable_parallel_tool_use --requests.params.tool_choice.name --requests.params.tools.input_schema.type --requests.params.tools.name --requests.params.tools.cache_control.type --requests.params.tools.description --requests.params.tools.type --requests.params.tools.display_height_px --requests.params.tools.display_width_px --requests.params.tools.display_number --requests.params.+tool --requests.params.top_k --requests.params.top_p --+request --betas --+beta"
 complete -c anthropic-cli --no-files \
   -n "__fish_seen_subcommand_from beta.messages.batches.retrieve" \
   -a "--message-batch-id --betas --+beta"
@@ -75,12 +75,16 @@ complete -c anthropic-cli --no-files \
    -ra "ephemeral"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from messages.create" \
+   -l messages.content.citations.type \
+   -ra "char_location page_location content_block_location"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from messages.create" \
    -l messages.content.source.media_type \
-   -ra "image/jpeg image/png image/gif image/webp application/pdf"
+   -ra "image/jpeg image/png image/gif image/webp application/pdf text/plain"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from messages.create" \
    -l messages.content.source.type \
-   -ra "base64"
+   -ra "base64 text content"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from messages.create" \
    -l messages.content.content.type \
@@ -91,11 +95,35 @@ complete -c anthropic-cli --no-files \
    -ra "ephemeral"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from messages.create" \
+   -l messages.content.content.citations.type \
+   -ra "char_location page_location content_block_location"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from messages.create" \
    -l messages.content.content.source.media_type \
    -ra "image/jpeg image/png image/gif image/webp"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from messages.create" \
    -l messages.content.content.source.type \
+   -ra "base64"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from messages.create" \
+   -l messages.content.source.content.type \
+   -ra "text image"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from messages.create" \
+   -l messages.content.source.content.cache_control.type \
+   -ra "ephemeral"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from messages.create" \
+   -l messages.content.source.content.citations.type \
+   -ra "char_location page_location content_block_location"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from messages.create" \
+   -l messages.content.source.content.source.media_type \
+   -ra "image/jpeg image/png image/gif image/webp"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from messages.create" \
+   -l messages.content.source.content.source.type \
    -ra "base64"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from messages.create" \
@@ -113,6 +141,10 @@ complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from messages.create" \
    -l system.cache_control.type \
    -ra "ephemeral"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from messages.create" \
+   -l system.citations.type \
+   -ra "char_location page_location content_block_location"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from messages.create" \
    -l tool-choice.type \
@@ -131,12 +163,16 @@ complete -c anthropic-cli --no-files \
    -ra "ephemeral"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from messages.count_tokens" \
+   -l messages.content.citations.type \
+   -ra "char_location page_location content_block_location"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from messages.count_tokens" \
    -l messages.content.source.media_type \
-   -ra "image/jpeg image/png image/gif image/webp application/pdf"
+   -ra "image/jpeg image/png image/gif image/webp application/pdf text/plain"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from messages.count_tokens" \
    -l messages.content.source.type \
-   -ra "base64"
+   -ra "base64 text content"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from messages.count_tokens" \
    -l messages.content.content.type \
@@ -147,11 +183,35 @@ complete -c anthropic-cli --no-files \
    -ra "ephemeral"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from messages.count_tokens" \
+   -l messages.content.content.citations.type \
+   -ra "char_location page_location content_block_location"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from messages.count_tokens" \
    -l messages.content.content.source.media_type \
    -ra "image/jpeg image/png image/gif image/webp"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from messages.count_tokens" \
    -l messages.content.content.source.type \
+   -ra "base64"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from messages.count_tokens" \
+   -l messages.content.source.content.type \
+   -ra "text image"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from messages.count_tokens" \
+   -l messages.content.source.content.cache_control.type \
+   -ra "ephemeral"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from messages.count_tokens" \
+   -l messages.content.source.content.citations.type \
+   -ra "char_location page_location content_block_location"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from messages.count_tokens" \
+   -l messages.content.source.content.source.media_type \
+   -ra "image/jpeg image/png image/gif image/webp"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from messages.count_tokens" \
+   -l messages.content.source.content.source.type \
    -ra "base64"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from messages.count_tokens" \
@@ -171,6 +231,10 @@ complete -c anthropic-cli --no-files \
    -ra "ephemeral"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from messages.count_tokens" \
+   -l system.citations.type \
+   -ra "char_location page_location content_block_location"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from messages.count_tokens" \
    -l tool-choice.type \
    -ra "auto any tool"
  complete -c anthropic-cli --no-files \
@@ -187,12 +251,16 @@ complete -c anthropic-cli --no-files \
    -ra "ephemeral"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from messages.batches.create" \
+   -l requests.params.messages.content.citations.type \
+   -ra "char_location page_location content_block_location"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from messages.batches.create" \
    -l requests.params.messages.content.source.media_type \
-   -ra "image/jpeg image/png image/gif image/webp application/pdf"
+   -ra "image/jpeg image/png image/gif image/webp application/pdf text/plain"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from messages.batches.create" \
    -l requests.params.messages.content.source.type \
-   -ra "base64"
+   -ra "base64 text content"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from messages.batches.create" \
    -l requests.params.messages.content.content.type \
@@ -203,11 +271,35 @@ complete -c anthropic-cli --no-files \
    -ra "ephemeral"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from messages.batches.create" \
+   -l requests.params.messages.content.content.citations.type \
+   -ra "char_location page_location content_block_location"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from messages.batches.create" \
    -l requests.params.messages.content.content.source.media_type \
    -ra "image/jpeg image/png image/gif image/webp"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from messages.batches.create" \
    -l requests.params.messages.content.content.source.type \
+   -ra "base64"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from messages.batches.create" \
+   -l requests.params.messages.content.source.content.type \
+   -ra "text image"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from messages.batches.create" \
+   -l requests.params.messages.content.source.content.cache_control.type \
+   -ra "ephemeral"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from messages.batches.create" \
+   -l requests.params.messages.content.source.content.citations.type \
+   -ra "char_location page_location content_block_location"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from messages.batches.create" \
+   -l requests.params.messages.content.source.content.source.media_type \
+   -ra "image/jpeg image/png image/gif image/webp"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from messages.batches.create" \
+   -l requests.params.messages.content.source.content.source.type \
    -ra "base64"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from messages.batches.create" \
@@ -225,6 +317,10 @@ complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from messages.batches.create" \
    -l requests.params.system.cache_control.type \
    -ra "ephemeral"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from messages.batches.create" \
+   -l requests.params.system.citations.type \
+   -ra "char_location page_location content_block_location"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from messages.batches.create" \
    -l requests.params.tool_choice.type \
@@ -243,12 +339,16 @@ complete -c anthropic-cli --no-files \
    -ra "ephemeral"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from beta.messages.create" \
+   -l messages.content.citations.type \
+   -ra "char_location page_location content_block_location"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from beta.messages.create" \
    -l messages.content.source.media_type \
-   -ra "image/jpeg image/png image/gif image/webp application/pdf"
+   -ra "image/jpeg image/png image/gif image/webp application/pdf text/plain"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from beta.messages.create" \
    -l messages.content.source.type \
-   -ra "base64"
+   -ra "base64 text content"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from beta.messages.create" \
    -l messages.content.content.type \
@@ -259,11 +359,35 @@ complete -c anthropic-cli --no-files \
    -ra "ephemeral"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from beta.messages.create" \
+   -l messages.content.content.citations.type \
+   -ra "char_location page_location content_block_location"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from beta.messages.create" \
    -l messages.content.content.source.media_type \
    -ra "image/jpeg image/png image/gif image/webp"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from beta.messages.create" \
    -l messages.content.content.source.type \
+   -ra "base64"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from beta.messages.create" \
+   -l messages.content.source.content.type \
+   -ra "text image"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from beta.messages.create" \
+   -l messages.content.source.content.cache_control.type \
+   -ra "ephemeral"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from beta.messages.create" \
+   -l messages.content.source.content.citations.type \
+   -ra "char_location page_location content_block_location"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from beta.messages.create" \
+   -l messages.content.source.content.source.media_type \
+   -ra "image/jpeg image/png image/gif image/webp"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from beta.messages.create" \
+   -l messages.content.source.content.source.type \
    -ra "base64"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from beta.messages.create" \
@@ -281,6 +405,10 @@ complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from beta.messages.create" \
    -l system.cache_control.type \
    -ra "ephemeral"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from beta.messages.create" \
+   -l system.citations.type \
+   -ra "char_location page_location content_block_location"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from beta.messages.create" \
    -l tool-choice.type \
@@ -319,12 +447,16 @@ complete -c anthropic-cli --no-files \
    -ra "ephemeral"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from beta.messages.count_tokens" \
+   -l messages.content.citations.type \
+   -ra "char_location page_location content_block_location"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from beta.messages.count_tokens" \
    -l messages.content.source.media_type \
-   -ra "image/jpeg image/png image/gif image/webp application/pdf"
+   -ra "image/jpeg image/png image/gif image/webp application/pdf text/plain"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from beta.messages.count_tokens" \
    -l messages.content.source.type \
-   -ra "base64"
+   -ra "base64 text content"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from beta.messages.count_tokens" \
    -l messages.content.content.type \
@@ -335,11 +467,35 @@ complete -c anthropic-cli --no-files \
    -ra "ephemeral"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from beta.messages.count_tokens" \
+   -l messages.content.content.citations.type \
+   -ra "char_location page_location content_block_location"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from beta.messages.count_tokens" \
    -l messages.content.content.source.media_type \
    -ra "image/jpeg image/png image/gif image/webp"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from beta.messages.count_tokens" \
    -l messages.content.content.source.type \
+   -ra "base64"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from beta.messages.count_tokens" \
+   -l messages.content.source.content.type \
+   -ra "text image"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from beta.messages.count_tokens" \
+   -l messages.content.source.content.cache_control.type \
+   -ra "ephemeral"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from beta.messages.count_tokens" \
+   -l messages.content.source.content.citations.type \
+   -ra "char_location page_location content_block_location"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from beta.messages.count_tokens" \
+   -l messages.content.source.content.source.media_type \
+   -ra "image/jpeg image/png image/gif image/webp"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from beta.messages.count_tokens" \
+   -l messages.content.source.content.source.type \
    -ra "base64"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from beta.messages.count_tokens" \
@@ -357,6 +513,10 @@ complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from beta.messages.count_tokens" \
    -l system.cache_control.type \
    -ra "ephemeral"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from beta.messages.count_tokens" \
+   -l system.citations.type \
+   -ra "char_location page_location content_block_location"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from beta.messages.count_tokens" \
    -l tool-choice.type \
@@ -395,12 +555,16 @@ complete -c anthropic-cli --no-files \
    -ra "ephemeral"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from beta.messages.batches.create" \
+   -l requests.params.messages.content.citations.type \
+   -ra "char_location page_location content_block_location"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from beta.messages.batches.create" \
    -l requests.params.messages.content.source.media_type \
-   -ra "image/jpeg image/png image/gif image/webp application/pdf"
+   -ra "image/jpeg image/png image/gif image/webp application/pdf text/plain"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from beta.messages.batches.create" \
    -l requests.params.messages.content.source.type \
-   -ra "base64"
+   -ra "base64 text content"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from beta.messages.batches.create" \
    -l requests.params.messages.content.content.type \
@@ -411,11 +575,35 @@ complete -c anthropic-cli --no-files \
    -ra "ephemeral"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from beta.messages.batches.create" \
+   -l requests.params.messages.content.content.citations.type \
+   -ra "char_location page_location content_block_location"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from beta.messages.batches.create" \
    -l requests.params.messages.content.content.source.media_type \
    -ra "image/jpeg image/png image/gif image/webp"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from beta.messages.batches.create" \
    -l requests.params.messages.content.content.source.type \
+   -ra "base64"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from beta.messages.batches.create" \
+   -l requests.params.messages.content.source.content.type \
+   -ra "text image"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from beta.messages.batches.create" \
+   -l requests.params.messages.content.source.content.cache_control.type \
+   -ra "ephemeral"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from beta.messages.batches.create" \
+   -l requests.params.messages.content.source.content.citations.type \
+   -ra "char_location page_location content_block_location"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from beta.messages.batches.create" \
+   -l requests.params.messages.content.source.content.source.media_type \
+   -ra "image/jpeg image/png image/gif image/webp"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from beta.messages.batches.create" \
+   -l requests.params.messages.content.source.content.source.type \
    -ra "base64"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from beta.messages.batches.create" \
@@ -433,6 +621,10 @@ complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from beta.messages.batches.create" \
    -l requests.params.system.cache_control.type \
    -ra "ephemeral"
+ complete -c anthropic-cli --no-files \
+   -n "__fish_seen_subcommand_from beta.messages.batches.create" \
+   -l requests.params.system.citations.type \
+   -ra "char_location page_location content_block_location"
  complete -c anthropic-cli --no-files \
    -n "__fish_seen_subcommand_from beta.messages.batches.create" \
    -l requests.params.tool_choice.type \

@@ -76,6 +76,177 @@ func createMessagesCreateSubcommand(initialBody []byte) Subcommand {
 	)
 
 	flagSet.Func(
+		"messages.content.citations.cited_text",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.cited_text", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.citations.document_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.document_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.citations.document_title",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.document_title", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.citations.end_char_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.end_char_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.citations.start_char_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.start_char_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.citations.type",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.type", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.citations.end_page_number",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.end_page_number", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.citations.start_page_number",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.start_page_number", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.citations.end_block_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.end_block_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.citations.start_block_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.start_block_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.BoolFunc(
+		"messages.content.+citation",
+		"",
+		func(_ string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.-1", map[string]interface{}{})
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
 		"messages.content.source.data",
 		"",
 		func(string string) error {
@@ -193,6 +364,177 @@ func createMessagesCreateSubcommand(initialBody []byte) Subcommand {
 	)
 
 	flagSet.Func(
+		"messages.content.content.citations.cited_text",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.cited_text", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.content.citations.document_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.document_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.content.citations.document_title",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.document_title", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.content.citations.end_char_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.end_char_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.content.citations.start_char_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.start_char_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.content.citations.type",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.type", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.content.citations.end_page_number",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.end_page_number", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.content.citations.start_page_number",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.start_page_number", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.content.citations.end_block_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.end_block_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.content.citations.start_block_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.start_block_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.BoolFunc(
+		"messages.content.content.+citation",
+		"",
+		func(_ string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.-1", map[string]interface{}{})
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
 		"messages.content.content.source.data",
 		"",
 		func(string string) error {
@@ -250,6 +592,320 @@ func createMessagesCreateSubcommand(initialBody []byte) Subcommand {
 		func(_ string) error {
 			var jsonErr error
 			body, jsonErr = jsonSet(body, "messages.#.content.#.is_error", true)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.text",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.text", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.type",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.type", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.cache_control.type",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.cache_control.type", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.citations.cited_text",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.cited_text", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.citations.document_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.document_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.citations.document_title",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.document_title", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.citations.end_char_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.end_char_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.citations.start_char_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.start_char_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.citations.type",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.type", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.citations.end_page_number",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.end_page_number", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.citations.start_page_number",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.start_page_number", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.citations.end_block_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.end_block_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.citations.start_block_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.start_block_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.BoolFunc(
+		"messages.content.source.content.+citation",
+		"",
+		func(_ string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.-1", map[string]interface{}{})
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.source.data",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.source.data", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.source.media_type",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.source.media_type", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.source.type",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.source.type", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.BoolFunc(
+		"messages.content.source.+content",
+		"",
+		func(_ string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.-1", map[string]interface{}{})
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.BoolFunc(
+		"messages.content.citations.enabled",
+		"",
+		func(_ string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.enabled", true)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.context",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.context", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.title",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.title", string)
 			if jsonErr != nil {
 				return jsonErr
 			}
@@ -380,6 +1036,177 @@ func createMessagesCreateSubcommand(initialBody []byte) Subcommand {
 		func(string string) error {
 			var jsonErr error
 			body, jsonErr = jsonSet(body, "system.#.cache_control.type", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"system.citations.cited_text",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "system.#.citations.#.cited_text", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"system.citations.document_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "system.#.citations.#.document_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"system.citations.document_title",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "system.#.citations.#.document_title", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"system.citations.end_char_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "system.#.citations.#.end_char_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"system.citations.start_char_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "system.#.citations.#.start_char_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"system.citations.type",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "system.#.citations.#.type", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"system.citations.end_page_number",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "system.#.citations.#.end_page_number", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"system.citations.start_page_number",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "system.#.citations.#.start_page_number", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"system.citations.end_block_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "system.#.citations.#.end_block_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"system.citations.start_block_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "system.#.citations.#.start_block_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.BoolFunc(
+		"system.+citation",
+		"",
+		func(_ string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "system.#.citations.-1", map[string]interface{}{})
 			if jsonErr != nil {
 				return jsonErr
 			}
@@ -614,6 +1441,177 @@ func createMessagesCountTokensSubcommand(initialBody []byte) Subcommand {
 	)
 
 	flagSet.Func(
+		"messages.content.citations.cited_text",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.cited_text", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.citations.document_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.document_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.citations.document_title",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.document_title", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.citations.end_char_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.end_char_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.citations.start_char_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.start_char_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.citations.type",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.type", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.citations.end_page_number",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.end_page_number", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.citations.start_page_number",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.start_page_number", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.citations.end_block_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.end_block_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.citations.start_block_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.start_block_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.BoolFunc(
+		"messages.content.+citation",
+		"",
+		func(_ string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.-1", map[string]interface{}{})
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
 		"messages.content.source.data",
 		"",
 		func(string string) error {
@@ -731,6 +1729,177 @@ func createMessagesCountTokensSubcommand(initialBody []byte) Subcommand {
 	)
 
 	flagSet.Func(
+		"messages.content.content.citations.cited_text",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.cited_text", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.content.citations.document_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.document_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.content.citations.document_title",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.document_title", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.content.citations.end_char_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.end_char_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.content.citations.start_char_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.start_char_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.content.citations.type",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.type", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.content.citations.end_page_number",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.end_page_number", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.content.citations.start_page_number",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.start_page_number", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.content.citations.end_block_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.end_block_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.content.citations.start_block_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.start_block_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.BoolFunc(
+		"messages.content.content.+citation",
+		"",
+		func(_ string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.-1", map[string]interface{}{})
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
 		"messages.content.content.source.data",
 		"",
 		func(string string) error {
@@ -788,6 +1957,320 @@ func createMessagesCountTokensSubcommand(initialBody []byte) Subcommand {
 		func(_ string) error {
 			var jsonErr error
 			body, jsonErr = jsonSet(body, "messages.#.content.#.is_error", true)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.text",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.text", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.type",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.type", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.cache_control.type",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.cache_control.type", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.citations.cited_text",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.cited_text", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.citations.document_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.document_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.citations.document_title",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.document_title", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.citations.end_char_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.end_char_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.citations.start_char_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.start_char_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.citations.type",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.type", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.citations.end_page_number",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.end_page_number", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.citations.start_page_number",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.start_page_number", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.citations.end_block_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.end_block_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.citations.start_block_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.start_block_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.BoolFunc(
+		"messages.content.source.content.+citation",
+		"",
+		func(_ string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.-1", map[string]interface{}{})
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.source.data",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.source.data", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.source.media_type",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.source.media_type", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.source.type",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.source.type", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.BoolFunc(
+		"messages.content.source.+content",
+		"",
+		func(_ string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.-1", map[string]interface{}{})
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.BoolFunc(
+		"messages.content.citations.enabled",
+		"",
+		func(_ string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.enabled", true)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.context",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.context", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.title",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.title", string)
 			if jsonErr != nil {
 				return jsonErr
 			}
@@ -892,6 +2375,177 @@ func createMessagesCountTokensSubcommand(initialBody []byte) Subcommand {
 		func(string string) error {
 			var jsonErr error
 			body, jsonErr = jsonSet(body, "system.#.cache_control.type", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"system.citations.cited_text",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "system.#.citations.#.cited_text", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"system.citations.document_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "system.#.citations.#.document_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"system.citations.document_title",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "system.#.citations.#.document_title", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"system.citations.end_char_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "system.#.citations.#.end_char_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"system.citations.start_char_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "system.#.citations.#.start_char_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"system.citations.type",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "system.#.citations.#.type", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"system.citations.end_page_number",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "system.#.citations.#.end_page_number", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"system.citations.start_page_number",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "system.#.citations.#.start_page_number", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"system.citations.end_block_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "system.#.citations.#.end_block_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"system.citations.start_block_index",
+		"",
+		func(string string) error {
+			int, err := parseInt(string)
+			if err != nil {
+				return err
+			}
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "system.#.citations.#.start_block_index", int)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.BoolFunc(
+		"system.+citation",
+		"",
+		func(_ string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "system.#.citations.-1", map[string]interface{}{})
 			if jsonErr != nil {
 				return jsonErr
 			}
