@@ -286,6 +286,19 @@ func createMessagesCreateSubcommand(initialBody []byte) Subcommand {
 	)
 
 	flagSet.Func(
+		"messages.content.source.url",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.url", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
 		"messages.content.id",
 		"",
 		func(string string) error {
@@ -566,6 +579,19 @@ func createMessagesCreateSubcommand(initialBody []byte) Subcommand {
 		func(string string) error {
 			var jsonErr error
 			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.source.type", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.content.source.url",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.source.url", string)
 			if jsonErr != nil {
 				return jsonErr
 			}
@@ -854,6 +880,19 @@ func createMessagesCreateSubcommand(initialBody []byte) Subcommand {
 		func(string string) error {
 			var jsonErr error
 			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.source.type", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.source.url",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.source.url", string)
 			if jsonErr != nil {
 				return jsonErr
 			}
@@ -1366,19 +1405,6 @@ func createMessagesCreateSubcommand(initialBody []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"tools.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "tools.#.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
 		"tools.cache_control.type",
 		"",
 		func(string string) error {
@@ -1397,6 +1423,19 @@ func createMessagesCreateSubcommand(initialBody []byte) Subcommand {
 		func(string string) error {
 			var jsonErr error
 			body, jsonErr = jsonSet(body, "tools.#.description", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"tools.type",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "tools.#.type", string)
 			if jsonErr != nil {
 				return jsonErr
 			}
@@ -1733,6 +1772,19 @@ func createMessagesCountTokensSubcommand(initialBody []byte) Subcommand {
 	)
 
 	flagSet.Func(
+		"messages.content.source.url",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.url", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
 		"messages.content.id",
 		"",
 		func(string string) error {
@@ -2013,6 +2065,19 @@ func createMessagesCountTokensSubcommand(initialBody []byte) Subcommand {
 		func(string string) error {
 			var jsonErr error
 			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.source.type", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.content.source.url",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.source.url", string)
 			if jsonErr != nil {
 				return jsonErr
 			}
@@ -2301,6 +2366,19 @@ func createMessagesCountTokensSubcommand(initialBody []byte) Subcommand {
 		func(string string) error {
 			var jsonErr error
 			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.source.type", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"messages.content.source.content.source.url",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.source.url", string)
 			if jsonErr != nil {
 				return jsonErr
 			}
@@ -2770,19 +2848,6 @@ func createMessagesCountTokensSubcommand(initialBody []byte) Subcommand {
 	)
 
 	flagSet.Func(
-		"tools.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "tools.#.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
 		"tools.cache_control.type",
 		"",
 		func(string string) error {
@@ -2801,6 +2866,19 @@ func createMessagesCountTokensSubcommand(initialBody []byte) Subcommand {
 		func(string string) error {
 			var jsonErr error
 			body, jsonErr = jsonSet(body, "tools.#.description", string)
+			if jsonErr != nil {
+				return jsonErr
+			}
+			return nil
+		},
+	)
+
+	flagSet.Func(
+		"tools.type",
+		"",
+		func(string string) error {
+			var jsonErr error
+			body, jsonErr = jsonSet(body, "tools.#.type", string)
 			if jsonErr != nil {
 				return jsonErr
 			}
