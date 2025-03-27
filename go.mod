@@ -3,7 +3,7 @@ module github.com/stainless-sdks/anthropic-cli
 go 1.21
 
 require (
-	github.com/anthropics/anthropic-sdk-go v0.2.0-beta.2
+	github.com/anthropics/anthropic-sdk-go v0.2.0-beta.3
 	github.com/tidwall/gjson v1.14.4
 	github.com/tidwall/sjson v1.2.5
 )
