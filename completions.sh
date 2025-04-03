@@ -5,7 +5,26 @@ _main()
 {
     COMPREPLY=()
 
-    local subcommands="completions.create messages.create messages.count_tokens messages.batches.create messages.batches.retrieve messages.batches.list messages.batches.delete messages.batches.cancel models.retrieve models.list beta.models.retrieve beta.models.list beta.messages.create beta.messages.count_tokens beta.messages.batches.create beta.messages.batches.retrieve beta.messages.batches.list beta.messages.batches.delete beta.messages.batches.cancel"
+    local subcommands="\
+      completions.create \
+      messages.create \
+      messages.count_tokens \
+      messages.batches.create \
+      messages.batches.retrieve \
+      messages.batches.list \
+      messages.batches.delete \
+      messages.batches.cancel \
+      models.retrieve \
+      models.list \
+      beta.models.retrieve \
+      beta.models.list \
+      beta.messages.create \
+      beta.messages.count_tokens \
+      beta.messages.batches.create \
+      beta.messages.batches.retrieve \
+      beta.messages.batches.list \
+      beta.messages.batches.delete \
+      beta.messages.batches.cancel"
 
     if [[ "$COMP_CWORD" -eq 1 ]]
     then

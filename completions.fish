@@ -1,4 +1,23 @@
-set -l subcommands completions.create messages.create messages.count_tokens messages.batches.create messages.batches.retrieve messages.batches.list messages.batches.delete messages.batches.cancel models.retrieve models.list beta.models.retrieve beta.models.list beta.messages.create beta.messages.count_tokens beta.messages.batches.create beta.messages.batches.retrieve beta.messages.batches.list beta.messages.batches.delete beta.messages.batches.cancel
+set -l subcommands \
+  completions.create \
+  messages.create \
+  messages.count_tokens \
+  messages.batches.create \
+  messages.batches.retrieve \
+  messages.batches.list \
+  messages.batches.delete \
+  messages.batches.cancel \
+  models.retrieve \
+  models.list \
+  beta.models.retrieve \
+  beta.models.list \
+  beta.messages.create \
+  beta.messages.count_tokens \
+  beta.messages.batches.create \
+  beta.messages.batches.retrieve \
+  beta.messages.batches.list \
+  beta.messages.batches.delete \
+  beta.messages.batches.cancel
 complete -c anthropic-cli --no-files \
   -n "not __fish_seen_subcommand_from $subcommands" \
   -a "$subcommands"
