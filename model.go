@@ -4,142 +4,77 @@ package main
 
 import (
 	"context"
-	"flag"
 	"fmt"
-	"net/http"
 	"os"
 
 	"github.com/anthropics/anthropic-sdk-go"
 	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/urfave/cli/v3"
 )
 
-func createModelsRetrieveSubcommand() Subcommand {
-	var modelID *string = nil
-	query := []byte("{}")
-	header := []byte("{}")
-	var flagSet = flag.NewFlagSet("models.retrieve", flag.ExitOnError)
-
-	flagSet.Func(
-		"model-id",
-		"",
-		func(string string) error {
-			modelID = &string
-			return nil
+var modelsRetrieve = cli.Command{
+	Name:  "retrieve",
+	Usage: "Get a specific model.",
+	Flags: []cli.Flag{
+		&cli.StringFlag{
+			Name: "model-id",
 		},
-	)
-
-	return Subcommand{
-		flagSet: flagSet,
-		handle: func(client *anthropic.Client) {
-			res, err := client.Models.Get(
-				context.TODO(),
-				*modelID,
-				option.WithMiddleware(func(r *http.Request, mn option.MiddlewareNext) (*http.Response, error) {
-					q := r.URL.Query()
-					for key, values := range serializeQuery(query) {
-						for _, value := range values {
-							q.Add(key, value)
-						}
-					}
-					r.URL.RawQuery = q.Encode()
-
-					for key, values := range serializeHeader(header) {
-						for _, value := range values {
-							r.Header.Add(key, value)
-						}
-					}
-
-					return mn(r)
-				}),
-			)
-			if err != nil {
-				fmt.Printf("%s\n", err)
-				os.Exit(1)
-			}
-
-			fmt.Printf("%s\n", res.JSON.RawJSON())
-		},
-	}
+	},
+	Before:          initAPICommand,
+	Action:          handleModelsRetrieve,
+	HideHelpCommand: true,
 }
 
-func createModelsListSubcommand() Subcommand {
-	query := []byte("{}")
-	header := []byte("{}")
-	var flagSet = flag.NewFlagSet("models.list", flag.ExitOnError)
-
-	flagSet.Func(
-		"after-id",
-		"",
-		func(string string) error {
-			var jsonErr error
-			query, jsonErr = jsonSet(query, "after_id", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
+var modelsList = cli.Command{
+	Name:  "list",
+	Usage: "List available models.",
+	Flags: []cli.Flag{
+		&cli.StringFlag{
+			Name:   "after-id",
+			Action: getAPIFlagAction[string]("query", "after_id"),
 		},
+		&cli.StringFlag{
+			Name:   "before-id",
+			Action: getAPIFlagAction[string]("query", "before_id"),
+		},
+		&cli.Int64Flag{
+			Name:   "limit",
+			Action: getAPIFlagAction[int64]("query", "limit"),
+		},
+	},
+	Before:          initAPICommand,
+	Action:          handleModelsList,
+	HideHelpCommand: true,
+}
+
+func handleModelsRetrieve(ctx context.Context, cmd *cli.Command) error {
+	cc := getAPICommandContext(ctx, cmd)
+
+	res, err := cc.client.Models.Get(
+		context.TODO(),
+		cmd.Value("model-id").(string),
+		option.WithMiddleware(cc.AsMiddleware()),
 	)
-
-	flagSet.Func(
-		"before-id",
-		"",
-		func(string string) error {
-			var jsonErr error
-			query, jsonErr = jsonSet(query, "before_id", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"limit",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			query, jsonErr = jsonSet(query, "limit", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	return Subcommand{
-		flagSet: flagSet,
-		handle: func(client *anthropic.Client) {
-			res, err := client.Models.List(
-				context.TODO(),
-				anthropic.ModelListParams{},
-				option.WithMiddleware(func(r *http.Request, mn option.MiddlewareNext) (*http.Response, error) {
-					q := r.URL.Query()
-					for key, values := range serializeQuery(query) {
-						for _, value := range values {
-							q.Add(key, value)
-						}
-					}
-					r.URL.RawQuery = q.Encode()
-
-					for key, values := range serializeHeader(header) {
-						for _, value := range values {
-							r.Header.Add(key, value)
-						}
-					}
-
-					return mn(r)
-				}),
-			)
-			if err != nil {
-				fmt.Printf("%s\n", err)
-				os.Exit(1)
-			}
-
-			fmt.Printf("%s\n", res.JSON.RawJSON())
-		},
+	if err != nil {
+		return err
 	}
+
+	fmt.Printf("%s\n", colorizeJSON(res.RawJSON(), os.Stdout))
+	return nil
+}
+
+func handleModelsList(ctx context.Context, cmd *cli.Command) error {
+	cc := getAPICommandContext(ctx, cmd)
+
+	res, err := cc.client.Models.List(
+		context.TODO(),
+		anthropic.ModelListParams{},
+		option.WithMiddleware(cc.AsMiddleware()),
+	)
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("%s\n", colorizeJSON(res.RawJSON(), os.Stdout))
+	return nil
 }

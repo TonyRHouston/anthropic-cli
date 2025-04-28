@@ -4,3124 +4,913 @@ package main
 
 import (
 	"context"
-	"flag"
 	"fmt"
-	"net/http"
 	"os"
 
 	"github.com/anthropics/anthropic-sdk-go"
 	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/urfave/cli/v3"
 )
 
-func createBetaMessagesCreateSubcommand(initialBody []byte) Subcommand {
-	query := []byte("{}")
-	header := []byte("{}")
-	body := initialBody
-	var flagSet = flag.NewFlagSet("beta.messages.create", flag.ExitOnError)
-
-	flagSet.Func(
-		"max-tokens",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "max_tokens", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.text",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.text", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.cache_control.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.cache_control.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.citations.cited_text",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.cited_text", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.citations.document_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.document_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.citations.document_title",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.document_title", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.citations.end_char_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.end_char_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.citations.start_char_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.start_char_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.citations.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.citations.end_page_number",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.end_page_number", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.citations.start_page_number",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.start_page_number", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.citations.end_block_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.end_block_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.citations.start_block_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.start_block_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"messages.content.+citation",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.-1", map[string]interface{}{})
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.data",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.data", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.media_type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.media_type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.url",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.url", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.id",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.id", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.name",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.name", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.tool_use_id",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.tool_use_id", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.text",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.text", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.cache_control.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.cache_control.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.citations.cited_text",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.cited_text", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.citations.document_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.document_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.citations.document_title",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.document_title", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.citations.end_char_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.end_char_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.citations.start_char_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.start_char_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.citations.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.citations.end_page_number",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.end_page_number", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.citations.start_page_number",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.start_page_number", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.citations.end_block_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.end_block_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.citations.start_block_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.start_block_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"messages.content.content.+citation",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.-1", map[string]interface{}{})
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.source.data",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.source.data", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.source.media_type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.source.media_type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.source.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.source.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.source.url",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.source.url", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"messages.content.+content",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.-1", map[string]interface{}{})
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"messages.content.is_error",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.is_error", true)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.text",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.text", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.cache_control.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.cache_control.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.citations.cited_text",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.cited_text", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.citations.document_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.document_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.citations.document_title",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.document_title", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.citations.end_char_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.end_char_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.citations.start_char_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.start_char_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.citations.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.citations.end_page_number",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.end_page_number", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.citations.start_page_number",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.start_page_number", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.citations.end_block_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.end_block_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.citations.start_block_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.start_block_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"messages.content.source.content.+citation",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.-1", map[string]interface{}{})
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.source.data",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.source.data", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.source.media_type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.source.media_type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.source.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.source.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.source.url",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.source.url", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"messages.content.source.+content",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.-1", map[string]interface{}{})
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"messages.content.citations.enabled",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.enabled", true)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.context",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.context", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.title",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.title", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.signature",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.signature", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.thinking",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.thinking", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.data",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.data", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"messages.+content",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.-1", map[string]interface{}{})
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.role",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.role", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"+message",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.-1", map[string]interface{}{})
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"model",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "model", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"metadata.user_id",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "metadata.user_id", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"stop-sequences",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "stop_sequences.#", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"+stop_sequence",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "stop_sequences.-1", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"system.text",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "system.#.text", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"system.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "system.#.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"system.cache_control.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "system.#.cache_control.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"system.citations.cited_text",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "system.#.citations.#.cited_text", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"system.citations.document_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "system.#.citations.#.document_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"system.citations.document_title",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "system.#.citations.#.document_title", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"system.citations.end_char_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "system.#.citations.#.end_char_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"system.citations.start_char_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "system.#.citations.#.start_char_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"system.citations.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "system.#.citations.#.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"system.citations.end_page_number",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "system.#.citations.#.end_page_number", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"system.citations.start_page_number",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "system.#.citations.#.start_page_number", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"system.citations.end_block_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "system.#.citations.#.end_block_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"system.citations.start_block_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "system.#.citations.#.start_block_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"system.+citation",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "system.#.citations.-1", map[string]interface{}{})
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"+system",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "system.-1", map[string]interface{}{})
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"temperature",
-		"",
-		func(string string) error {
-			float, err := parseFloat(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "temperature", float)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"thinking.budget_tokens",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "thinking.budget_tokens", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"thinking.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "thinking.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"tool-choice.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "tool_choice.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"tool-choice.disable_parallel_tool_use",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "tool_choice.disable_parallel_tool_use", true)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"tool-choice.name",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "tool_choice.name", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"tools.input_schema.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "tools.#.input_schema.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"tools.name",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "tools.#.name", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"tools.cache_control.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "tools.#.cache_control.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"tools.description",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "tools.#.description", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"tools.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "tools.#.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"tools.display_height_px",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "tools.#.display_height_px", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"tools.display_width_px",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "tools.#.display_width_px", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"tools.display_number",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "tools.#.display_number", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"+tool",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "tools.-1", map[string]interface{}{})
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"top-k",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "top_k", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"top-p",
-		"",
-		func(string string) error {
-			float, err := parseFloat(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "top_p", float)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"betas",
-		"",
-		func(string string) error {
-			var jsonErr error
-			header, jsonErr = jsonSet(header, "anthropic-beta.#", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"+beta",
-		"",
-		func(string string) error {
-			var jsonErr error
-			header, jsonErr = jsonSet(header, "anthropic-beta.-1", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	return Subcommand{
-		flagSet: flagSet,
-		handle: func(client *anthropic.Client) {
-			var err error
-			body, err = jsonSet(body, "stream", true)
-			if err != nil {
-				fmt.Printf("%s\n", err)
-				os.Exit(1)
-			}
-			stream := client.Beta.Messages.NewStreaming(
-				context.TODO(),
-				anthropic.BetaMessageNewParams{},
-				option.WithMiddleware(func(r *http.Request, mn option.MiddlewareNext) (*http.Response, error) {
-					q := r.URL.Query()
-					for key, values := range serializeQuery(query) {
-						for _, value := range values {
-							q.Add(key, value)
-						}
-					}
-					r.URL.RawQuery = q.Encode()
-
-					for key, values := range serializeHeader(header) {
-						for _, value := range values {
-							r.Header.Add(key, value)
-						}
-					}
-
-					return mn(r)
-				}),
-				option.WithRequestBody("application/json", body),
-			)
-			for stream.Next() {
-				fmt.Printf("%s\n", stream.Current().JSON.RawJSON())
-			}
-		},
-	}
+var betaMessagesCreate = cli.Command{
+	Name:  "create",
+	Usage: "Send a structured list of input messages with text and/or image content, and the\nmodel will generate the next message in the conversation.",
+	Flags: []cli.Flag{
+		&cli.Int64Flag{
+			Name:   "max-tokens",
+			Action: getAPIFlagAction[int64]("body", "max_tokens"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.text",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.text"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.type",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.type"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.cache_control.type",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.cache_control.type"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.citations.cited_text",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.citations.#.cited_text"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.citations.document_index",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.citations.#.document_index"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.citations.document_title",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.citations.#.document_title"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.citations.end_char_index",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.citations.#.end_char_index"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.citations.start_char_index",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.citations.#.start_char_index"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.citations.type",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.citations.#.type"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.citations.end_page_number",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.citations.#.end_page_number"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.citations.start_page_number",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.citations.#.start_page_number"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.citations.end_block_index",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.citations.#.end_block_index"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.citations.start_block_index",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.citations.#.start_block_index"),
+		},
+		&cli.BoolFlag{
+			Name:   "messages.content.+citation",
+			Action: getAPIFlagActionWithValue[bool]("body", "messages.#.content.#.citations.-1", map[string]interface{}{}),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.source.data",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.source.data"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.source.media_type",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.source.media_type"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.source.type",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.source.type"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.source.url",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.source.url"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.id",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.id"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.name",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.name"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.tool_use_id",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.tool_use_id"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.content.text",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.content.#.text"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.content.type",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.content.#.type"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.content.cache_control.type",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.content.#.cache_control.type"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.content.citations.cited_text",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.content.#.citations.#.cited_text"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.content.citations.document_index",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.content.#.citations.#.document_index"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.content.citations.document_title",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.content.#.citations.#.document_title"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.content.citations.end_char_index",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.content.#.citations.#.end_char_index"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.content.citations.start_char_index",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.content.#.citations.#.start_char_index"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.content.citations.type",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.content.#.citations.#.type"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.content.citations.end_page_number",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.content.#.citations.#.end_page_number"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.content.citations.start_page_number",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.content.#.citations.#.start_page_number"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.content.citations.end_block_index",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.content.#.citations.#.end_block_index"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.content.citations.start_block_index",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.content.#.citations.#.start_block_index"),
+		},
+		&cli.BoolFlag{
+			Name:   "messages.content.content.+citation",
+			Action: getAPIFlagActionWithValue[bool]("body", "messages.#.content.#.content.#.citations.-1", map[string]interface{}{}),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.content.source.data",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.content.#.source.data"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.content.source.media_type",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.content.#.source.media_type"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.content.source.type",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.content.#.source.type"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.content.source.url",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.content.#.source.url"),
+		},
+		&cli.BoolFlag{
+			Name:   "messages.content.+content",
+			Action: getAPIFlagActionWithValue[bool]("body", "messages.#.content.#.content.-1", map[string]interface{}{}),
+		},
+		&cli.BoolFlag{
+			Name:   "messages.content.is_error",
+			Action: getAPIFlagAction[bool]("body", "messages.#.content.#.is_error"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.source.content",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.source.content"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.source.content.text",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.source.content.#.text"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.source.content.type",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.source.content.#.type"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.source.content.cache_control.type",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.source.content.#.cache_control.type"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.source.content.citations.cited_text",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.source.content.#.citations.#.cited_text"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.source.content.citations.document_index",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.source.content.#.citations.#.document_index"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.source.content.citations.document_title",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.source.content.#.citations.#.document_title"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.source.content.citations.end_char_index",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.source.content.#.citations.#.end_char_index"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.source.content.citations.start_char_index",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.source.content.#.citations.#.start_char_index"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.source.content.citations.type",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.source.content.#.citations.#.type"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.source.content.citations.end_page_number",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.source.content.#.citations.#.end_page_number"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.source.content.citations.start_page_number",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.source.content.#.citations.#.start_page_number"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.source.content.citations.end_block_index",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.source.content.#.citations.#.end_block_index"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.source.content.citations.start_block_index",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.source.content.#.citations.#.start_block_index"),
+		},
+		&cli.BoolFlag{
+			Name:   "messages.content.source.content.+citation",
+			Action: getAPIFlagActionWithValue[bool]("body", "messages.#.content.#.source.content.#.citations.-1", map[string]interface{}{}),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.source.content.source.data",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.source.content.#.source.data"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.source.content.source.media_type",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.source.content.#.source.media_type"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.source.content.source.type",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.source.content.#.source.type"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.source.content.source.url",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.source.content.#.source.url"),
+		},
+		&cli.BoolFlag{
+			Name:   "messages.content.source.+content",
+			Action: getAPIFlagActionWithValue[bool]("body", "messages.#.content.#.source.content.-1", map[string]interface{}{}),
+		},
+		&cli.BoolFlag{
+			Name:   "messages.content.citations.enabled",
+			Action: getAPIFlagAction[bool]("body", "messages.#.content.#.citations.enabled"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.context",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.context"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.title",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.title"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.signature",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.signature"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.thinking",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.thinking"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.data",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.data"),
+		},
+		&cli.BoolFlag{
+			Name:   "messages.+content",
+			Action: getAPIFlagActionWithValue[bool]("body", "messages.#.content.-1", map[string]interface{}{}),
+		},
+		&cli.StringFlag{
+			Name:   "messages.role",
+			Action: getAPIFlagAction[string]("body", "messages.#.role"),
+		},
+		&cli.BoolFlag{
+			Name:   "+message",
+			Action: getAPIFlagActionWithValue[bool]("body", "messages.-1", map[string]interface{}{}),
+		},
+		&cli.StringFlag{
+			Name:   "model",
+			Action: getAPIFlagAction[string]("body", "model"),
+		},
+		&cli.StringFlag{
+			Name:   "metadata.user_id",
+			Action: getAPIFlagAction[string]("body", "metadata.user_id"),
+		},
+		&cli.StringFlag{
+			Name:   "stop-sequences",
+			Action: getAPIFlagAction[string]("body", "stop_sequences.#"),
+		},
+		&cli.StringFlag{
+			Name:   "+stop_sequence",
+			Action: getAPIFlagAction[string]("body", "stop_sequences.-1"),
+		},
+		&cli.StringFlag{
+			Name:   "system.text",
+			Action: getAPIFlagAction[string]("body", "system.#.text"),
+		},
+		&cli.StringFlag{
+			Name:   "system.type",
+			Action: getAPIFlagAction[string]("body", "system.#.type"),
+		},
+		&cli.StringFlag{
+			Name:   "system.cache_control.type",
+			Action: getAPIFlagAction[string]("body", "system.#.cache_control.type"),
+		},
+		&cli.StringFlag{
+			Name:   "system.citations.cited_text",
+			Action: getAPIFlagAction[string]("body", "system.#.citations.#.cited_text"),
+		},
+		&cli.Int64Flag{
+			Name:   "system.citations.document_index",
+			Action: getAPIFlagAction[int64]("body", "system.#.citations.#.document_index"),
+		},
+		&cli.StringFlag{
+			Name:   "system.citations.document_title",
+			Action: getAPIFlagAction[string]("body", "system.#.citations.#.document_title"),
+		},
+		&cli.Int64Flag{
+			Name:   "system.citations.end_char_index",
+			Action: getAPIFlagAction[int64]("body", "system.#.citations.#.end_char_index"),
+		},
+		&cli.Int64Flag{
+			Name:   "system.citations.start_char_index",
+			Action: getAPIFlagAction[int64]("body", "system.#.citations.#.start_char_index"),
+		},
+		&cli.StringFlag{
+			Name:   "system.citations.type",
+			Action: getAPIFlagAction[string]("body", "system.#.citations.#.type"),
+		},
+		&cli.Int64Flag{
+			Name:   "system.citations.end_page_number",
+			Action: getAPIFlagAction[int64]("body", "system.#.citations.#.end_page_number"),
+		},
+		&cli.Int64Flag{
+			Name:   "system.citations.start_page_number",
+			Action: getAPIFlagAction[int64]("body", "system.#.citations.#.start_page_number"),
+		},
+		&cli.Int64Flag{
+			Name:   "system.citations.end_block_index",
+			Action: getAPIFlagAction[int64]("body", "system.#.citations.#.end_block_index"),
+		},
+		&cli.Int64Flag{
+			Name:   "system.citations.start_block_index",
+			Action: getAPIFlagAction[int64]("body", "system.#.citations.#.start_block_index"),
+		},
+		&cli.BoolFlag{
+			Name:   "system.+citation",
+			Action: getAPIFlagActionWithValue[bool]("body", "system.#.citations.-1", map[string]interface{}{}),
+		},
+		&cli.BoolFlag{
+			Name:   "+system",
+			Action: getAPIFlagActionWithValue[bool]("body", "system.-1", map[string]interface{}{}),
+		},
+		&cli.FloatFlag{
+			Name:   "temperature",
+			Action: getAPIFlagAction[float64]("body", "temperature"),
+		},
+		&cli.Int64Flag{
+			Name:   "thinking.budget_tokens",
+			Action: getAPIFlagAction[int64]("body", "thinking.budget_tokens"),
+		},
+		&cli.StringFlag{
+			Name:   "thinking.type",
+			Action: getAPIFlagAction[string]("body", "thinking.type"),
+		},
+		&cli.StringFlag{
+			Name:   "tool-choice.type",
+			Action: getAPIFlagAction[string]("body", "tool_choice.type"),
+		},
+		&cli.BoolFlag{
+			Name:   "tool-choice.disable_parallel_tool_use",
+			Action: getAPIFlagAction[bool]("body", "tool_choice.disable_parallel_tool_use"),
+		},
+		&cli.StringFlag{
+			Name:   "tool-choice.name",
+			Action: getAPIFlagAction[string]("body", "tool_choice.name"),
+		},
+		&cli.StringFlag{
+			Name:   "tools.input_schema.type",
+			Action: getAPIFlagAction[string]("body", "tools.#.input_schema.type"),
+		},
+		&cli.StringFlag{
+			Name:   "tools.name",
+			Action: getAPIFlagAction[string]("body", "tools.#.name"),
+		},
+		&cli.StringFlag{
+			Name:   "tools.cache_control.type",
+			Action: getAPIFlagAction[string]("body", "tools.#.cache_control.type"),
+		},
+		&cli.StringFlag{
+			Name:   "tools.description",
+			Action: getAPIFlagAction[string]("body", "tools.#.description"),
+		},
+		&cli.StringFlag{
+			Name:   "tools.type",
+			Action: getAPIFlagAction[string]("body", "tools.#.type"),
+		},
+		&cli.Int64Flag{
+			Name:   "tools.display_height_px",
+			Action: getAPIFlagAction[int64]("body", "tools.#.display_height_px"),
+		},
+		&cli.Int64Flag{
+			Name:   "tools.display_width_px",
+			Action: getAPIFlagAction[int64]("body", "tools.#.display_width_px"),
+		},
+		&cli.Int64Flag{
+			Name:   "tools.display_number",
+			Action: getAPIFlagAction[int64]("body", "tools.#.display_number"),
+		},
+		&cli.BoolFlag{
+			Name:   "+tool",
+			Action: getAPIFlagActionWithValue[bool]("body", "tools.-1", map[string]interface{}{}),
+		},
+		&cli.Int64Flag{
+			Name:   "top-k",
+			Action: getAPIFlagAction[int64]("body", "top_k"),
+		},
+		&cli.FloatFlag{
+			Name:   "top-p",
+			Action: getAPIFlagAction[float64]("body", "top_p"),
+		},
+		&cli.StringFlag{
+			Name:   "betas",
+			Action: getAPIFlagAction[string]("header", "anthropic-beta.#"),
+		},
+		&cli.StringFlag{
+			Name:   "+beta",
+			Action: getAPIFlagAction[string]("header", "anthropic-beta.-1"),
+		},
+	},
+	Before:          initAPICommand,
+	Action:          handleBetaMessagesCreate,
+	HideHelpCommand: true,
 }
 
-func createBetaMessagesCountTokensSubcommand(initialBody []byte) Subcommand {
-	query := []byte("{}")
-	header := []byte("{}")
-	body := initialBody
-	var flagSet = flag.NewFlagSet("beta.messages.count_tokens", flag.ExitOnError)
-
-	flagSet.Func(
-		"messages.content.text",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.text", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.cache_control.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.cache_control.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.citations.cited_text",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.cited_text", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.citations.document_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.document_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.citations.document_title",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.document_title", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.citations.end_char_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.end_char_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.citations.start_char_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.start_char_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.citations.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.citations.end_page_number",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.end_page_number", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.citations.start_page_number",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.start_page_number", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.citations.end_block_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.end_block_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.citations.start_block_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.#.start_block_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"messages.content.+citation",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.-1", map[string]interface{}{})
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.data",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.data", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.media_type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.media_type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.url",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.url", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.id",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.id", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.name",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.name", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.tool_use_id",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.tool_use_id", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.text",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.text", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.cache_control.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.cache_control.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.citations.cited_text",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.cited_text", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.citations.document_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.document_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.citations.document_title",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.document_title", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.citations.end_char_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.end_char_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.citations.start_char_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.start_char_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.citations.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.citations.end_page_number",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.end_page_number", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.citations.start_page_number",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.start_page_number", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.citations.end_block_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.end_block_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.citations.start_block_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.#.start_block_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"messages.content.content.+citation",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.citations.-1", map[string]interface{}{})
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.source.data",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.source.data", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.source.media_type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.source.media_type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.source.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.source.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.content.source.url",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.#.source.url", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"messages.content.+content",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.content.-1", map[string]interface{}{})
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"messages.content.is_error",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.is_error", true)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.text",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.text", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.cache_control.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.cache_control.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.citations.cited_text",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.cited_text", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.citations.document_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.document_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.citations.document_title",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.document_title", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.citations.end_char_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.end_char_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.citations.start_char_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.start_char_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.citations.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.citations.end_page_number",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.end_page_number", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.citations.start_page_number",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.start_page_number", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.citations.end_block_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.end_block_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.citations.start_block_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.#.start_block_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"messages.content.source.content.+citation",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.citations.-1", map[string]interface{}{})
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.source.data",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.source.data", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.source.media_type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.source.media_type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.source.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.source.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.source.content.source.url",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.#.source.url", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"messages.content.source.+content",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.source.content.-1", map[string]interface{}{})
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"messages.content.citations.enabled",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.citations.enabled", true)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.context",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.context", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.title",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.title", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.signature",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.signature", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.thinking",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.thinking", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.content.data",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.#.data", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"messages.+content",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.content.-1", map[string]interface{}{})
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"messages.role",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.#.role", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"+message",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "messages.-1", map[string]interface{}{})
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"model",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "model", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"system",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "system", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"system.text",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "system.#.text", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"system.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "system.#.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"system.cache_control.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "system.#.cache_control.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"system.citations.cited_text",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "system.#.citations.#.cited_text", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"system.citations.document_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "system.#.citations.#.document_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"system.citations.document_title",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "system.#.citations.#.document_title", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"system.citations.end_char_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "system.#.citations.#.end_char_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"system.citations.start_char_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "system.#.citations.#.start_char_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"system.citations.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "system.#.citations.#.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"system.citations.end_page_number",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "system.#.citations.#.end_page_number", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"system.citations.start_page_number",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "system.#.citations.#.start_page_number", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"system.citations.end_block_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "system.#.citations.#.end_block_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"system.citations.start_block_index",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "system.#.citations.#.start_block_index", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"system.+citation",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "system.#.citations.-1", map[string]interface{}{})
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"+system",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "system.-1", map[string]interface{}{})
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"thinking.budget_tokens",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "thinking.budget_tokens", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"thinking.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "thinking.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"tool-choice.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "tool_choice.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"tool-choice.disable_parallel_tool_use",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "tool_choice.disable_parallel_tool_use", true)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"tool-choice.name",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "tool_choice.name", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"tools.input_schema.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "tools.#.input_schema.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"tools.name",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "tools.#.name", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"tools.cache_control.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "tools.#.cache_control.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"tools.description",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "tools.#.description", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"tools.type",
-		"",
-		func(string string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "tools.#.type", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"tools.display_height_px",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "tools.#.display_height_px", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"tools.display_width_px",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "tools.#.display_width_px", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"tools.display_number",
-		"",
-		func(string string) error {
-			int, err := parseInt(string)
-			if err != nil {
-				return err
-			}
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "tools.#.display_number", int)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.BoolFunc(
-		"+tool",
-		"",
-		func(_ string) error {
-			var jsonErr error
-			body, jsonErr = jsonSet(body, "tools.-1", map[string]interface{}{})
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"betas",
-		"",
-		func(string string) error {
-			var jsonErr error
-			header, jsonErr = jsonSet(header, "anthropic-beta.#", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	flagSet.Func(
-		"+beta",
-		"",
-		func(string string) error {
-			var jsonErr error
-			header, jsonErr = jsonSet(header, "anthropic-beta.-1", string)
-			if jsonErr != nil {
-				return jsonErr
-			}
-			return nil
-		},
-	)
-
-	return Subcommand{
-		flagSet: flagSet,
-		handle: func(client *anthropic.Client) {
-			res, err := client.Beta.Messages.CountTokens(
-				context.TODO(),
-				anthropic.BetaMessageCountTokensParams{},
-				option.WithMiddleware(func(r *http.Request, mn option.MiddlewareNext) (*http.Response, error) {
-					q := r.URL.Query()
-					for key, values := range serializeQuery(query) {
-						for _, value := range values {
-							q.Add(key, value)
-						}
-					}
-					r.URL.RawQuery = q.Encode()
-
-					for key, values := range serializeHeader(header) {
-						for _, value := range values {
-							r.Header.Add(key, value)
-						}
-					}
-
-					return mn(r)
-				}),
-				option.WithRequestBody("application/json", body),
-			)
-			if err != nil {
-				fmt.Printf("%s\n", err)
-				os.Exit(1)
-			}
-
-			fmt.Printf("%s\n", res.JSON.RawJSON())
-		},
+var betaMessagesCountTokens = cli.Command{
+	Name:  "count_tokens",
+	Usage: "Count the number of tokens in a Message.",
+	Flags: []cli.Flag{
+		&cli.StringFlag{
+			Name:   "messages.content.text",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.text"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.type",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.type"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.cache_control.type",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.cache_control.type"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.citations.cited_text",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.citations.#.cited_text"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.citations.document_index",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.citations.#.document_index"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.citations.document_title",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.citations.#.document_title"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.citations.end_char_index",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.citations.#.end_char_index"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.citations.start_char_index",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.citations.#.start_char_index"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.citations.type",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.citations.#.type"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.citations.end_page_number",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.citations.#.end_page_number"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.citations.start_page_number",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.citations.#.start_page_number"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.citations.end_block_index",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.citations.#.end_block_index"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.citations.start_block_index",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.citations.#.start_block_index"),
+		},
+		&cli.BoolFlag{
+			Name:   "messages.content.+citation",
+			Action: getAPIFlagActionWithValue[bool]("body", "messages.#.content.#.citations.-1", map[string]interface{}{}),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.source.data",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.source.data"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.source.media_type",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.source.media_type"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.source.type",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.source.type"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.source.url",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.source.url"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.id",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.id"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.name",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.name"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.tool_use_id",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.tool_use_id"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.content.text",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.content.#.text"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.content.type",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.content.#.type"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.content.cache_control.type",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.content.#.cache_control.type"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.content.citations.cited_text",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.content.#.citations.#.cited_text"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.content.citations.document_index",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.content.#.citations.#.document_index"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.content.citations.document_title",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.content.#.citations.#.document_title"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.content.citations.end_char_index",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.content.#.citations.#.end_char_index"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.content.citations.start_char_index",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.content.#.citations.#.start_char_index"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.content.citations.type",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.content.#.citations.#.type"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.content.citations.end_page_number",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.content.#.citations.#.end_page_number"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.content.citations.start_page_number",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.content.#.citations.#.start_page_number"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.content.citations.end_block_index",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.content.#.citations.#.end_block_index"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.content.citations.start_block_index",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.content.#.citations.#.start_block_index"),
+		},
+		&cli.BoolFlag{
+			Name:   "messages.content.content.+citation",
+			Action: getAPIFlagActionWithValue[bool]("body", "messages.#.content.#.content.#.citations.-1", map[string]interface{}{}),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.content.source.data",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.content.#.source.data"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.content.source.media_type",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.content.#.source.media_type"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.content.source.type",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.content.#.source.type"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.content.source.url",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.content.#.source.url"),
+		},
+		&cli.BoolFlag{
+			Name:   "messages.content.+content",
+			Action: getAPIFlagActionWithValue[bool]("body", "messages.#.content.#.content.-1", map[string]interface{}{}),
+		},
+		&cli.BoolFlag{
+			Name:   "messages.content.is_error",
+			Action: getAPIFlagAction[bool]("body", "messages.#.content.#.is_error"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.source.content",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.source.content"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.source.content.text",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.source.content.#.text"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.source.content.type",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.source.content.#.type"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.source.content.cache_control.type",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.source.content.#.cache_control.type"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.source.content.citations.cited_text",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.source.content.#.citations.#.cited_text"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.source.content.citations.document_index",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.source.content.#.citations.#.document_index"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.source.content.citations.document_title",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.source.content.#.citations.#.document_title"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.source.content.citations.end_char_index",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.source.content.#.citations.#.end_char_index"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.source.content.citations.start_char_index",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.source.content.#.citations.#.start_char_index"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.source.content.citations.type",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.source.content.#.citations.#.type"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.source.content.citations.end_page_number",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.source.content.#.citations.#.end_page_number"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.source.content.citations.start_page_number",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.source.content.#.citations.#.start_page_number"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.source.content.citations.end_block_index",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.source.content.#.citations.#.end_block_index"),
+		},
+		&cli.Int64Flag{
+			Name:   "messages.content.source.content.citations.start_block_index",
+			Action: getAPIFlagAction[int64]("body", "messages.#.content.#.source.content.#.citations.#.start_block_index"),
+		},
+		&cli.BoolFlag{
+			Name:   "messages.content.source.content.+citation",
+			Action: getAPIFlagActionWithValue[bool]("body", "messages.#.content.#.source.content.#.citations.-1", map[string]interface{}{}),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.source.content.source.data",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.source.content.#.source.data"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.source.content.source.media_type",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.source.content.#.source.media_type"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.source.content.source.type",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.source.content.#.source.type"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.source.content.source.url",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.source.content.#.source.url"),
+		},
+		&cli.BoolFlag{
+			Name:   "messages.content.source.+content",
+			Action: getAPIFlagActionWithValue[bool]("body", "messages.#.content.#.source.content.-1", map[string]interface{}{}),
+		},
+		&cli.BoolFlag{
+			Name:   "messages.content.citations.enabled",
+			Action: getAPIFlagAction[bool]("body", "messages.#.content.#.citations.enabled"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.context",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.context"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.title",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.title"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.signature",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.signature"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.thinking",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.thinking"),
+		},
+		&cli.StringFlag{
+			Name:   "messages.content.data",
+			Action: getAPIFlagAction[string]("body", "messages.#.content.#.data"),
+		},
+		&cli.BoolFlag{
+			Name:   "messages.+content",
+			Action: getAPIFlagActionWithValue[bool]("body", "messages.#.content.-1", map[string]interface{}{}),
+		},
+		&cli.StringFlag{
+			Name:   "messages.role",
+			Action: getAPIFlagAction[string]("body", "messages.#.role"),
+		},
+		&cli.BoolFlag{
+			Name:   "+message",
+			Action: getAPIFlagActionWithValue[bool]("body", "messages.-1", map[string]interface{}{}),
+		},
+		&cli.StringFlag{
+			Name:   "model",
+			Action: getAPIFlagAction[string]("body", "model"),
+		},
+		&cli.StringFlag{
+			Name:   "system",
+			Action: getAPIFlagAction[string]("body", "system"),
+		},
+		&cli.StringFlag{
+			Name:   "system.text",
+			Action: getAPIFlagAction[string]("body", "system.#.text"),
+		},
+		&cli.StringFlag{
+			Name:   "system.type",
+			Action: getAPIFlagAction[string]("body", "system.#.type"),
+		},
+		&cli.StringFlag{
+			Name:   "system.cache_control.type",
+			Action: getAPIFlagAction[string]("body", "system.#.cache_control.type"),
+		},
+		&cli.StringFlag{
+			Name:   "system.citations.cited_text",
+			Action: getAPIFlagAction[string]("body", "system.#.citations.#.cited_text"),
+		},
+		&cli.Int64Flag{
+			Name:   "system.citations.document_index",
+			Action: getAPIFlagAction[int64]("body", "system.#.citations.#.document_index"),
+		},
+		&cli.StringFlag{
+			Name:   "system.citations.document_title",
+			Action: getAPIFlagAction[string]("body", "system.#.citations.#.document_title"),
+		},
+		&cli.Int64Flag{
+			Name:   "system.citations.end_char_index",
+			Action: getAPIFlagAction[int64]("body", "system.#.citations.#.end_char_index"),
+		},
+		&cli.Int64Flag{
+			Name:   "system.citations.start_char_index",
+			Action: getAPIFlagAction[int64]("body", "system.#.citations.#.start_char_index"),
+		},
+		&cli.StringFlag{
+			Name:   "system.citations.type",
+			Action: getAPIFlagAction[string]("body", "system.#.citations.#.type"),
+		},
+		&cli.Int64Flag{
+			Name:   "system.citations.end_page_number",
+			Action: getAPIFlagAction[int64]("body", "system.#.citations.#.end_page_number"),
+		},
+		&cli.Int64Flag{
+			Name:   "system.citations.start_page_number",
+			Action: getAPIFlagAction[int64]("body", "system.#.citations.#.start_page_number"),
+		},
+		&cli.Int64Flag{
+			Name:   "system.citations.end_block_index",
+			Action: getAPIFlagAction[int64]("body", "system.#.citations.#.end_block_index"),
+		},
+		&cli.Int64Flag{
+			Name:   "system.citations.start_block_index",
+			Action: getAPIFlagAction[int64]("body", "system.#.citations.#.start_block_index"),
+		},
+		&cli.BoolFlag{
+			Name:   "system.+citation",
+			Action: getAPIFlagActionWithValue[bool]("body", "system.#.citations.-1", map[string]interface{}{}),
+		},
+		&cli.BoolFlag{
+			Name:   "+system",
+			Action: getAPIFlagActionWithValue[bool]("body", "system.-1", map[string]interface{}{}),
+		},
+		&cli.Int64Flag{
+			Name:   "thinking.budget_tokens",
+			Action: getAPIFlagAction[int64]("body", "thinking.budget_tokens"),
+		},
+		&cli.StringFlag{
+			Name:   "thinking.type",
+			Action: getAPIFlagAction[string]("body", "thinking.type"),
+		},
+		&cli.StringFlag{
+			Name:   "tool-choice.type",
+			Action: getAPIFlagAction[string]("body", "tool_choice.type"),
+		},
+		&cli.BoolFlag{
+			Name:   "tool-choice.disable_parallel_tool_use",
+			Action: getAPIFlagAction[bool]("body", "tool_choice.disable_parallel_tool_use"),
+		},
+		&cli.StringFlag{
+			Name:   "tool-choice.name",
+			Action: getAPIFlagAction[string]("body", "tool_choice.name"),
+		},
+		&cli.StringFlag{
+			Name:   "tools.input_schema.type",
+			Action: getAPIFlagAction[string]("body", "tools.#.input_schema.type"),
+		},
+		&cli.StringFlag{
+			Name:   "tools.name",
+			Action: getAPIFlagAction[string]("body", "tools.#.name"),
+		},
+		&cli.StringFlag{
+			Name:   "tools.cache_control.type",
+			Action: getAPIFlagAction[string]("body", "tools.#.cache_control.type"),
+		},
+		&cli.StringFlag{
+			Name:   "tools.description",
+			Action: getAPIFlagAction[string]("body", "tools.#.description"),
+		},
+		&cli.StringFlag{
+			Name:   "tools.type",
+			Action: getAPIFlagAction[string]("body", "tools.#.type"),
+		},
+		&cli.Int64Flag{
+			Name:   "tools.display_height_px",
+			Action: getAPIFlagAction[int64]("body", "tools.#.display_height_px"),
+		},
+		&cli.Int64Flag{
+			Name:   "tools.display_width_px",
+			Action: getAPIFlagAction[int64]("body", "tools.#.display_width_px"),
+		},
+		&cli.Int64Flag{
+			Name:   "tools.display_number",
+			Action: getAPIFlagAction[int64]("body", "tools.#.display_number"),
+		},
+		&cli.BoolFlag{
+			Name:   "+tool",
+			Action: getAPIFlagActionWithValue[bool]("body", "tools.-1", map[string]interface{}{}),
+		},
+		&cli.StringFlag{
+			Name:   "betas",
+			Action: getAPIFlagAction[string]("header", "anthropic-beta.#"),
+		},
+		&cli.StringFlag{
+			Name:   "+beta",
+			Action: getAPIFlagAction[string]("header", "anthropic-beta.-1"),
+		},
+	},
+	Before:          initAPICommand,
+	Action:          handleBetaMessagesCountTokens,
+	HideHelpCommand: true,
+}
+
+func handleBetaMessagesCreate(ctx context.Context, cmd *cli.Command) error {
+	cc := getAPICommandContext(ctx, cmd)
+
+	stream := cc.client.Beta.Messages.NewStreaming(
+		context.TODO(),
+		anthropic.BetaMessageNewParams{},
+		option.WithMiddleware(cc.AsMiddleware()),
+		option.WithRequestBody("application/json", cc.body),
+	)
+	for stream.Next() {
+		fmt.Printf("%s\n", stream.Current().RawJSON())
 	}
+	if err := stream.Err(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func handleBetaMessagesCountTokens(ctx context.Context, cmd *cli.Command) error {
+	cc := getAPICommandContext(ctx, cmd)
+
+	res, err := cc.client.Beta.Messages.CountTokens(
+		context.TODO(),
+		anthropic.BetaMessageCountTokensParams{},
+		option.WithMiddleware(cc.AsMiddleware()),
+		option.WithRequestBody("application/json", cc.body),
+	)
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("%s\n", colorizeJSON(res.RawJSON(), os.Stdout))
+	return nil
 }

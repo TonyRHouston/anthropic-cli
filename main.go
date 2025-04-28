@@ -3,98 +3,84 @@
 package main
 
 import (
-	"flag"
-	"fmt"
+	"context"
 	"log"
 	"os"
 
-	"github.com/anthropics/anthropic-sdk-go"
+	"github.com/urfave/cli/v3"
 )
 
 func main() {
-	if len(os.Args) < 2 {
-		fmt.Println("Expected subcommand")
-		os.Exit(1)
+	app := &cli.Command{
+		Name:  "anthropic-cli",
+		Usage: "CLI for the anthropic API",
+		Commands: []*cli.Command{
+			{
+				Name: "completions",
+				Commands: []*cli.Command{
+					&completionsCreate,
+				},
+			},
+
+			{
+				Name: "messages",
+				Commands: []*cli.Command{
+					&messagesCreate,
+					&messagesCountTokens,
+				},
+			},
+
+			{
+				Name: "messages:batches",
+				Commands: []*cli.Command{
+					&messagesBatchesCreate,
+					&messagesBatchesRetrieve,
+					&messagesBatchesList,
+					&messagesBatchesDelete,
+					&messagesBatchesCancel,
+				},
+			},
+
+			{
+				Name: "models",
+				Commands: []*cli.Command{
+					&modelsRetrieve,
+					&modelsList,
+				},
+			},
+
+			{
+				Name: "beta:models",
+				Commands: []*cli.Command{
+					&betaModelsRetrieve,
+					&betaModelsList,
+				},
+			},
+
+			{
+				Name: "beta:messages",
+				Commands: []*cli.Command{
+					&betaMessagesCreate,
+					&betaMessagesCountTokens,
+				},
+			},
+
+			{
+				Name: "beta:messages:batches",
+				Commands: []*cli.Command{
+					&betaMessagesBatchesCreate,
+					&betaMessagesBatchesRetrieve,
+					&betaMessagesBatchesList,
+					&betaMessagesBatchesDelete,
+					&betaMessagesBatchesCancel,
+				},
+			},
+		},
+		EnableShellCompletion: true,
+		HideHelpCommand:       true,
 	}
 
-	subcommand := subcommands[os.Args[1]]
-	if subcommand == nil {
-		log.Fatalf("Unknown subcommand '%s'", os.Args[1])
+	if err := app.Run(context.Background(), os.Args); err != nil {
+		log.Fatal(err)
 	}
-
-	subcommand.flagSet.Parse(os.Args[2:])
-
-	var client *anthropic.Client = anthropic.NewClient()
-	subcommand.handle(client)
-}
-
-func init() {
-	initialBody := getStdInput()
-	if initialBody == nil {
-		initialBody = []byte("{}")
-	}
-
-	var completionsCreateSubcommand = createCompletionsCreateSubcommand(initialBody)
-	subcommands[completionsCreateSubcommand.flagSet.Name()] = &completionsCreateSubcommand
-
-	var messagesCreateSubcommand = createMessagesCreateSubcommand(initialBody)
-	subcommands[messagesCreateSubcommand.flagSet.Name()] = &messagesCreateSubcommand
-
-	var messagesCountTokensSubcommand = createMessagesCountTokensSubcommand(initialBody)
-	subcommands[messagesCountTokensSubcommand.flagSet.Name()] = &messagesCountTokensSubcommand
-
-	var messagesBatchesCreateSubcommand = createMessagesBatchesCreateSubcommand(initialBody)
-	subcommands[messagesBatchesCreateSubcommand.flagSet.Name()] = &messagesBatchesCreateSubcommand
-
-	var messagesBatchesRetrieveSubcommand = createMessagesBatchesRetrieveSubcommand()
-	subcommands[messagesBatchesRetrieveSubcommand.flagSet.Name()] = &messagesBatchesRetrieveSubcommand
-
-	var messagesBatchesListSubcommand = createMessagesBatchesListSubcommand()
-	subcommands[messagesBatchesListSubcommand.flagSet.Name()] = &messagesBatchesListSubcommand
-
-	var messagesBatchesDeleteSubcommand = createMessagesBatchesDeleteSubcommand(initialBody)
-	subcommands[messagesBatchesDeleteSubcommand.flagSet.Name()] = &messagesBatchesDeleteSubcommand
-
-	var messagesBatchesCancelSubcommand = createMessagesBatchesCancelSubcommand(initialBody)
-	subcommands[messagesBatchesCancelSubcommand.flagSet.Name()] = &messagesBatchesCancelSubcommand
-
-	var modelsRetrieveSubcommand = createModelsRetrieveSubcommand()
-	subcommands[modelsRetrieveSubcommand.flagSet.Name()] = &modelsRetrieveSubcommand
-
-	var modelsListSubcommand = createModelsListSubcommand()
-	subcommands[modelsListSubcommand.flagSet.Name()] = &modelsListSubcommand
-
-	var betaModelsRetrieveSubcommand = createBetaModelsRetrieveSubcommand()
-	subcommands[betaModelsRetrieveSubcommand.flagSet.Name()] = &betaModelsRetrieveSubcommand
-
-	var betaModelsListSubcommand = createBetaModelsListSubcommand()
-	subcommands[betaModelsListSubcommand.flagSet.Name()] = &betaModelsListSubcommand
-
-	var betaMessagesCreateSubcommand = createBetaMessagesCreateSubcommand(initialBody)
-	subcommands[betaMessagesCreateSubcommand.flagSet.Name()] = &betaMessagesCreateSubcommand
-
-	var betaMessagesCountTokensSubcommand = createBetaMessagesCountTokensSubcommand(initialBody)
-	subcommands[betaMessagesCountTokensSubcommand.flagSet.Name()] = &betaMessagesCountTokensSubcommand
-
-	var betaMessagesBatchesCreateSubcommand = createBetaMessagesBatchesCreateSubcommand(initialBody)
-	subcommands[betaMessagesBatchesCreateSubcommand.flagSet.Name()] = &betaMessagesBatchesCreateSubcommand
-
-	var betaMessagesBatchesRetrieveSubcommand = createBetaMessagesBatchesRetrieveSubcommand()
-	subcommands[betaMessagesBatchesRetrieveSubcommand.flagSet.Name()] = &betaMessagesBatchesRetrieveSubcommand
-
-	var betaMessagesBatchesListSubcommand = createBetaMessagesBatchesListSubcommand()
-	subcommands[betaMessagesBatchesListSubcommand.flagSet.Name()] = &betaMessagesBatchesListSubcommand
-
-	var betaMessagesBatchesDeleteSubcommand = createBetaMessagesBatchesDeleteSubcommand(initialBody)
-	subcommands[betaMessagesBatchesDeleteSubcommand.flagSet.Name()] = &betaMessagesBatchesDeleteSubcommand
-
-	var betaMessagesBatchesCancelSubcommand = createBetaMessagesBatchesCancelSubcommand(initialBody)
-	subcommands[betaMessagesBatchesCancelSubcommand.flagSet.Name()] = &betaMessagesBatchesCancelSubcommand
-}
-
-var subcommands = map[string]*Subcommand{}
-
-type Subcommand struct {
-	flagSet *flag.FlagSet
-	handle  func(*anthropic.Client)
 }
