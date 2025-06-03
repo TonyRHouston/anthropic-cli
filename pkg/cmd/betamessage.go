@@ -577,6 +577,14 @@ var betaMessagesCreate = cli.Command{
 			Action: getAPIFlagAction[string]("body", "tools.#.input_schema.type"),
 		},
 		&cli.StringFlag{
+			Name:   "tools.input_schema.required",
+			Action: getAPIFlagAction[string]("body", "tools.#.input_schema.required.#"),
+		},
+		&cli.StringFlag{
+			Name:   "tools.input_schema.+required",
+			Action: getAPIFlagAction[string]("body", "tools.#.input_schema.required.-1"),
+		},
+		&cli.StringFlag{
 			Name:   "tools.name",
 			Action: getAPIFlagAction[string]("body", "tools.#.name"),
 		},
@@ -1213,6 +1221,14 @@ var betaMessagesCountTokens = cli.Command{
 		&cli.StringFlag{
 			Name:   "tools.input_schema.type",
 			Action: getAPIFlagAction[string]("body", "tools.#.input_schema.type"),
+		},
+		&cli.StringFlag{
+			Name:   "tools.input_schema.required",
+			Action: getAPIFlagAction[string]("body", "tools.#.input_schema.required.#"),
+		},
+		&cli.StringFlag{
+			Name:   "tools.input_schema.+required",
+			Action: getAPIFlagAction[string]("body", "tools.#.input_schema.required.-1"),
 		},
 		&cli.StringFlag{
 			Name:   "tools.name",

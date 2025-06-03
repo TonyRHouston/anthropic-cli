@@ -585,6 +585,14 @@ var betaMessagesBatchesCreate = cli.Command{
 			Action: getAPIFlagAction[string]("body", "requests.#.params.tools.#.input_schema.type"),
 		},
 		&cli.StringFlag{
+			Name:   "requests.params.tools.input_schema.required",
+			Action: getAPIFlagAction[string]("body", "requests.#.params.tools.#.input_schema.required.#"),
+		},
+		&cli.StringFlag{
+			Name:   "requests.params.tools.input_schema.+required",
+			Action: getAPIFlagAction[string]("body", "requests.#.params.tools.#.input_schema.required.-1"),
+		},
+		&cli.StringFlag{
 			Name:   "requests.params.tools.name",
 			Action: getAPIFlagAction[string]("body", "requests.#.params.tools.#.name"),
 		},
