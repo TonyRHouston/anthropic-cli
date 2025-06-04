@@ -20,6 +20,13 @@ import (
 	"golang.org/x/term"
 )
 
+func getDefaultRequestOptions() []option.RequestOption {
+	return []option.RequestOption{
+		option.WithHeader("X-Stainless-Lang", "cli"),
+		option.WithHeader("X-Stainless-Runtime", "cli"),
+	}
+}
+
 func jsonSet(json []byte, path string, value interface{}) ([]byte, error) {
 	keys := strings.Split(path, ".")
 	path = ""
@@ -67,7 +74,7 @@ func (c apiCommandContext) AsMiddleware() option.Middleware {
 }
 
 func initAPICommand(ctx context.Context, cmd *cli.Command) (context.Context, error) {
-	client := anthropic.NewClient()
+	client := anthropic.NewClient(getDefaultRequestOptions()...)
 	body := getStdInput()
 	if body == nil {
 		body = []byte("{}")
