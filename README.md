@@ -7,7 +7,7 @@ The official CLI for the [Anthropic REST API](https://docs.anthropic.com/claude/
 ### Installing with Go
 
 ```sh
-go install 'github.com/stainless-sdks/anthropic-cli'
+go install 'github.com/stainless-sdks/anthropic-cli/cmd/anthropic-cli@latest'
 ```
 
 ## Usage
