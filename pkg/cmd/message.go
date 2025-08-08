@@ -136,6 +136,20 @@ var messagesCreate = cli.Command{
 				Path: "messages.#.content.#.citations.#.url",
 			},
 		},
+		&jsonflag.JSONIntFlag{
+			Name: "messages.content.citations.search_result_index",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.citations.#.search_result_index",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.citations.source",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.citations.#.source",
+			},
+		},
 		&jsonflag.JSONAnyFlag{
 			Name: "messages.content.+citation",
 			Config: jsonflag.JSONConfig{
@@ -292,6 +306,20 @@ var messagesCreate = cli.Command{
 				Path: "messages.#.content.#.source.content.#.citations.#.url",
 			},
 		},
+		&jsonflag.JSONIntFlag{
+			Name: "messages.content.source.content.citations.search_result_index",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.source.content.#.citations.#.search_result_index",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.source.content.citations.source",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.source.content.#.citations.#.source",
+			},
+		},
 		&jsonflag.JSONAnyFlag{
 			Name: "messages.content.source.content.+citation",
 			Config: jsonflag.JSONConfig{
@@ -358,48 +386,6 @@ var messagesCreate = cli.Command{
 			Config: jsonflag.JSONConfig{
 				Kind: jsonflag.Body,
 				Path: "messages.#.content.#.title",
-			},
-		},
-		&jsonflag.JSONStringFlag{
-			Name: "messages.content.signature",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Body,
-				Path: "messages.#.content.#.signature",
-			},
-		},
-		&jsonflag.JSONStringFlag{
-			Name: "messages.content.thinking",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Body,
-				Path: "messages.#.content.#.thinking",
-			},
-		},
-		&jsonflag.JSONStringFlag{
-			Name: "messages.content.data",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Body,
-				Path: "messages.#.content.#.data",
-			},
-		},
-		&jsonflag.JSONStringFlag{
-			Name: "messages.content.id",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Body,
-				Path: "messages.#.content.#.id",
-			},
-		},
-		&jsonflag.JSONStringFlag{
-			Name: "messages.content.name",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Body,
-				Path: "messages.#.content.#.name",
-			},
-		},
-		&jsonflag.JSONStringFlag{
-			Name: "messages.content.tool_use_id",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Body,
-				Path: "messages.#.content.#.tool_use_id",
 			},
 		},
 		&jsonflag.JSONStringFlag{
@@ -514,6 +500,20 @@ var messagesCreate = cli.Command{
 				Path: "messages.#.content.#.content.#.citations.#.url",
 			},
 		},
+		&jsonflag.JSONIntFlag{
+			Name: "messages.content.content.citations.search_result_index",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.citations.#.search_result_index",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.content.citations.source",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.citations.#.source",
+			},
+		},
 		&jsonflag.JSONAnyFlag{
 			Name: "messages.content.content.+citation",
 			Config: jsonflag.JSONConfig{
@@ -522,6 +522,64 @@ var messagesCreate = cli.Command{
 				SetValue: map[string]interface{}{},
 			},
 			Value: map[string]interface{}{},
+		},
+		&jsonflag.JSONAnyFlag{
+			Name: "messages.content.+content",
+			Config: jsonflag.JSONConfig{
+				Kind:     jsonflag.Body,
+				Path:     "messages.#.content.#.content.-1",
+				SetValue: map[string]interface{}{},
+			},
+			Value: map[string]interface{}{},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.source",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.source",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.signature",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.signature",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.thinking",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.thinking",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.data",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.data",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.id",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.id",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.name",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.name",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.tool_use_id",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.tool_use_id",
+			},
 		},
 		&jsonflag.JSONStringFlag{
 			Name: "messages.content.content.source.data",
@@ -551,14 +609,171 @@ var messagesCreate = cli.Command{
 				Path: "messages.#.content.#.content.#.source.url",
 			},
 		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.content.content.text",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.text",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.content.content.type",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.type",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.content.content.cache_control.type",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.cache_control.type",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.content.content.citations.cited_text",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.citations.#.cited_text",
+			},
+		},
+		&jsonflag.JSONIntFlag{
+			Name: "messages.content.content.content.citations.document_index",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.citations.#.document_index",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.content.content.citations.document_title",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.citations.#.document_title",
+			},
+		},
+		&jsonflag.JSONIntFlag{
+			Name: "messages.content.content.content.citations.end_char_index",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.citations.#.end_char_index",
+			},
+		},
+		&jsonflag.JSONIntFlag{
+			Name: "messages.content.content.content.citations.start_char_index",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.citations.#.start_char_index",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.content.content.citations.type",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.citations.#.type",
+			},
+		},
+		&jsonflag.JSONIntFlag{
+			Name: "messages.content.content.content.citations.end_page_number",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.citations.#.end_page_number",
+			},
+		},
+		&jsonflag.JSONIntFlag{
+			Name: "messages.content.content.content.citations.start_page_number",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.citations.#.start_page_number",
+			},
+		},
+		&jsonflag.JSONIntFlag{
+			Name: "messages.content.content.content.citations.end_block_index",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.citations.#.end_block_index",
+			},
+		},
+		&jsonflag.JSONIntFlag{
+			Name: "messages.content.content.content.citations.start_block_index",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.citations.#.start_block_index",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.content.content.citations.encrypted_index",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.citations.#.encrypted_index",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.content.content.citations.title",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.citations.#.title",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.content.content.citations.url",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.citations.#.url",
+			},
+		},
+		&jsonflag.JSONIntFlag{
+			Name: "messages.content.content.content.citations.search_result_index",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.citations.#.search_result_index",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.content.content.citations.source",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.citations.#.source",
+			},
+		},
 		&jsonflag.JSONAnyFlag{
-			Name: "messages.content.+content",
+			Name: "messages.content.content.content.+citation",
 			Config: jsonflag.JSONConfig{
 				Kind:     jsonflag.Body,
-				Path:     "messages.#.content.#.content.-1",
+				Path:     "messages.#.content.#.content.#.content.#.citations.-1",
 				SetValue: map[string]interface{}{},
 			},
 			Value: map[string]interface{}{},
+		},
+		&jsonflag.JSONAnyFlag{
+			Name: "messages.content.content.+content",
+			Config: jsonflag.JSONConfig{
+				Kind:     jsonflag.Body,
+				Path:     "messages.#.content.#.content.#.content.-1",
+				SetValue: map[string]interface{}{},
+			},
+			Value: map[string]interface{}{},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.content.source",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.source",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.content.title",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.title",
+			},
+		},
+		&jsonflag.JSONBoolFlag{
+			Name: "messages.content.content.citations.enabled",
+			Config: jsonflag.JSONConfig{
+				Kind:     jsonflag.Body,
+				Path:     "messages.#.content.#.content.#.citations.enabled",
+				SetValue: true,
+			},
 		},
 		&jsonflag.JSONBoolFlag{
 			Name: "messages.content.is_error",
@@ -573,13 +788,6 @@ var messagesCreate = cli.Command{
 			Config: jsonflag.JSONConfig{
 				Kind: jsonflag.Body,
 				Path: "messages.#.content.#.content.#.encrypted_content",
-			},
-		},
-		&jsonflag.JSONStringFlag{
-			Name: "messages.content.content.title",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Body,
-				Path: "messages.#.content.#.content.#.title",
 			},
 		},
 		&jsonflag.JSONStringFlag{
@@ -773,6 +981,20 @@ var messagesCreate = cli.Command{
 			Config: jsonflag.JSONConfig{
 				Kind: jsonflag.Body,
 				Path: "system.#.citations.#.url",
+			},
+		},
+		&jsonflag.JSONIntFlag{
+			Name: "system.citations.search_result_index",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "system.#.citations.#.search_result_index",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "system.citations.source",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "system.#.citations.#.source",
 			},
 		},
 		&jsonflag.JSONAnyFlag{
@@ -1085,6 +1307,20 @@ var messagesCountTokens = cli.Command{
 				Path: "messages.#.content.#.citations.#.url",
 			},
 		},
+		&jsonflag.JSONIntFlag{
+			Name: "messages.content.citations.search_result_index",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.citations.#.search_result_index",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.citations.source",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.citations.#.source",
+			},
+		},
 		&jsonflag.JSONAnyFlag{
 			Name: "messages.content.+citation",
 			Config: jsonflag.JSONConfig{
@@ -1241,6 +1477,20 @@ var messagesCountTokens = cli.Command{
 				Path: "messages.#.content.#.source.content.#.citations.#.url",
 			},
 		},
+		&jsonflag.JSONIntFlag{
+			Name: "messages.content.source.content.citations.search_result_index",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.source.content.#.citations.#.search_result_index",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.source.content.citations.source",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.source.content.#.citations.#.source",
+			},
+		},
 		&jsonflag.JSONAnyFlag{
 			Name: "messages.content.source.content.+citation",
 			Config: jsonflag.JSONConfig{
@@ -1307,48 +1557,6 @@ var messagesCountTokens = cli.Command{
 			Config: jsonflag.JSONConfig{
 				Kind: jsonflag.Body,
 				Path: "messages.#.content.#.title",
-			},
-		},
-		&jsonflag.JSONStringFlag{
-			Name: "messages.content.signature",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Body,
-				Path: "messages.#.content.#.signature",
-			},
-		},
-		&jsonflag.JSONStringFlag{
-			Name: "messages.content.thinking",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Body,
-				Path: "messages.#.content.#.thinking",
-			},
-		},
-		&jsonflag.JSONStringFlag{
-			Name: "messages.content.data",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Body,
-				Path: "messages.#.content.#.data",
-			},
-		},
-		&jsonflag.JSONStringFlag{
-			Name: "messages.content.id",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Body,
-				Path: "messages.#.content.#.id",
-			},
-		},
-		&jsonflag.JSONStringFlag{
-			Name: "messages.content.name",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Body,
-				Path: "messages.#.content.#.name",
-			},
-		},
-		&jsonflag.JSONStringFlag{
-			Name: "messages.content.tool_use_id",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Body,
-				Path: "messages.#.content.#.tool_use_id",
 			},
 		},
 		&jsonflag.JSONStringFlag{
@@ -1463,6 +1671,20 @@ var messagesCountTokens = cli.Command{
 				Path: "messages.#.content.#.content.#.citations.#.url",
 			},
 		},
+		&jsonflag.JSONIntFlag{
+			Name: "messages.content.content.citations.search_result_index",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.citations.#.search_result_index",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.content.citations.source",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.citations.#.source",
+			},
+		},
 		&jsonflag.JSONAnyFlag{
 			Name: "messages.content.content.+citation",
 			Config: jsonflag.JSONConfig{
@@ -1471,6 +1693,64 @@ var messagesCountTokens = cli.Command{
 				SetValue: map[string]interface{}{},
 			},
 			Value: map[string]interface{}{},
+		},
+		&jsonflag.JSONAnyFlag{
+			Name: "messages.content.+content",
+			Config: jsonflag.JSONConfig{
+				Kind:     jsonflag.Body,
+				Path:     "messages.#.content.#.content.-1",
+				SetValue: map[string]interface{}{},
+			},
+			Value: map[string]interface{}{},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.source",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.source",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.signature",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.signature",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.thinking",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.thinking",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.data",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.data",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.id",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.id",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.name",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.name",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.tool_use_id",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.tool_use_id",
+			},
 		},
 		&jsonflag.JSONStringFlag{
 			Name: "messages.content.content.source.data",
@@ -1500,14 +1780,171 @@ var messagesCountTokens = cli.Command{
 				Path: "messages.#.content.#.content.#.source.url",
 			},
 		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.content.content.text",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.text",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.content.content.type",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.type",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.content.content.cache_control.type",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.cache_control.type",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.content.content.citations.cited_text",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.citations.#.cited_text",
+			},
+		},
+		&jsonflag.JSONIntFlag{
+			Name: "messages.content.content.content.citations.document_index",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.citations.#.document_index",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.content.content.citations.document_title",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.citations.#.document_title",
+			},
+		},
+		&jsonflag.JSONIntFlag{
+			Name: "messages.content.content.content.citations.end_char_index",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.citations.#.end_char_index",
+			},
+		},
+		&jsonflag.JSONIntFlag{
+			Name: "messages.content.content.content.citations.start_char_index",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.citations.#.start_char_index",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.content.content.citations.type",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.citations.#.type",
+			},
+		},
+		&jsonflag.JSONIntFlag{
+			Name: "messages.content.content.content.citations.end_page_number",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.citations.#.end_page_number",
+			},
+		},
+		&jsonflag.JSONIntFlag{
+			Name: "messages.content.content.content.citations.start_page_number",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.citations.#.start_page_number",
+			},
+		},
+		&jsonflag.JSONIntFlag{
+			Name: "messages.content.content.content.citations.end_block_index",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.citations.#.end_block_index",
+			},
+		},
+		&jsonflag.JSONIntFlag{
+			Name: "messages.content.content.content.citations.start_block_index",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.citations.#.start_block_index",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.content.content.citations.encrypted_index",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.citations.#.encrypted_index",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.content.content.citations.title",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.citations.#.title",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.content.content.citations.url",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.citations.#.url",
+			},
+		},
+		&jsonflag.JSONIntFlag{
+			Name: "messages.content.content.content.citations.search_result_index",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.citations.#.search_result_index",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.content.content.citations.source",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.content.#.citations.#.source",
+			},
+		},
 		&jsonflag.JSONAnyFlag{
-			Name: "messages.content.+content",
+			Name: "messages.content.content.content.+citation",
 			Config: jsonflag.JSONConfig{
 				Kind:     jsonflag.Body,
-				Path:     "messages.#.content.#.content.-1",
+				Path:     "messages.#.content.#.content.#.content.#.citations.-1",
 				SetValue: map[string]interface{}{},
 			},
 			Value: map[string]interface{}{},
+		},
+		&jsonflag.JSONAnyFlag{
+			Name: "messages.content.content.+content",
+			Config: jsonflag.JSONConfig{
+				Kind:     jsonflag.Body,
+				Path:     "messages.#.content.#.content.#.content.-1",
+				SetValue: map[string]interface{}{},
+			},
+			Value: map[string]interface{}{},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.content.source",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.source",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "messages.content.content.title",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "messages.#.content.#.content.#.title",
+			},
+		},
+		&jsonflag.JSONBoolFlag{
+			Name: "messages.content.content.citations.enabled",
+			Config: jsonflag.JSONConfig{
+				Kind:     jsonflag.Body,
+				Path:     "messages.#.content.#.content.#.citations.enabled",
+				SetValue: true,
+			},
 		},
 		&jsonflag.JSONBoolFlag{
 			Name: "messages.content.is_error",
@@ -1522,13 +1959,6 @@ var messagesCountTokens = cli.Command{
 			Config: jsonflag.JSONConfig{
 				Kind: jsonflag.Body,
 				Path: "messages.#.content.#.content.#.encrypted_content",
-			},
-		},
-		&jsonflag.JSONStringFlag{
-			Name: "messages.content.content.title",
-			Config: jsonflag.JSONConfig{
-				Kind: jsonflag.Body,
-				Path: "messages.#.content.#.content.#.title",
 			},
 		},
 		&jsonflag.JSONStringFlag{
@@ -1701,6 +2131,20 @@ var messagesCountTokens = cli.Command{
 			Config: jsonflag.JSONConfig{
 				Kind: jsonflag.Body,
 				Path: "system.#.citations.#.url",
+			},
+		},
+		&jsonflag.JSONIntFlag{
+			Name: "system.citations.search_result_index",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "system.#.citations.#.search_result_index",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name: "system.citations.source",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "system.#.citations.#.source",
 			},
 		},
 		&jsonflag.JSONAnyFlag{
