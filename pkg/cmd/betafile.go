@@ -110,7 +110,7 @@ var betaFilesDownload = cli.Command{
 }
 
 var betaFilesRetrieveMetadata = cli.Command{
-	Name:  "retrieve_metadata",
+	Name:  "retrieve-metadata",
 	Usage: "Get File Metadata",
 	Flags: []cli.Flag{
 		&cli.StringFlag{

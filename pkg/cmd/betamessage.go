@@ -1718,7 +1718,7 @@ var betaMessagesCreate = cli.Command{
 }
 
 var betaMessagesCountTokens = cli.Command{
-	Name:  "count_tokens",
+	Name:  "count-tokens",
 	Usage: "Count the number of tokens in a Message.",
 	Flags: []cli.Flag{
 		&jsonflag.JSONStringFlag{

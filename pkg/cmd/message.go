@@ -1427,7 +1427,7 @@ var messagesCreate = cli.Command{
 }
 
 var messagesCountTokens = cli.Command{
-	Name:  "count_tokens",
+	Name:  "count-tokens",
 	Usage: "Count the number of tokens in a Message.",
 	Flags: []cli.Flag{
 		&jsonflag.JSONStringFlag{
