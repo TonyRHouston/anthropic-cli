@@ -1820,6 +1820,14 @@ var betaMessagesCreate = cli.Command{
 				Path: "context_management.edits.#.trigger.value",
 			},
 		},
+		&jsonflag.JSONStringFlag{
+			Name:  "context-management.edits.keep",
+			Usage: "List of context management edits to apply",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "context_management.edits.#.keep",
+			},
+		},
 		&jsonflag.JSONAnyFlag{
 			Name:  "context-management.+edit",
 			Usage: "List of context management edits to apply",
@@ -4132,6 +4140,14 @@ var betaMessagesCountTokens = cli.Command{
 			Config: jsonflag.JSONConfig{
 				Kind: jsonflag.Body,
 				Path: "context_management.edits.#.trigger.value",
+			},
+		},
+		&jsonflag.JSONStringFlag{
+			Name:  "context-management.edits.keep",
+			Usage: "List of context management edits to apply",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "context_management.edits.#.keep",
 			},
 		},
 		&jsonflag.JSONAnyFlag{

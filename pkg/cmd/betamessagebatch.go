@@ -1829,6 +1829,14 @@ var betaMessagesBatchesCreate = cli.Command{
 				Path: "requests.#.params.context_management.edits.#.trigger.value",
 			},
 		},
+		&jsonflag.JSONStringFlag{
+			Name:  "requests.params.context_management.edits.keep",
+			Usage: "List of requests for prompt completion. Each is an individual request to create a Message.",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "requests.#.params.context_management.edits.#.keep",
+			},
+		},
 		&jsonflag.JSONAnyFlag{
 			Name:  "requests.params.context_management.+edit",
 			Usage: "List of requests for prompt completion. Each is an individual request to create a Message.",
