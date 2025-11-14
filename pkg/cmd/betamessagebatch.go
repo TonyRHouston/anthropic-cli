@@ -1921,6 +1921,14 @@ var betaMessagesBatchesCreate = cli.Command{
 			},
 		},
 		&jsonflag.JSONStringFlag{
+			Name:  "requests.params.output_format.type",
+			Usage: "List of requests for prompt completion. Each is an individual request to create a Message.",
+			Config: jsonflag.JSONConfig{
+				Kind: jsonflag.Body,
+				Path: "requests.#.params.output_format.type",
+			},
+		},
+		&jsonflag.JSONStringFlag{
 			Name:  "requests.params.service_tier",
 			Usage: "List of requests for prompt completion. Each is an individual request to create a Message.",
 			Config: jsonflag.JSONConfig{
@@ -2226,6 +2234,15 @@ var betaMessagesBatchesCreate = cli.Command{
 			Config: jsonflag.JSONConfig{
 				Kind: jsonflag.Body,
 				Path: "requests.#.params.tools.#.description",
+			},
+		},
+		&jsonflag.JSONBoolFlag{
+			Name:  "requests.params.tools.strict",
+			Usage: "List of requests for prompt completion. Each is an individual request to create a Message.",
+			Config: jsonflag.JSONConfig{
+				Kind:     jsonflag.Body,
+				Path:     "requests.#.params.tools.#.strict",
+				SetValue: true,
 			},
 		},
 		&jsonflag.JSONStringFlag{

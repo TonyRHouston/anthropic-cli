@@ -1411,7 +1411,7 @@ var messagesCreate = cli.Command{
 		},
 		&jsonflag.JSONIntFlag{
 			Name:  "thinking.budget_tokens",
-			Usage: "Determines how many tokens Claude can use for its internal reasoning process. Larger budgets can enable more thorough analysis for complex problems, improving response quality. \n\nMust be ≥1024 and less than `max_tokens`.\n\nSee [extended thinking](https://docs.claude.com/en/docs/build-with-claude/extended-thinking) for details.",
+			Usage: "Determines how many tokens Claude can use for its internal reasoning process. Larger budgets can enable more thorough analysis for complex problems, improving response quality.\n\nMust be ≥1024 and less than `max_tokens`.\n\nSee [extended thinking](https://docs.claude.com/en/docs/build-with-claude/extended-thinking) for details.",
 			Config: jsonflag.JSONConfig{
 				Kind: jsonflag.Body,
 				Path: "thinking.budget_tokens",
@@ -2942,7 +2942,7 @@ var messagesCountTokens = cli.Command{
 		},
 		&jsonflag.JSONIntFlag{
 			Name:  "thinking.budget_tokens",
-			Usage: "Determines how many tokens Claude can use for its internal reasoning process. Larger budgets can enable more thorough analysis for complex problems, improving response quality. \n\nMust be ≥1024 and less than `max_tokens`.\n\nSee [extended thinking](https://docs.claude.com/en/docs/build-with-claude/extended-thinking) for details.",
+			Usage: "Determines how many tokens Claude can use for its internal reasoning process. Larger budgets can enable more thorough analysis for complex problems, improving response quality.\n\nMust be ≥1024 and less than `max_tokens`.\n\nSee [extended thinking](https://docs.claude.com/en/docs/build-with-claude/extended-thinking) for details.",
 			Config: jsonflag.JSONConfig{
 				Kind: jsonflag.Body,
 				Path: "thinking.budget_tokens",
