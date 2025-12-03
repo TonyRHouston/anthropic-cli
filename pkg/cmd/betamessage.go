@@ -14,7 +14,7 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-var messagesCreate = cli.Command{
+var betaMessagesCreate = cli.Command{
 	Name:  "create",
 	Usage: "Send a structured list of input messages with text and/or image content, and the\nmodel will generate the next message in the conversation.",
 	Flags: []cli.Flag{
@@ -40,9 +40,41 @@ var messagesCreate = cli.Command{
 			},
 		},
 		&requestflag.YAMLFlag{
+			Name:  "container",
+			Usage: "Container identifier for reuse across requests.",
+			Config: requestflag.RequestConfig{
+				BodyPath: "container",
+			},
+		},
+		&requestflag.YAMLFlag{
+			Name: "context-management",
+			Config: requestflag.RequestConfig{
+				BodyPath: "context_management",
+			},
+		},
+		&requestflag.YAMLSliceFlag{
+			Name:  "mcp-server",
+			Usage: "MCP servers to be utilized in this request",
+			Config: requestflag.RequestConfig{
+				BodyPath: "mcp_servers",
+			},
+		},
+		&requestflag.YAMLFlag{
 			Name: "metadata",
 			Config: requestflag.RequestConfig{
 				BodyPath: "metadata",
+			},
+		},
+		&requestflag.YAMLFlag{
+			Name: "output-config",
+			Config: requestflag.RequestConfig{
+				BodyPath: "output_config",
+			},
+		},
+		&requestflag.YAMLFlag{
+			Name: "output-format",
+			Config: requestflag.RequestConfig{
+				BodyPath: "output_format",
 			},
 		},
 		&requestflag.StringFlag{
@@ -115,12 +147,19 @@ var messagesCreate = cli.Command{
 				BodyPath: "top_p",
 			},
 		},
+		&requestflag.YAMLSliceFlag{
+			Name:  "beta",
+			Usage: "Optional header to specify the beta version(s) you want to use.",
+			Config: requestflag.RequestConfig{
+				HeaderPath: "anthropic-beta",
+			},
+		},
 	},
-	Action:          handleMessagesCreate,
+	Action:          handleBetaMessagesCreate,
 	HideHelpCommand: true,
 }
 
-var messagesCountTokens = cli.Command{
+var betaMessagesCountTokens = cli.Command{
 	Name:  "count-tokens",
 	Usage: "Count the number of tokens in a Message.",
 	Flags: []cli.Flag{
@@ -136,6 +175,31 @@ var messagesCountTokens = cli.Command{
 			Usage: "The model that will complete your prompt.\\n\\nSee [models](https://docs.anthropic.com/en/docs/models-overview) for additional details and options.",
 			Config: requestflag.RequestConfig{
 				BodyPath: "model",
+			},
+		},
+		&requestflag.YAMLFlag{
+			Name: "context-management",
+			Config: requestflag.RequestConfig{
+				BodyPath: "context_management",
+			},
+		},
+		&requestflag.YAMLSliceFlag{
+			Name:  "mcp-server",
+			Usage: "MCP servers to be utilized in this request",
+			Config: requestflag.RequestConfig{
+				BodyPath: "mcp_servers",
+			},
+		},
+		&requestflag.YAMLFlag{
+			Name: "output-config",
+			Config: requestflag.RequestConfig{
+				BodyPath: "output_config",
+			},
+		},
+		&requestflag.YAMLFlag{
+			Name: "output-format",
+			Config: requestflag.RequestConfig{
+				BodyPath: "output_format",
 			},
 		},
 		&requestflag.YAMLFlag{
@@ -166,18 +230,25 @@ var messagesCountTokens = cli.Command{
 				BodyPath: "tools",
 			},
 		},
+		&requestflag.YAMLSliceFlag{
+			Name:  "beta",
+			Usage: "Optional header to specify the beta version(s) you want to use.",
+			Config: requestflag.RequestConfig{
+				HeaderPath: "anthropic-beta",
+			},
+		},
 	},
-	Action:          handleMessagesCountTokens,
+	Action:          handleBetaMessagesCountTokens,
 	HideHelpCommand: true,
 }
 
-func handleMessagesCreate(ctx context.Context, cmd *cli.Command) error {
+func handleBetaMessagesCreate(ctx context.Context, cmd *cli.Command) error {
 	client := anthropic.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
-	params := anthropic.MessageNewParams{}
+	params := anthropic.BetaMessageNewParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -188,7 +259,7 @@ func handleMessagesCreate(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	stream := client.Messages.NewStreaming(
+	stream := client.Beta.Messages.NewStreaming(
 		ctx,
 		params,
 		options...,
@@ -199,13 +270,13 @@ func handleMessagesCreate(ctx context.Context, cmd *cli.Command) error {
 	return stream.Err()
 }
 
-func handleMessagesCountTokens(ctx context.Context, cmd *cli.Command) error {
+func handleBetaMessagesCountTokens(ctx context.Context, cmd *cli.Command) error {
 	client := anthropic.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
-	params := anthropic.MessageCountTokensParams{}
+	params := anthropic.BetaMessageCountTokensParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -218,7 +289,7 @@ func handleMessagesCountTokens(ctx context.Context, cmd *cli.Command) error {
 	}
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Messages.CountTokens(
+	_, err = client.Beta.Messages.CountTokens(
 		ctx,
 		params,
 		options...,
@@ -230,5 +301,5 @@ func handleMessagesCountTokens(ctx context.Context, cmd *cli.Command) error {
 	json := gjson.Parse(string(res))
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("messages count-tokens", json, format, transform)
+	return ShowJSON("beta:messages count-tokens", json, format, transform)
 }

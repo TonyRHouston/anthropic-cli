@@ -14,7 +14,7 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-var messagesBatchesCreate = cli.Command{
+var betaMessagesBatchesCreate = cli.Command{
 	Name:  "create",
 	Usage: "Send a batch of Message creation requests.",
 	Flags: []cli.Flag{
@@ -25,12 +25,19 @@ var messagesBatchesCreate = cli.Command{
 				BodyPath: "requests",
 			},
 		},
+		&requestflag.YAMLSliceFlag{
+			Name:  "beta",
+			Usage: "Optional header to specify the beta version(s) you want to use.",
+			Config: requestflag.RequestConfig{
+				HeaderPath: "anthropic-beta",
+			},
+		},
 	},
-	Action:          handleMessagesBatchesCreate,
+	Action:          handleBetaMessagesBatchesCreate,
 	HideHelpCommand: true,
 }
 
-var messagesBatchesRetrieve = cli.Command{
+var betaMessagesBatchesRetrieve = cli.Command{
 	Name:  "retrieve",
 	Usage: "This endpoint is idempotent and can be used to poll for Message Batch\ncompletion. To access the results of a Message Batch, make a request to the\n`results_url` field in the response.",
 	Flags: []cli.Flag{
@@ -38,12 +45,19 @@ var messagesBatchesRetrieve = cli.Command{
 			Name:  "message-batch-id",
 			Usage: "ID of the Message Batch.",
 		},
+		&requestflag.YAMLSliceFlag{
+			Name:  "beta",
+			Usage: "Optional header to specify the beta version(s) you want to use.",
+			Config: requestflag.RequestConfig{
+				HeaderPath: "anthropic-beta",
+			},
+		},
 	},
-	Action:          handleMessagesBatchesRetrieve,
+	Action:          handleBetaMessagesBatchesRetrieve,
 	HideHelpCommand: true,
 }
 
-var messagesBatchesList = cli.Command{
+var betaMessagesBatchesList = cli.Command{
 	Name:  "list",
 	Usage: "List all Message Batches within a Workspace. Most recently created batches are\nreturned first.",
 	Flags: []cli.Flag{
@@ -69,12 +83,19 @@ var messagesBatchesList = cli.Command{
 				QueryPath: "limit",
 			},
 		},
+		&requestflag.YAMLSliceFlag{
+			Name:  "beta",
+			Usage: "Optional header to specify the beta version(s) you want to use.",
+			Config: requestflag.RequestConfig{
+				HeaderPath: "anthropic-beta",
+			},
+		},
 	},
-	Action:          handleMessagesBatchesList,
+	Action:          handleBetaMessagesBatchesList,
 	HideHelpCommand: true,
 }
 
-var messagesBatchesDelete = cli.Command{
+var betaMessagesBatchesDelete = cli.Command{
 	Name:  "delete",
 	Usage: "Delete a Message Batch.",
 	Flags: []cli.Flag{
@@ -82,12 +103,19 @@ var messagesBatchesDelete = cli.Command{
 			Name:  "message-batch-id",
 			Usage: "ID of the Message Batch.",
 		},
+		&requestflag.YAMLSliceFlag{
+			Name:  "beta",
+			Usage: "Optional header to specify the beta version(s) you want to use.",
+			Config: requestflag.RequestConfig{
+				HeaderPath: "anthropic-beta",
+			},
+		},
 	},
-	Action:          handleMessagesBatchesDelete,
+	Action:          handleBetaMessagesBatchesDelete,
 	HideHelpCommand: true,
 }
 
-var messagesBatchesCancel = cli.Command{
+var betaMessagesBatchesCancel = cli.Command{
 	Name:  "cancel",
 	Usage: "Batches may be canceled any time before processing ends. Once cancellation is\ninitiated, the batch enters a `canceling` state, at which time the system may\ncomplete any in-progress, non-interruptible requests before finalizing\ncancellation.",
 	Flags: []cli.Flag{
@@ -95,12 +123,19 @@ var messagesBatchesCancel = cli.Command{
 			Name:  "message-batch-id",
 			Usage: "ID of the Message Batch.",
 		},
+		&requestflag.YAMLSliceFlag{
+			Name:  "beta",
+			Usage: "Optional header to specify the beta version(s) you want to use.",
+			Config: requestflag.RequestConfig{
+				HeaderPath: "anthropic-beta",
+			},
+		},
 	},
-	Action:          handleMessagesBatchesCancel,
+	Action:          handleBetaMessagesBatchesCancel,
 	HideHelpCommand: true,
 }
 
-var messagesBatchesResults = cli.Command{
+var betaMessagesBatchesResults = cli.Command{
 	Name:  "results",
 	Usage: "Streams the results of a Message Batch as a `.jsonl` file.",
 	Flags: []cli.Flag{
@@ -108,18 +143,25 @@ var messagesBatchesResults = cli.Command{
 			Name:  "message-batch-id",
 			Usage: "ID of the Message Batch.",
 		},
+		&requestflag.YAMLSliceFlag{
+			Name:  "beta",
+			Usage: "Optional header to specify the beta version(s) you want to use.",
+			Config: requestflag.RequestConfig{
+				HeaderPath: "anthropic-beta",
+			},
+		},
 	},
-	Action:          handleMessagesBatchesResults,
+	Action:          handleBetaMessagesBatchesResults,
 	HideHelpCommand: true,
 }
 
-func handleMessagesBatchesCreate(ctx context.Context, cmd *cli.Command) error {
+func handleBetaMessagesBatchesCreate(ctx context.Context, cmd *cli.Command) error {
 	client := anthropic.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
-	params := anthropic.MessageBatchNewParams{}
+	params := anthropic.BetaMessageBatchNewParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -132,7 +174,7 @@ func handleMessagesBatchesCreate(ctx context.Context, cmd *cli.Command) error {
 	}
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Messages.Batches.New(
+	_, err = client.Beta.Messages.Batches.New(
 		ctx,
 		params,
 		options...,
@@ -144,10 +186,10 @@ func handleMessagesBatchesCreate(ctx context.Context, cmd *cli.Command) error {
 	json := gjson.Parse(string(res))
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("messages:batches create", json, format, transform)
+	return ShowJSON("beta:messages:batches create", json, format, transform)
 }
 
-func handleMessagesBatchesRetrieve(ctx context.Context, cmd *cli.Command) error {
+func handleBetaMessagesBatchesRetrieve(ctx context.Context, cmd *cli.Command) error {
 	client := anthropic.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("message-batch-id") && len(unusedArgs) > 0 {
@@ -157,6 +199,8 @@ func handleMessagesBatchesRetrieve(ctx context.Context, cmd *cli.Command) error 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
+	params := anthropic.BetaMessageBatchGetParams{}
+
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -168,9 +212,10 @@ func handleMessagesBatchesRetrieve(ctx context.Context, cmd *cli.Command) error 
 	}
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Messages.Batches.Get(
+	_, err = client.Beta.Messages.Batches.Get(
 		ctx,
 		requestflag.CommandRequestValue[string](cmd, "message-batch-id"),
+		params,
 		options...,
 	)
 	if err != nil {
@@ -180,16 +225,16 @@ func handleMessagesBatchesRetrieve(ctx context.Context, cmd *cli.Command) error 
 	json := gjson.Parse(string(res))
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("messages:batches retrieve", json, format, transform)
+	return ShowJSON("beta:messages:batches retrieve", json, format, transform)
 }
 
-func handleMessagesBatchesList(ctx context.Context, cmd *cli.Command) error {
+func handleBetaMessagesBatchesList(ctx context.Context, cmd *cli.Command) error {
 	client := anthropic.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
-	params := anthropic.MessageBatchListParams{}
+	params := anthropic.BetaMessageBatchListParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -202,7 +247,7 @@ func handleMessagesBatchesList(ctx context.Context, cmd *cli.Command) error {
 	}
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Messages.Batches.List(
+	_, err = client.Beta.Messages.Batches.List(
 		ctx,
 		params,
 		options...,
@@ -214,10 +259,10 @@ func handleMessagesBatchesList(ctx context.Context, cmd *cli.Command) error {
 	json := gjson.Parse(string(res))
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("messages:batches list", json, format, transform)
+	return ShowJSON("beta:messages:batches list", json, format, transform)
 }
 
-func handleMessagesBatchesDelete(ctx context.Context, cmd *cli.Command) error {
+func handleBetaMessagesBatchesDelete(ctx context.Context, cmd *cli.Command) error {
 	client := anthropic.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("message-batch-id") && len(unusedArgs) > 0 {
@@ -227,6 +272,8 @@ func handleMessagesBatchesDelete(ctx context.Context, cmd *cli.Command) error {
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
+	params := anthropic.BetaMessageBatchDeleteParams{}
+
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -238,9 +285,10 @@ func handleMessagesBatchesDelete(ctx context.Context, cmd *cli.Command) error {
 	}
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Messages.Batches.Delete(
+	_, err = client.Beta.Messages.Batches.Delete(
 		ctx,
 		requestflag.CommandRequestValue[string](cmd, "message-batch-id"),
+		params,
 		options...,
 	)
 	if err != nil {
@@ -250,10 +298,10 @@ func handleMessagesBatchesDelete(ctx context.Context, cmd *cli.Command) error {
 	json := gjson.Parse(string(res))
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("messages:batches delete", json, format, transform)
+	return ShowJSON("beta:messages:batches delete", json, format, transform)
 }
 
-func handleMessagesBatchesCancel(ctx context.Context, cmd *cli.Command) error {
+func handleBetaMessagesBatchesCancel(ctx context.Context, cmd *cli.Command) error {
 	client := anthropic.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("message-batch-id") && len(unusedArgs) > 0 {
@@ -263,6 +311,8 @@ func handleMessagesBatchesCancel(ctx context.Context, cmd *cli.Command) error {
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
+	params := anthropic.BetaMessageBatchCancelParams{}
+
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -274,9 +324,10 @@ func handleMessagesBatchesCancel(ctx context.Context, cmd *cli.Command) error {
 	}
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Messages.Batches.Cancel(
+	_, err = client.Beta.Messages.Batches.Cancel(
 		ctx,
 		requestflag.CommandRequestValue[string](cmd, "message-batch-id"),
+		params,
 		options...,
 	)
 	if err != nil {
@@ -286,10 +337,10 @@ func handleMessagesBatchesCancel(ctx context.Context, cmd *cli.Command) error {
 	json := gjson.Parse(string(res))
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("messages:batches cancel", json, format, transform)
+	return ShowJSON("beta:messages:batches cancel", json, format, transform)
 }
 
-func handleMessagesBatchesResults(ctx context.Context, cmd *cli.Command) error {
+func handleBetaMessagesBatchesResults(ctx context.Context, cmd *cli.Command) error {
 	client := anthropic.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("message-batch-id") && len(unusedArgs) > 0 {
@@ -299,6 +350,8 @@ func handleMessagesBatchesResults(ctx context.Context, cmd *cli.Command) error {
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
+	params := anthropic.BetaMessageBatchResultsParams{}
+
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -308,9 +361,10 @@ func handleMessagesBatchesResults(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	stream := client.Messages.Batches.ResultsStreaming(
+	stream := client.Beta.Messages.Batches.ResultsStreaming(
 		ctx,
 		requestflag.CommandRequestValue[string](cmd, "message-batch-id"),
+		params,
 		options...,
 	)
 	for stream.Next() {
