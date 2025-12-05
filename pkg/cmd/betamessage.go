@@ -5,6 +5,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/anthropics/anthropic-sdk-go"
 	"github.com/anthropics/anthropic-sdk-go/option"
@@ -98,7 +99,7 @@ var betaMessagesCreate = cli.Command{
 				BodyPath: "stream",
 			},
 		},
-		&requestflag.YAMLFlag{
+		&requestflag.YAMLSliceFlag{
 			Name:  "system",
 			Usage: "System prompt.\n\nA system prompt is a way of providing context and instructions to Claude, such as specifying a particular goal or role. See our [guide to system prompts](https://docs.claude.com/en/docs/system-prompts).",
 			Config: requestflag.RequestConfig{
@@ -147,7 +148,7 @@ var betaMessagesCreate = cli.Command{
 				BodyPath: "top_p",
 			},
 		},
-		&requestflag.YAMLSliceFlag{
+		&requestflag.StringSliceFlag{
 			Name:  "beta",
 			Usage: "Optional header to specify the beta version(s) you want to use.",
 			Config: requestflag.RequestConfig{
@@ -230,7 +231,7 @@ var betaMessagesCountTokens = cli.Command{
 				BodyPath: "tools",
 			},
 		},
-		&requestflag.YAMLSliceFlag{
+		&requestflag.StringSliceFlag{
 			Name:  "beta",
 			Usage: "Optional header to specify the beta version(s) you want to use.",
 			Config: requestflag.RequestConfig{
@@ -245,6 +246,7 @@ var betaMessagesCountTokens = cli.Command{
 func handleBetaMessagesCreate(ctx context.Context, cmd *cli.Command) error {
 	client := anthropic.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -259,11 +261,8 @@ func handleBetaMessagesCreate(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	stream := client.Beta.Messages.NewStreaming(
-		ctx,
-		params,
-		options...,
-	)
+
+	stream := client.Beta.Messages.NewStreaming(ctx, params, options...)
 	for stream.Next() {
 		fmt.Printf("%s\n", stream.Current().RawJSON())
 	}
@@ -273,6 +272,7 @@ func handleBetaMessagesCreate(ctx context.Context, cmd *cli.Command) error {
 func handleBetaMessagesCountTokens(ctx context.Context, cmd *cli.Command) error {
 	client := anthropic.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -287,19 +287,16 @@ func handleBetaMessagesCountTokens(ctx context.Context, cmd *cli.Command) error 
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Beta.Messages.CountTokens(
-		ctx,
-		params,
-		options...,
-	)
+	_, err = client.Beta.Messages.CountTokens(ctx, params, options...)
 	if err != nil {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("beta:messages count-tokens", json, format, transform)
+	return ShowJSON(os.Stdout, "beta:messages count-tokens", obj, format, transform)
 }

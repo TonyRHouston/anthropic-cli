@@ -5,6 +5,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/anthropics/anthropic-sdk-go"
 	"github.com/anthropics/anthropic-sdk-go/option"
@@ -22,7 +23,7 @@ var betaModelsRetrieve = cli.Command{
 			Name:  "model-id",
 			Usage: "Model identifier or alias.",
 		},
-		&requestflag.YAMLSliceFlag{
+		&requestflag.StringSliceFlag{
 			Name:  "beta",
 			Usage: "Optional header to specify the beta version(s) you want to use.",
 			Config: requestflag.RequestConfig{
@@ -60,7 +61,7 @@ var betaModelsList = cli.Command{
 				QueryPath: "limit",
 			},
 		},
-		&requestflag.YAMLSliceFlag{
+		&requestflag.StringSliceFlag{
 			Name:  "beta",
 			Usage: "Optional header to specify the beta version(s) you want to use.",
 			Config: requestflag.RequestConfig{
@@ -93,6 +94,7 @@ func handleBetaModelsRetrieve(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Beta.Models.Get(
@@ -105,15 +107,16 @@ func handleBetaModelsRetrieve(ctx context.Context, cmd *cli.Command) error {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("beta:models retrieve", json, format, transform)
+	return ShowJSON(os.Stdout, "beta:models retrieve", obj, format, transform)
 }
 
 func handleBetaModelsList(ctx context.Context, cmd *cli.Command) error {
 	client := anthropic.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -128,19 +131,29 @@ func handleBetaModelsList(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	var res []byte
-	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Beta.Models.List(
-		ctx,
-		params,
-		options...,
-	)
-	if err != nil {
-		return err
-	}
 
-	json := gjson.Parse(string(res))
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("beta:models list", json, format, transform)
+	if format == "raw" {
+		var res []byte
+		options = append(options, option.WithResponseBodyInto(&res))
+		_, err = client.Beta.Models.List(ctx, params, options...)
+		if err != nil {
+			return err
+		}
+		obj := gjson.ParseBytes(res)
+		return ShowJSON(os.Stdout, "beta:models list", obj, format, transform)
+	} else {
+		iter := client.Beta.Models.ListAutoPaging(ctx, params, options...)
+		return streamOutput("beta:models list", func(w *os.File) error {
+			for iter.Next() {
+				item := iter.Current()
+				obj := gjson.Parse(item.RawJSON())
+				if err := ShowJSON(w, "beta:models list", obj, format, transform); err != nil {
+					return err
+				}
+			}
+			return iter.Err()
+		})
+	}
 }

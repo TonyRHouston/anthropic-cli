@@ -5,6 +5,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/anthropics/anthropic-sdk-go"
 	"github.com/anthropics/anthropic-sdk-go/option"
@@ -29,7 +30,7 @@ var betaSkillsVersionsCreate = cli.Command{
 				BodyPath: "files",
 			},
 		},
-		&requestflag.YAMLSliceFlag{
+		&requestflag.StringSliceFlag{
 			Name:  "beta",
 			Usage: "Optional header to specify the beta version(s) you want to use.",
 			Config: requestflag.RequestConfig{
@@ -53,7 +54,7 @@ var betaSkillsVersionsRetrieve = cli.Command{
 			Name:  "version",
 			Usage: "Version identifier for the skill.\n\nEach version is identified by a Unix epoch timestamp (e.g., \"1759178010641129\").",
 		},
-		&requestflag.YAMLSliceFlag{
+		&requestflag.StringSliceFlag{
 			Name:  "beta",
 			Usage: "Optional header to specify the beta version(s) you want to use.",
 			Config: requestflag.RequestConfig{
@@ -87,7 +88,7 @@ var betaSkillsVersionsList = cli.Command{
 				QueryPath: "page",
 			},
 		},
-		&requestflag.YAMLSliceFlag{
+		&requestflag.StringSliceFlag{
 			Name:  "beta",
 			Usage: "Optional header to specify the beta version(s) you want to use.",
 			Config: requestflag.RequestConfig{
@@ -111,7 +112,7 @@ var betaSkillsVersionsDelete = cli.Command{
 			Name:  "version",
 			Usage: "Version identifier for the skill.\n\nEach version is identified by a Unix epoch timestamp (e.g., \"1759178010641129\").",
 		},
-		&requestflag.YAMLSliceFlag{
+		&requestflag.StringSliceFlag{
 			Name:  "beta",
 			Usage: "Optional header to specify the beta version(s) you want to use.",
 			Config: requestflag.RequestConfig{
@@ -144,6 +145,7 @@ func handleBetaSkillsVersionsCreate(ctx context.Context, cmd *cli.Command) error
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Beta.Skills.Versions.New(
@@ -156,10 +158,10 @@ func handleBetaSkillsVersionsCreate(ctx context.Context, cmd *cli.Command) error
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("beta:skills:versions create", json, format, transform)
+	return ShowJSON(os.Stdout, "beta:skills:versions create", obj, format, transform)
 }
 
 func handleBetaSkillsVersionsRetrieve(ctx context.Context, cmd *cli.Command) error {
@@ -185,6 +187,7 @@ func handleBetaSkillsVersionsRetrieve(ctx context.Context, cmd *cli.Command) err
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Beta.Skills.Versions.Get(
@@ -197,10 +200,10 @@ func handleBetaSkillsVersionsRetrieve(ctx context.Context, cmd *cli.Command) err
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("beta:skills:versions retrieve", json, format, transform)
+	return ShowJSON(os.Stdout, "beta:skills:versions retrieve", obj, format, transform)
 }
 
 func handleBetaSkillsVersionsList(ctx context.Context, cmd *cli.Command) error {
@@ -224,22 +227,41 @@ func handleBetaSkillsVersionsList(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	var res []byte
-	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Beta.Skills.Versions.List(
-		ctx,
-		requestflag.CommandRequestValue[string](cmd, "skill-id"),
-		params,
-		options...,
-	)
-	if err != nil {
-		return err
-	}
 
-	json := gjson.Parse(string(res))
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("beta:skills:versions list", json, format, transform)
+	if format == "raw" {
+		var res []byte
+		options = append(options, option.WithResponseBodyInto(&res))
+		_, err = client.Beta.Skills.Versions.List(
+			ctx,
+			requestflag.CommandRequestValue[string](cmd, "skill-id"),
+			params,
+			options...,
+		)
+		if err != nil {
+			return err
+		}
+		obj := gjson.ParseBytes(res)
+		return ShowJSON(os.Stdout, "beta:skills:versions list", obj, format, transform)
+	} else {
+		iter := client.Beta.Skills.Versions.ListAutoPaging(
+			ctx,
+			requestflag.CommandRequestValue[string](cmd, "skill-id"),
+			params,
+			options...,
+		)
+		return streamOutput("beta:skills:versions list", func(w *os.File) error {
+			for iter.Next() {
+				item := iter.Current()
+				obj := gjson.Parse(item.RawJSON())
+				if err := ShowJSON(w, "beta:skills:versions list", obj, format, transform); err != nil {
+					return err
+				}
+			}
+			return iter.Err()
+		})
+	}
 }
 
 func handleBetaSkillsVersionsDelete(ctx context.Context, cmd *cli.Command) error {
@@ -265,6 +287,7 @@ func handleBetaSkillsVersionsDelete(ctx context.Context, cmd *cli.Command) error
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Beta.Skills.Versions.Delete(
@@ -277,8 +300,8 @@ func handleBetaSkillsVersionsDelete(ctx context.Context, cmd *cli.Command) error
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("beta:skills:versions delete", json, format, transform)
+	return ShowJSON(os.Stdout, "beta:skills:versions delete", obj, format, transform)
 }

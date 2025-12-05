@@ -5,6 +5,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/anthropics/anthropic-sdk-go"
 	"github.com/anthropics/anthropic-sdk-go/option"
@@ -32,7 +33,7 @@ var betaSkillsCreate = cli.Command{
 				BodyPath: "files",
 			},
 		},
-		&requestflag.YAMLSliceFlag{
+		&requestflag.StringSliceFlag{
 			Name:  "beta",
 			Usage: "Optional header to specify the beta version(s) you want to use.",
 			Config: requestflag.RequestConfig{
@@ -52,7 +53,7 @@ var betaSkillsRetrieve = cli.Command{
 			Name:  "skill-id",
 			Usage: "Unique identifier for the skill.\n\nThe format and length of IDs may change over time.",
 		},
-		&requestflag.YAMLSliceFlag{
+		&requestflag.StringSliceFlag{
 			Name:  "beta",
 			Usage: "Optional header to specify the beta version(s) you want to use.",
 			Config: requestflag.RequestConfig{
@@ -90,7 +91,7 @@ var betaSkillsList = cli.Command{
 				QueryPath: "source",
 			},
 		},
-		&requestflag.YAMLSliceFlag{
+		&requestflag.StringSliceFlag{
 			Name:  "beta",
 			Usage: "Optional header to specify the beta version(s) you want to use.",
 			Config: requestflag.RequestConfig{
@@ -110,7 +111,7 @@ var betaSkillsDelete = cli.Command{
 			Name:  "skill-id",
 			Usage: "Unique identifier for the skill.\n\nThe format and length of IDs may change over time.",
 		},
-		&requestflag.YAMLSliceFlag{
+		&requestflag.StringSliceFlag{
 			Name:  "beta",
 			Usage: "Optional header to specify the beta version(s) you want to use.",
 			Config: requestflag.RequestConfig{
@@ -125,6 +126,7 @@ var betaSkillsDelete = cli.Command{
 func handleBetaSkillsCreate(ctx context.Context, cmd *cli.Command) error {
 	client := anthropic.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -139,21 +141,18 @@ func handleBetaSkillsCreate(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Beta.Skills.New(
-		ctx,
-		params,
-		options...,
-	)
+	_, err = client.Beta.Skills.New(ctx, params, options...)
 	if err != nil {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("beta:skills create", json, format, transform)
+	return ShowJSON(os.Stdout, "beta:skills create", obj, format, transform)
 }
 
 func handleBetaSkillsRetrieve(ctx context.Context, cmd *cli.Command) error {
@@ -177,6 +176,7 @@ func handleBetaSkillsRetrieve(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Beta.Skills.Get(
@@ -189,15 +189,16 @@ func handleBetaSkillsRetrieve(ctx context.Context, cmd *cli.Command) error {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("beta:skills retrieve", json, format, transform)
+	return ShowJSON(os.Stdout, "beta:skills retrieve", obj, format, transform)
 }
 
 func handleBetaSkillsList(ctx context.Context, cmd *cli.Command) error {
 	client := anthropic.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -212,21 +213,31 @@ func handleBetaSkillsList(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	var res []byte
-	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Beta.Skills.List(
-		ctx,
-		params,
-		options...,
-	)
-	if err != nil {
-		return err
-	}
 
-	json := gjson.Parse(string(res))
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("beta:skills list", json, format, transform)
+	if format == "raw" {
+		var res []byte
+		options = append(options, option.WithResponseBodyInto(&res))
+		_, err = client.Beta.Skills.List(ctx, params, options...)
+		if err != nil {
+			return err
+		}
+		obj := gjson.ParseBytes(res)
+		return ShowJSON(os.Stdout, "beta:skills list", obj, format, transform)
+	} else {
+		iter := client.Beta.Skills.ListAutoPaging(ctx, params, options...)
+		return streamOutput("beta:skills list", func(w *os.File) error {
+			for iter.Next() {
+				item := iter.Current()
+				obj := gjson.Parse(item.RawJSON())
+				if err := ShowJSON(w, "beta:skills list", obj, format, transform); err != nil {
+					return err
+				}
+			}
+			return iter.Err()
+		})
+	}
 }
 
 func handleBetaSkillsDelete(ctx context.Context, cmd *cli.Command) error {
@@ -250,6 +261,7 @@ func handleBetaSkillsDelete(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Beta.Skills.Delete(
@@ -262,8 +274,8 @@ func handleBetaSkillsDelete(ctx context.Context, cmd *cli.Command) error {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("beta:skills delete", json, format, transform)
+	return ShowJSON(os.Stdout, "beta:skills delete", obj, format, transform)
 }

@@ -5,6 +5,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/anthropics/anthropic-sdk-go"
 	"github.com/anthropics/anthropic-sdk-go/option"
@@ -116,6 +117,7 @@ var messagesBatchesResults = cli.Command{
 func handleMessagesBatchesCreate(ctx context.Context, cmd *cli.Command) error {
 	client := anthropic.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -130,21 +132,18 @@ func handleMessagesBatchesCreate(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Messages.Batches.New(
-		ctx,
-		params,
-		options...,
-	)
+	_, err = client.Messages.Batches.New(ctx, params, options...)
 	if err != nil {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("messages:batches create", json, format, transform)
+	return ShowJSON(os.Stdout, "messages:batches create", obj, format, transform)
 }
 
 func handleMessagesBatchesRetrieve(ctx context.Context, cmd *cli.Command) error {
@@ -166,26 +165,24 @@ func handleMessagesBatchesRetrieve(ctx context.Context, cmd *cli.Command) error 
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Messages.Batches.Get(
-		ctx,
-		requestflag.CommandRequestValue[string](cmd, "message-batch-id"),
-		options...,
-	)
+	_, err = client.Messages.Batches.Get(ctx, requestflag.CommandRequestValue[string](cmd, "message-batch-id"), options...)
 	if err != nil {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("messages:batches retrieve", json, format, transform)
+	return ShowJSON(os.Stdout, "messages:batches retrieve", obj, format, transform)
 }
 
 func handleMessagesBatchesList(ctx context.Context, cmd *cli.Command) error {
 	client := anthropic.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -200,21 +197,31 @@ func handleMessagesBatchesList(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	var res []byte
-	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Messages.Batches.List(
-		ctx,
-		params,
-		options...,
-	)
-	if err != nil {
-		return err
-	}
 
-	json := gjson.Parse(string(res))
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("messages:batches list", json, format, transform)
+	if format == "raw" {
+		var res []byte
+		options = append(options, option.WithResponseBodyInto(&res))
+		_, err = client.Messages.Batches.List(ctx, params, options...)
+		if err != nil {
+			return err
+		}
+		obj := gjson.ParseBytes(res)
+		return ShowJSON(os.Stdout, "messages:batches list", obj, format, transform)
+	} else {
+		iter := client.Messages.Batches.ListAutoPaging(ctx, params, options...)
+		return streamOutput("messages:batches list", func(w *os.File) error {
+			for iter.Next() {
+				item := iter.Current()
+				obj := gjson.Parse(item.RawJSON())
+				if err := ShowJSON(w, "messages:batches list", obj, format, transform); err != nil {
+					return err
+				}
+			}
+			return iter.Err()
+		})
+	}
 }
 
 func handleMessagesBatchesDelete(ctx context.Context, cmd *cli.Command) error {
@@ -236,21 +243,18 @@ func handleMessagesBatchesDelete(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Messages.Batches.Delete(
-		ctx,
-		requestflag.CommandRequestValue[string](cmd, "message-batch-id"),
-		options...,
-	)
+	_, err = client.Messages.Batches.Delete(ctx, requestflag.CommandRequestValue[string](cmd, "message-batch-id"), options...)
 	if err != nil {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("messages:batches delete", json, format, transform)
+	return ShowJSON(os.Stdout, "messages:batches delete", obj, format, transform)
 }
 
 func handleMessagesBatchesCancel(ctx context.Context, cmd *cli.Command) error {
@@ -272,21 +276,18 @@ func handleMessagesBatchesCancel(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Messages.Batches.Cancel(
-		ctx,
-		requestflag.CommandRequestValue[string](cmd, "message-batch-id"),
-		options...,
-	)
+	_, err = client.Messages.Batches.Cancel(ctx, requestflag.CommandRequestValue[string](cmd, "message-batch-id"), options...)
 	if err != nil {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("messages:batches cancel", json, format, transform)
+	return ShowJSON(os.Stdout, "messages:batches cancel", obj, format, transform)
 }
 
 func handleMessagesBatchesResults(ctx context.Context, cmd *cli.Command) error {
@@ -308,11 +309,8 @@ func handleMessagesBatchesResults(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	stream := client.Messages.Batches.ResultsStreaming(
-		ctx,
-		requestflag.CommandRequestValue[string](cmd, "message-batch-id"),
-		options...,
-	)
+
+	stream := client.Messages.Batches.ResultsStreaming(ctx, requestflag.CommandRequestValue[string](cmd, "message-batch-id"), options...)
 	for stream.Next() {
 		fmt.Printf("%s\n", stream.Current().RawJSON())
 	}

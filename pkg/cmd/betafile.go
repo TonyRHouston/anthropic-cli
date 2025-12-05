@@ -5,6 +5,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/anthropics/anthropic-sdk-go"
 	"github.com/anthropics/anthropic-sdk-go/option"
@@ -40,7 +41,7 @@ var betaFilesList = cli.Command{
 				QueryPath: "limit",
 			},
 		},
-		&requestflag.YAMLSliceFlag{
+		&requestflag.StringSliceFlag{
 			Name:  "beta",
 			Usage: "Optional header to specify the beta version(s) you want to use.",
 			Config: requestflag.RequestConfig{
@@ -60,7 +61,7 @@ var betaFilesDelete = cli.Command{
 			Name:  "file-id",
 			Usage: "ID of the File.",
 		},
-		&requestflag.YAMLSliceFlag{
+		&requestflag.StringSliceFlag{
 			Name:  "beta",
 			Usage: "Optional header to specify the beta version(s) you want to use.",
 			Config: requestflag.RequestConfig{
@@ -80,7 +81,7 @@ var betaFilesDownload = cli.Command{
 			Name:  "file-id",
 			Usage: "ID of the File.",
 		},
-		&requestflag.YAMLSliceFlag{
+		&requestflag.StringSliceFlag{
 			Name:  "beta",
 			Usage: "Optional header to specify the beta version(s) you want to use.",
 			Config: requestflag.RequestConfig{
@@ -100,7 +101,7 @@ var betaFilesRetrieveMetadata = cli.Command{
 			Name:  "file-id",
 			Usage: "ID of the File.",
 		},
-		&requestflag.YAMLSliceFlag{
+		&requestflag.StringSliceFlag{
 			Name:  "beta",
 			Usage: "Optional header to specify the beta version(s) you want to use.",
 			Config: requestflag.RequestConfig{
@@ -123,7 +124,7 @@ var betaFilesUpload = cli.Command{
 				BodyPath: "file",
 			},
 		},
-		&requestflag.YAMLSliceFlag{
+		&requestflag.StringSliceFlag{
 			Name:  "beta",
 			Usage: "Optional header to specify the beta version(s) you want to use.",
 			Config: requestflag.RequestConfig{
@@ -138,6 +139,7 @@ var betaFilesUpload = cli.Command{
 func handleBetaFilesList(ctx context.Context, cmd *cli.Command) error {
 	client := anthropic.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -152,21 +154,31 @@ func handleBetaFilesList(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	var res []byte
-	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Beta.Files.List(
-		ctx,
-		params,
-		options...,
-	)
-	if err != nil {
-		return err
-	}
 
-	json := gjson.Parse(string(res))
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("beta:files list", json, format, transform)
+	if format == "raw" {
+		var res []byte
+		options = append(options, option.WithResponseBodyInto(&res))
+		_, err = client.Beta.Files.List(ctx, params, options...)
+		if err != nil {
+			return err
+		}
+		obj := gjson.ParseBytes(res)
+		return ShowJSON(os.Stdout, "beta:files list", obj, format, transform)
+	} else {
+		iter := client.Beta.Files.ListAutoPaging(ctx, params, options...)
+		return streamOutput("beta:files list", func(w *os.File) error {
+			for iter.Next() {
+				item := iter.Current()
+				obj := gjson.Parse(item.RawJSON())
+				if err := ShowJSON(w, "beta:files list", obj, format, transform); err != nil {
+					return err
+				}
+			}
+			return iter.Err()
+		})
+	}
 }
 
 func handleBetaFilesDelete(ctx context.Context, cmd *cli.Command) error {
@@ -190,6 +202,7 @@ func handleBetaFilesDelete(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Beta.Files.Delete(
@@ -202,10 +215,10 @@ func handleBetaFilesDelete(ctx context.Context, cmd *cli.Command) error {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("beta:files delete", json, format, transform)
+	return ShowJSON(os.Stdout, "beta:files delete", obj, format, transform)
 }
 
 func handleBetaFilesDownload(ctx context.Context, cmd *cli.Command) error {
@@ -229,6 +242,7 @@ func handleBetaFilesDownload(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Beta.Files.Download(
@@ -241,10 +255,10 @@ func handleBetaFilesDownload(ctx context.Context, cmd *cli.Command) error {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("beta:files download", json, format, transform)
+	return ShowJSON(os.Stdout, "beta:files download", obj, format, transform)
 }
 
 func handleBetaFilesRetrieveMetadata(ctx context.Context, cmd *cli.Command) error {
@@ -268,6 +282,7 @@ func handleBetaFilesRetrieveMetadata(ctx context.Context, cmd *cli.Command) erro
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Beta.Files.GetMetadata(
@@ -280,15 +295,16 @@ func handleBetaFilesRetrieveMetadata(ctx context.Context, cmd *cli.Command) erro
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("beta:files retrieve-metadata", json, format, transform)
+	return ShowJSON(os.Stdout, "beta:files retrieve-metadata", obj, format, transform)
 }
 
 func handleBetaFilesUpload(ctx context.Context, cmd *cli.Command) error {
 	client := anthropic.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -303,19 +319,16 @@ func handleBetaFilesUpload(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Beta.Files.Upload(
-		ctx,
-		params,
-		options...,
-	)
+	_, err = client.Beta.Files.Upload(ctx, params, options...)
 	if err != nil {
 		return err
 	}
 
-	json := gjson.Parse(string(res))
+	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON("beta:files upload", json, format, transform)
+	return ShowJSON(os.Stdout, "beta:files upload", obj, format, transform)
 }

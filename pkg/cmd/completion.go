@@ -78,7 +78,7 @@ var completionsCreate = cli.Command{
 				BodyPath: "top_p",
 			},
 		},
-		&requestflag.YAMLSliceFlag{
+		&requestflag.StringSliceFlag{
 			Name:  "beta",
 			Usage: "Optional header to specify the beta version(s) you want to use.",
 			Config: requestflag.RequestConfig{
@@ -93,6 +93,7 @@ var completionsCreate = cli.Command{
 func handleCompletionsCreate(ctx context.Context, cmd *cli.Command) error {
 	client := anthropic.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -107,11 +108,8 @@ func handleCompletionsCreate(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	stream := client.Completions.NewStreaming(
-		ctx,
-		params,
-		options...,
-	)
+
+	stream := client.Completions.NewStreaming(ctx, params, options...)
 	for stream.Next() {
 		fmt.Printf("%s\n", stream.Current().RawJSON())
 	}
