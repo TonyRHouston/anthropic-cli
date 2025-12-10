@@ -19,12 +19,10 @@ var messagesBatchesCreate = cli.Command{
 	Name:  "create",
 	Usage: "Send a batch of Message creation requests.",
 	Flags: []cli.Flag{
-		&requestflag.YAMLSliceFlag{
-			Name:  "request",
-			Usage: "List of requests for prompt completion. Each is an individual request to create a Message.",
-			Config: requestflag.RequestConfig{
-				BodyPath: "requests",
-			},
+		&requestflag.Flag[[]any]{
+			Name:     "request",
+			Usage:    "List of requests for prompt completion. Each is an individual request to create a Message.",
+			BodyPath: "requests",
 		},
 	},
 	Action:          handleMessagesBatchesCreate,
@@ -35,7 +33,7 @@ var messagesBatchesRetrieve = cli.Command{
 	Name:  "retrieve",
 	Usage: "This endpoint is idempotent and can be used to poll for Message Batch\ncompletion. To access the results of a Message Batch, make a request to the\n`results_url` field in the response.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "message-batch-id",
 			Usage: "ID of the Message Batch.",
 		},
@@ -48,27 +46,21 @@ var messagesBatchesList = cli.Command{
 	Name:  "list",
 	Usage: "List all Message Batches within a Workspace. Most recently created batches are\nreturned first.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
-			Name:  "after-id",
-			Usage: "ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately after this object.",
-			Config: requestflag.RequestConfig{
-				QueryPath: "after_id",
-			},
+		&requestflag.Flag[string]{
+			Name:      "after-id",
+			Usage:     "ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately after this object.",
+			QueryPath: "after_id",
 		},
-		&requestflag.StringFlag{
-			Name:  "before-id",
-			Usage: "ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately before this object.",
-			Config: requestflag.RequestConfig{
-				QueryPath: "before_id",
-			},
+		&requestflag.Flag[string]{
+			Name:      "before-id",
+			Usage:     "ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately before this object.",
+			QueryPath: "before_id",
 		},
-		&requestflag.IntFlag{
-			Name:  "limit",
-			Usage: "Number of items to return per page.\n\nDefaults to `20`. Ranges from `1` to `1000`.",
-			Value: requestflag.Value[int64](20),
-			Config: requestflag.RequestConfig{
-				QueryPath: "limit",
-			},
+		&requestflag.Flag[int64]{
+			Name:      "limit",
+			Usage:     "Number of items to return per page.\n\nDefaults to `20`. Ranges from `1` to `1000`.",
+			Default:   20,
+			QueryPath: "limit",
 		},
 	},
 	Action:          handleMessagesBatchesList,
@@ -79,7 +71,7 @@ var messagesBatchesDelete = cli.Command{
 	Name:  "delete",
 	Usage: "Delete a Message Batch.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "message-batch-id",
 			Usage: "ID of the Message Batch.",
 		},
@@ -92,7 +84,7 @@ var messagesBatchesCancel = cli.Command{
 	Name:  "cancel",
 	Usage: "Batches may be canceled any time before processing ends. Once cancellation is\ninitiated, the batch enters a `canceling` state, at which time the system may\ncomplete any in-progress, non-interruptible requests before finalizing\ncancellation.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "message-batch-id",
 			Usage: "ID of the Message Batch.",
 		},
@@ -105,7 +97,7 @@ var messagesBatchesResults = cli.Command{
 	Name:  "results",
 	Usage: "Streams the results of a Message Batch as a `.jsonl` file.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "message-batch-id",
 			Usage: "ID of the Message Batch.",
 		},
@@ -168,7 +160,7 @@ func handleMessagesBatchesRetrieve(ctx context.Context, cmd *cli.Command) error 
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Messages.Batches.Get(ctx, requestflag.CommandRequestValue[string](cmd, "message-batch-id"), options...)
+	_, err = client.Messages.Batches.Get(ctx, cmd.Value("message-batch-id").(string), options...)
 	if err != nil {
 		return err
 	}
@@ -246,7 +238,7 @@ func handleMessagesBatchesDelete(ctx context.Context, cmd *cli.Command) error {
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Messages.Batches.Delete(ctx, requestflag.CommandRequestValue[string](cmd, "message-batch-id"), options...)
+	_, err = client.Messages.Batches.Delete(ctx, cmd.Value("message-batch-id").(string), options...)
 	if err != nil {
 		return err
 	}
@@ -279,7 +271,7 @@ func handleMessagesBatchesCancel(ctx context.Context, cmd *cli.Command) error {
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Messages.Batches.Cancel(ctx, requestflag.CommandRequestValue[string](cmd, "message-batch-id"), options...)
+	_, err = client.Messages.Batches.Cancel(ctx, cmd.Value("message-batch-id").(string), options...)
 	if err != nil {
 		return err
 	}
@@ -310,7 +302,7 @@ func handleMessagesBatchesResults(ctx context.Context, cmd *cli.Command) error {
 		return err
 	}
 
-	stream := client.Messages.Batches.ResultsStreaming(ctx, requestflag.CommandRequestValue[string](cmd, "message-batch-id"), options...)
+	stream := client.Messages.Batches.ResultsStreaming(ctx, cmd.Value("message-batch-id").(string), options...)
 	for stream.Next() {
 		fmt.Printf("%s\n", stream.Current().RawJSON())
 	}

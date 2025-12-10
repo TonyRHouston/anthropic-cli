@@ -19,26 +19,20 @@ var betaSkillsCreate = cli.Command{
 	Name:  "create",
 	Usage: "Create Skill",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
-			Name:  "display-title",
-			Usage: "Display title for the skill.\n\nThis is a human-readable label that is not included in the prompt sent to the model.",
-			Config: requestflag.RequestConfig{
-				BodyPath: "display_title",
-			},
+		&requestflag.Flag[string]{
+			Name:     "display-title",
+			Usage:    "Display title for the skill.\n\nThis is a human-readable label that is not included in the prompt sent to the model.",
+			BodyPath: "display_title",
 		},
-		&requestflag.StringSliceFlag{
-			Name:  "file",
-			Usage: "Files to upload for the skill.\n\nAll files must be in the same top-level directory and must include a SKILL.md file at the root of that directory.",
-			Config: requestflag.RequestConfig{
-				BodyPath: "files",
-			},
+		&requestflag.Flag[[]string]{
+			Name:     "file",
+			Usage:    "Files to upload for the skill.\n\nAll files must be in the same top-level directory and must include a SKILL.md file at the root of that directory.",
+			BodyPath: "files",
 		},
-		&requestflag.StringSliceFlag{
-			Name:  "beta",
-			Usage: "Optional header to specify the beta version(s) you want to use.",
-			Config: requestflag.RequestConfig{
-				HeaderPath: "anthropic-beta",
-			},
+		&requestflag.Flag[[]string]{
+			Name:       "beta",
+			Usage:      "Optional header to specify the beta version(s) you want to use.",
+			HeaderPath: "anthropic-beta",
 		},
 	},
 	Action:          handleBetaSkillsCreate,
@@ -49,16 +43,14 @@ var betaSkillsRetrieve = cli.Command{
 	Name:  "retrieve",
 	Usage: "Get Skill",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "skill-id",
 			Usage: "Unique identifier for the skill.\n\nThe format and length of IDs may change over time.",
 		},
-		&requestflag.StringSliceFlag{
-			Name:  "beta",
-			Usage: "Optional header to specify the beta version(s) you want to use.",
-			Config: requestflag.RequestConfig{
-				HeaderPath: "anthropic-beta",
-			},
+		&requestflag.Flag[[]string]{
+			Name:       "beta",
+			Usage:      "Optional header to specify the beta version(s) you want to use.",
+			HeaderPath: "anthropic-beta",
 		},
 	},
 	Action:          handleBetaSkillsRetrieve,
@@ -69,34 +61,26 @@ var betaSkillsList = cli.Command{
 	Name:  "list",
 	Usage: "List Skills",
 	Flags: []cli.Flag{
-		&requestflag.IntFlag{
-			Name:  "limit",
-			Usage: "Number of results to return per page.\n\nMaximum value is 100. Defaults to 20.",
-			Value: requestflag.Value[int64](20),
-			Config: requestflag.RequestConfig{
-				QueryPath: "limit",
-			},
+		&requestflag.Flag[int64]{
+			Name:      "limit",
+			Usage:     "Number of results to return per page.\n\nMaximum value is 100. Defaults to 20.",
+			Default:   20,
+			QueryPath: "limit",
 		},
-		&requestflag.StringFlag{
-			Name:  "page",
-			Usage: "Pagination token for fetching a specific page of results.\n\nPass the value from a previous response's `next_page` field to get the next page of results.",
-			Config: requestflag.RequestConfig{
-				QueryPath: "page",
-			},
+		&requestflag.Flag[string]{
+			Name:      "page",
+			Usage:     "Pagination token for fetching a specific page of results.\n\nPass the value from a previous response's `next_page` field to get the next page of results.",
+			QueryPath: "page",
 		},
-		&requestflag.StringFlag{
-			Name:  "source",
-			Usage: "Filter skills by source.\n\nIf provided, only skills from the specified source will be returned:\n* `\"custom\"`: only return user-created skills\n* `\"anthropic\"`: only return Anthropic-created skills",
-			Config: requestflag.RequestConfig{
-				QueryPath: "source",
-			},
+		&requestflag.Flag[string]{
+			Name:      "source",
+			Usage:     "Filter skills by source.\n\nIf provided, only skills from the specified source will be returned:\n* `\"custom\"`: only return user-created skills\n* `\"anthropic\"`: only return Anthropic-created skills",
+			QueryPath: "source",
 		},
-		&requestflag.StringSliceFlag{
-			Name:  "beta",
-			Usage: "Optional header to specify the beta version(s) you want to use.",
-			Config: requestflag.RequestConfig{
-				HeaderPath: "anthropic-beta",
-			},
+		&requestflag.Flag[[]string]{
+			Name:       "beta",
+			Usage:      "Optional header to specify the beta version(s) you want to use.",
+			HeaderPath: "anthropic-beta",
 		},
 	},
 	Action:          handleBetaSkillsList,
@@ -107,16 +91,14 @@ var betaSkillsDelete = cli.Command{
 	Name:  "delete",
 	Usage: "Delete Skill",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "skill-id",
 			Usage: "Unique identifier for the skill.\n\nThe format and length of IDs may change over time.",
 		},
-		&requestflag.StringSliceFlag{
-			Name:  "beta",
-			Usage: "Optional header to specify the beta version(s) you want to use.",
-			Config: requestflag.RequestConfig{
-				HeaderPath: "anthropic-beta",
-			},
+		&requestflag.Flag[[]string]{
+			Name:       "beta",
+			Usage:      "Optional header to specify the beta version(s) you want to use.",
+			HeaderPath: "anthropic-beta",
 		},
 	},
 	Action:          handleBetaSkillsDelete,
@@ -181,7 +163,7 @@ func handleBetaSkillsRetrieve(ctx context.Context, cmd *cli.Command) error {
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Beta.Skills.Get(
 		ctx,
-		requestflag.CommandRequestValue[string](cmd, "skill-id"),
+		cmd.Value("skill-id").(string),
 		params,
 		options...,
 	)
@@ -266,7 +248,7 @@ func handleBetaSkillsDelete(ctx context.Context, cmd *cli.Command) error {
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Beta.Skills.Delete(
 		ctx,
-		requestflag.CommandRequestValue[string](cmd, "skill-id"),
+		cmd.Value("skill-id").(string),
 		params,
 		options...,
 	)

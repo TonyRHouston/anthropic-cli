@@ -19,19 +19,15 @@ var betaMessagesBatchesCreate = cli.Command{
 	Name:  "create",
 	Usage: "Send a batch of Message creation requests.",
 	Flags: []cli.Flag{
-		&requestflag.YAMLSliceFlag{
-			Name:  "request",
-			Usage: "List of requests for prompt completion. Each is an individual request to create a Message.",
-			Config: requestflag.RequestConfig{
-				BodyPath: "requests",
-			},
+		&requestflag.Flag[[]any]{
+			Name:     "request",
+			Usage:    "List of requests for prompt completion. Each is an individual request to create a Message.",
+			BodyPath: "requests",
 		},
-		&requestflag.StringSliceFlag{
-			Name:  "beta",
-			Usage: "Optional header to specify the beta version(s) you want to use.",
-			Config: requestflag.RequestConfig{
-				HeaderPath: "anthropic-beta",
-			},
+		&requestflag.Flag[[]string]{
+			Name:       "beta",
+			Usage:      "Optional header to specify the beta version(s) you want to use.",
+			HeaderPath: "anthropic-beta",
 		},
 	},
 	Action:          handleBetaMessagesBatchesCreate,
@@ -42,16 +38,14 @@ var betaMessagesBatchesRetrieve = cli.Command{
 	Name:  "retrieve",
 	Usage: "This endpoint is idempotent and can be used to poll for Message Batch\ncompletion. To access the results of a Message Batch, make a request to the\n`results_url` field in the response.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "message-batch-id",
 			Usage: "ID of the Message Batch.",
 		},
-		&requestflag.StringSliceFlag{
-			Name:  "beta",
-			Usage: "Optional header to specify the beta version(s) you want to use.",
-			Config: requestflag.RequestConfig{
-				HeaderPath: "anthropic-beta",
-			},
+		&requestflag.Flag[[]string]{
+			Name:       "beta",
+			Usage:      "Optional header to specify the beta version(s) you want to use.",
+			HeaderPath: "anthropic-beta",
 		},
 	},
 	Action:          handleBetaMessagesBatchesRetrieve,
@@ -62,34 +56,26 @@ var betaMessagesBatchesList = cli.Command{
 	Name:  "list",
 	Usage: "List all Message Batches within a Workspace. Most recently created batches are\nreturned first.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
-			Name:  "after-id",
-			Usage: "ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately after this object.",
-			Config: requestflag.RequestConfig{
-				QueryPath: "after_id",
-			},
+		&requestflag.Flag[string]{
+			Name:      "after-id",
+			Usage:     "ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately after this object.",
+			QueryPath: "after_id",
 		},
-		&requestflag.StringFlag{
-			Name:  "before-id",
-			Usage: "ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately before this object.",
-			Config: requestflag.RequestConfig{
-				QueryPath: "before_id",
-			},
+		&requestflag.Flag[string]{
+			Name:      "before-id",
+			Usage:     "ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately before this object.",
+			QueryPath: "before_id",
 		},
-		&requestflag.IntFlag{
-			Name:  "limit",
-			Usage: "Number of items to return per page.\n\nDefaults to `20`. Ranges from `1` to `1000`.",
-			Value: requestflag.Value[int64](20),
-			Config: requestflag.RequestConfig{
-				QueryPath: "limit",
-			},
+		&requestflag.Flag[int64]{
+			Name:      "limit",
+			Usage:     "Number of items to return per page.\n\nDefaults to `20`. Ranges from `1` to `1000`.",
+			Default:   20,
+			QueryPath: "limit",
 		},
-		&requestflag.StringSliceFlag{
-			Name:  "beta",
-			Usage: "Optional header to specify the beta version(s) you want to use.",
-			Config: requestflag.RequestConfig{
-				HeaderPath: "anthropic-beta",
-			},
+		&requestflag.Flag[[]string]{
+			Name:       "beta",
+			Usage:      "Optional header to specify the beta version(s) you want to use.",
+			HeaderPath: "anthropic-beta",
 		},
 	},
 	Action:          handleBetaMessagesBatchesList,
@@ -100,16 +86,14 @@ var betaMessagesBatchesDelete = cli.Command{
 	Name:  "delete",
 	Usage: "Delete a Message Batch.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "message-batch-id",
 			Usage: "ID of the Message Batch.",
 		},
-		&requestflag.StringSliceFlag{
-			Name:  "beta",
-			Usage: "Optional header to specify the beta version(s) you want to use.",
-			Config: requestflag.RequestConfig{
-				HeaderPath: "anthropic-beta",
-			},
+		&requestflag.Flag[[]string]{
+			Name:       "beta",
+			Usage:      "Optional header to specify the beta version(s) you want to use.",
+			HeaderPath: "anthropic-beta",
 		},
 	},
 	Action:          handleBetaMessagesBatchesDelete,
@@ -120,16 +104,14 @@ var betaMessagesBatchesCancel = cli.Command{
 	Name:  "cancel",
 	Usage: "Batches may be canceled any time before processing ends. Once cancellation is\ninitiated, the batch enters a `canceling` state, at which time the system may\ncomplete any in-progress, non-interruptible requests before finalizing\ncancellation.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "message-batch-id",
 			Usage: "ID of the Message Batch.",
 		},
-		&requestflag.StringSliceFlag{
-			Name:  "beta",
-			Usage: "Optional header to specify the beta version(s) you want to use.",
-			Config: requestflag.RequestConfig{
-				HeaderPath: "anthropic-beta",
-			},
+		&requestflag.Flag[[]string]{
+			Name:       "beta",
+			Usage:      "Optional header to specify the beta version(s) you want to use.",
+			HeaderPath: "anthropic-beta",
 		},
 	},
 	Action:          handleBetaMessagesBatchesCancel,
@@ -140,16 +122,14 @@ var betaMessagesBatchesResults = cli.Command{
 	Name:  "results",
 	Usage: "Streams the results of a Message Batch as a `.jsonl` file.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "message-batch-id",
 			Usage: "ID of the Message Batch.",
 		},
-		&requestflag.StringSliceFlag{
-			Name:  "beta",
-			Usage: "Optional header to specify the beta version(s) you want to use.",
-			Config: requestflag.RequestConfig{
-				HeaderPath: "anthropic-beta",
-			},
+		&requestflag.Flag[[]string]{
+			Name:       "beta",
+			Usage:      "Optional header to specify the beta version(s) you want to use.",
+			HeaderPath: "anthropic-beta",
 		},
 	},
 	Action:          handleBetaMessagesBatchesResults,
@@ -214,7 +194,7 @@ func handleBetaMessagesBatchesRetrieve(ctx context.Context, cmd *cli.Command) er
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Beta.Messages.Batches.Get(
 		ctx,
-		requestflag.CommandRequestValue[string](cmd, "message-batch-id"),
+		cmd.Value("message-batch-id").(string),
 		params,
 		options...,
 	)
@@ -299,7 +279,7 @@ func handleBetaMessagesBatchesDelete(ctx context.Context, cmd *cli.Command) erro
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Beta.Messages.Batches.Delete(
 		ctx,
-		requestflag.CommandRequestValue[string](cmd, "message-batch-id"),
+		cmd.Value("message-batch-id").(string),
 		params,
 		options...,
 	)
@@ -339,7 +319,7 @@ func handleBetaMessagesBatchesCancel(ctx context.Context, cmd *cli.Command) erro
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Beta.Messages.Batches.Cancel(
 		ctx,
-		requestflag.CommandRequestValue[string](cmd, "message-batch-id"),
+		cmd.Value("message-batch-id").(string),
 		params,
 		options...,
 	)
@@ -377,7 +357,7 @@ func handleBetaMessagesBatchesResults(ctx context.Context, cmd *cli.Command) err
 
 	stream := client.Beta.Messages.Batches.ResultsStreaming(
 		ctx,
-		requestflag.CommandRequestValue[string](cmd, "message-batch-id"),
+		cmd.Value("message-batch-id").(string),
 		params,
 		options...,
 	)

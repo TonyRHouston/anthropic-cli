@@ -19,16 +19,14 @@ var modelsRetrieve = cli.Command{
 	Name:  "retrieve",
 	Usage: "Get a specific model.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "model-id",
 			Usage: "Model identifier or alias.",
 		},
-		&requestflag.StringSliceFlag{
-			Name:  "beta",
-			Usage: "Optional header to specify the beta version(s) you want to use.",
-			Config: requestflag.RequestConfig{
-				HeaderPath: "anthropic-beta",
-			},
+		&requestflag.Flag[[]string]{
+			Name:       "beta",
+			Usage:      "Optional header to specify the beta version(s) you want to use.",
+			HeaderPath: "anthropic-beta",
 		},
 	},
 	Action:          handleModelsRetrieve,
@@ -39,34 +37,26 @@ var modelsList = cli.Command{
 	Name:  "list",
 	Usage: "List available models.",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
-			Name:  "after-id",
-			Usage: "ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately after this object.",
-			Config: requestflag.RequestConfig{
-				QueryPath: "after_id",
-			},
+		&requestflag.Flag[string]{
+			Name:      "after-id",
+			Usage:     "ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately after this object.",
+			QueryPath: "after_id",
 		},
-		&requestflag.StringFlag{
-			Name:  "before-id",
-			Usage: "ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately before this object.",
-			Config: requestflag.RequestConfig{
-				QueryPath: "before_id",
-			},
+		&requestflag.Flag[string]{
+			Name:      "before-id",
+			Usage:     "ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately before this object.",
+			QueryPath: "before_id",
 		},
-		&requestflag.IntFlag{
-			Name:  "limit",
-			Usage: "Number of items to return per page.\n\nDefaults to `20`. Ranges from `1` to `1000`.",
-			Value: requestflag.Value[int64](20),
-			Config: requestflag.RequestConfig{
-				QueryPath: "limit",
-			},
+		&requestflag.Flag[int64]{
+			Name:      "limit",
+			Usage:     "Number of items to return per page.\n\nDefaults to `20`. Ranges from `1` to `1000`.",
+			Default:   20,
+			QueryPath: "limit",
 		},
-		&requestflag.StringSliceFlag{
-			Name:  "beta",
-			Usage: "Optional header to specify the beta version(s) you want to use.",
-			Config: requestflag.RequestConfig{
-				HeaderPath: "anthropic-beta",
-			},
+		&requestflag.Flag[[]string]{
+			Name:       "beta",
+			Usage:      "Optional header to specify the beta version(s) you want to use.",
+			HeaderPath: "anthropic-beta",
 		},
 	},
 	Action:          handleModelsList,
@@ -99,7 +89,7 @@ func handleModelsRetrieve(ctx context.Context, cmd *cli.Command) error {
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Models.Get(
 		ctx,
-		requestflag.CommandRequestValue[string](cmd, "model-id"),
+		cmd.Value("model-id").(string),
 		params,
 		options...,
 	)

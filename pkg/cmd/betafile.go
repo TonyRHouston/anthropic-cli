@@ -19,34 +19,26 @@ var betaFilesList = cli.Command{
 	Name:  "list",
 	Usage: "List Files",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
-			Name:  "after-id",
-			Usage: "ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately after this object.",
-			Config: requestflag.RequestConfig{
-				QueryPath: "after_id",
-			},
+		&requestflag.Flag[string]{
+			Name:      "after-id",
+			Usage:     "ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately after this object.",
+			QueryPath: "after_id",
 		},
-		&requestflag.StringFlag{
-			Name:  "before-id",
-			Usage: "ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately before this object.",
-			Config: requestflag.RequestConfig{
-				QueryPath: "before_id",
-			},
+		&requestflag.Flag[string]{
+			Name:      "before-id",
+			Usage:     "ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately before this object.",
+			QueryPath: "before_id",
 		},
-		&requestflag.IntFlag{
-			Name:  "limit",
-			Usage: "Number of items to return per page.\n\nDefaults to `20`. Ranges from `1` to `1000`.",
-			Value: requestflag.Value[int64](20),
-			Config: requestflag.RequestConfig{
-				QueryPath: "limit",
-			},
+		&requestflag.Flag[int64]{
+			Name:      "limit",
+			Usage:     "Number of items to return per page.\n\nDefaults to `20`. Ranges from `1` to `1000`.",
+			Default:   20,
+			QueryPath: "limit",
 		},
-		&requestflag.StringSliceFlag{
-			Name:  "beta",
-			Usage: "Optional header to specify the beta version(s) you want to use.",
-			Config: requestflag.RequestConfig{
-				HeaderPath: "anthropic-beta",
-			},
+		&requestflag.Flag[[]string]{
+			Name:       "beta",
+			Usage:      "Optional header to specify the beta version(s) you want to use.",
+			HeaderPath: "anthropic-beta",
 		},
 	},
 	Action:          handleBetaFilesList,
@@ -57,16 +49,14 @@ var betaFilesDelete = cli.Command{
 	Name:  "delete",
 	Usage: "Delete File",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "file-id",
 			Usage: "ID of the File.",
 		},
-		&requestflag.StringSliceFlag{
-			Name:  "beta",
-			Usage: "Optional header to specify the beta version(s) you want to use.",
-			Config: requestflag.RequestConfig{
-				HeaderPath: "anthropic-beta",
-			},
+		&requestflag.Flag[[]string]{
+			Name:       "beta",
+			Usage:      "Optional header to specify the beta version(s) you want to use.",
+			HeaderPath: "anthropic-beta",
 		},
 	},
 	Action:          handleBetaFilesDelete,
@@ -77,16 +67,14 @@ var betaFilesDownload = cli.Command{
 	Name:  "download",
 	Usage: "Download File",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "file-id",
 			Usage: "ID of the File.",
 		},
-		&requestflag.StringSliceFlag{
-			Name:  "beta",
-			Usage: "Optional header to specify the beta version(s) you want to use.",
-			Config: requestflag.RequestConfig{
-				HeaderPath: "anthropic-beta",
-			},
+		&requestflag.Flag[[]string]{
+			Name:       "beta",
+			Usage:      "Optional header to specify the beta version(s) you want to use.",
+			HeaderPath: "anthropic-beta",
 		},
 	},
 	Action:          handleBetaFilesDownload,
@@ -97,16 +85,14 @@ var betaFilesRetrieveMetadata = cli.Command{
 	Name:  "retrieve-metadata",
 	Usage: "Get File Metadata",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "file-id",
 			Usage: "ID of the File.",
 		},
-		&requestflag.StringSliceFlag{
-			Name:  "beta",
-			Usage: "Optional header to specify the beta version(s) you want to use.",
-			Config: requestflag.RequestConfig{
-				HeaderPath: "anthropic-beta",
-			},
+		&requestflag.Flag[[]string]{
+			Name:       "beta",
+			Usage:      "Optional header to specify the beta version(s) you want to use.",
+			HeaderPath: "anthropic-beta",
 		},
 	},
 	Action:          handleBetaFilesRetrieveMetadata,
@@ -117,19 +103,15 @@ var betaFilesUpload = cli.Command{
 	Name:  "upload",
 	Usage: "Upload File",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
-			Name:  "file",
-			Usage: "The file to upload",
-			Config: requestflag.RequestConfig{
-				BodyPath: "file",
-			},
+		&requestflag.Flag[string]{
+			Name:     "file",
+			Usage:    "The file to upload",
+			BodyPath: "file",
 		},
-		&requestflag.StringSliceFlag{
-			Name:  "beta",
-			Usage: "Optional header to specify the beta version(s) you want to use.",
-			Config: requestflag.RequestConfig{
-				HeaderPath: "anthropic-beta",
-			},
+		&requestflag.Flag[[]string]{
+			Name:       "beta",
+			Usage:      "Optional header to specify the beta version(s) you want to use.",
+			HeaderPath: "anthropic-beta",
 		},
 	},
 	Action:          handleBetaFilesUpload,
@@ -207,7 +189,7 @@ func handleBetaFilesDelete(ctx context.Context, cmd *cli.Command) error {
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Beta.Files.Delete(
 		ctx,
-		requestflag.CommandRequestValue[string](cmd, "file-id"),
+		cmd.Value("file-id").(string),
 		params,
 		options...,
 	)
@@ -247,7 +229,7 @@ func handleBetaFilesDownload(ctx context.Context, cmd *cli.Command) error {
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Beta.Files.Download(
 		ctx,
-		requestflag.CommandRequestValue[string](cmd, "file-id"),
+		cmd.Value("file-id").(string),
 		params,
 		options...,
 	)
@@ -287,7 +269,7 @@ func handleBetaFilesRetrieveMetadata(ctx context.Context, cmd *cli.Command) erro
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Beta.Files.GetMetadata(
 		ctx,
-		requestflag.CommandRequestValue[string](cmd, "file-id"),
+		cmd.Value("file-id").(string),
 		params,
 		options...,
 	)

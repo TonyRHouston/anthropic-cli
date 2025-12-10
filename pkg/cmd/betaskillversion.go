@@ -19,23 +19,19 @@ var betaSkillsVersionsCreate = cli.Command{
 	Name:  "create",
 	Usage: "Create Skill Version",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "skill-id",
 			Usage: "Unique identifier for the skill.\n\nThe format and length of IDs may change over time.",
 		},
-		&requestflag.StringSliceFlag{
-			Name:  "file",
-			Usage: "Files to upload for the skill.\n\nAll files must be in the same top-level directory and must include a SKILL.md file at the root of that directory.",
-			Config: requestflag.RequestConfig{
-				BodyPath: "files",
-			},
+		&requestflag.Flag[[]string]{
+			Name:     "file",
+			Usage:    "Files to upload for the skill.\n\nAll files must be in the same top-level directory and must include a SKILL.md file at the root of that directory.",
+			BodyPath: "files",
 		},
-		&requestflag.StringSliceFlag{
-			Name:  "beta",
-			Usage: "Optional header to specify the beta version(s) you want to use.",
-			Config: requestflag.RequestConfig{
-				HeaderPath: "anthropic-beta",
-			},
+		&requestflag.Flag[[]string]{
+			Name:       "beta",
+			Usage:      "Optional header to specify the beta version(s) you want to use.",
+			HeaderPath: "anthropic-beta",
 		},
 	},
 	Action:          handleBetaSkillsVersionsCreate,
@@ -46,20 +42,18 @@ var betaSkillsVersionsRetrieve = cli.Command{
 	Name:  "retrieve",
 	Usage: "Get Skill Version",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "skill-id",
 			Usage: "Unique identifier for the skill.\n\nThe format and length of IDs may change over time.",
 		},
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "version",
 			Usage: "Version identifier for the skill.\n\nEach version is identified by a Unix epoch timestamp (e.g., \"1759178010641129\").",
 		},
-		&requestflag.StringSliceFlag{
-			Name:  "beta",
-			Usage: "Optional header to specify the beta version(s) you want to use.",
-			Config: requestflag.RequestConfig{
-				HeaderPath: "anthropic-beta",
-			},
+		&requestflag.Flag[[]string]{
+			Name:       "beta",
+			Usage:      "Optional header to specify the beta version(s) you want to use.",
+			HeaderPath: "anthropic-beta",
 		},
 	},
 	Action:          handleBetaSkillsVersionsRetrieve,
@@ -70,30 +64,24 @@ var betaSkillsVersionsList = cli.Command{
 	Name:  "list",
 	Usage: "List Skill Versions",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "skill-id",
 			Usage: "Unique identifier for the skill.\n\nThe format and length of IDs may change over time.",
 		},
-		&requestflag.IntFlag{
-			Name:  "limit",
-			Usage: "Number of items to return per page.\n\nDefaults to `20`. Ranges from `1` to `1000`.",
-			Config: requestflag.RequestConfig{
-				QueryPath: "limit",
-			},
+		&requestflag.Flag[int64]{
+			Name:      "limit",
+			Usage:     "Number of items to return per page.\n\nDefaults to `20`. Ranges from `1` to `1000`.",
+			QueryPath: "limit",
 		},
-		&requestflag.StringFlag{
-			Name:  "page",
-			Usage: "Optionally set to the `next_page` token from the previous response.",
-			Config: requestflag.RequestConfig{
-				QueryPath: "page",
-			},
+		&requestflag.Flag[string]{
+			Name:      "page",
+			Usage:     "Optionally set to the `next_page` token from the previous response.",
+			QueryPath: "page",
 		},
-		&requestflag.StringSliceFlag{
-			Name:  "beta",
-			Usage: "Optional header to specify the beta version(s) you want to use.",
-			Config: requestflag.RequestConfig{
-				HeaderPath: "anthropic-beta",
-			},
+		&requestflag.Flag[[]string]{
+			Name:       "beta",
+			Usage:      "Optional header to specify the beta version(s) you want to use.",
+			HeaderPath: "anthropic-beta",
 		},
 	},
 	Action:          handleBetaSkillsVersionsList,
@@ -104,20 +92,18 @@ var betaSkillsVersionsDelete = cli.Command{
 	Name:  "delete",
 	Usage: "Delete Skill Version",
 	Flags: []cli.Flag{
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "skill-id",
 			Usage: "Unique identifier for the skill.\n\nThe format and length of IDs may change over time.",
 		},
-		&requestflag.StringFlag{
+		&requestflag.Flag[string]{
 			Name:  "version",
 			Usage: "Version identifier for the skill.\n\nEach version is identified by a Unix epoch timestamp (e.g., \"1759178010641129\").",
 		},
-		&requestflag.StringSliceFlag{
-			Name:  "beta",
-			Usage: "Optional header to specify the beta version(s) you want to use.",
-			Config: requestflag.RequestConfig{
-				HeaderPath: "anthropic-beta",
-			},
+		&requestflag.Flag[[]string]{
+			Name:       "beta",
+			Usage:      "Optional header to specify the beta version(s) you want to use.",
+			HeaderPath: "anthropic-beta",
 		},
 	},
 	Action:          handleBetaSkillsVersionsDelete,
@@ -150,7 +136,7 @@ func handleBetaSkillsVersionsCreate(ctx context.Context, cmd *cli.Command) error
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Beta.Skills.Versions.New(
 		ctx,
-		requestflag.CommandRequestValue[string](cmd, "skill-id"),
+		cmd.Value("skill-id").(string),
 		params,
 		options...,
 	)
@@ -175,7 +161,7 @@ func handleBetaSkillsVersionsRetrieve(ctx context.Context, cmd *cli.Command) err
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 	params := anthropic.BetaSkillVersionGetParams{
-		SkillID: requestflag.CommandRequestValue[string](cmd, "skill-id"),
+		SkillID: cmd.Value("skill-id").(string),
 	}
 
 	options, err := flagOptions(
@@ -192,7 +178,7 @@ func handleBetaSkillsVersionsRetrieve(ctx context.Context, cmd *cli.Command) err
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Beta.Skills.Versions.Get(
 		ctx,
-		requestflag.CommandRequestValue[string](cmd, "version"),
+		cmd.Value("version").(string),
 		params,
 		options...,
 	)
@@ -235,7 +221,7 @@ func handleBetaSkillsVersionsList(ctx context.Context, cmd *cli.Command) error {
 		options = append(options, option.WithResponseBodyInto(&res))
 		_, err = client.Beta.Skills.Versions.List(
 			ctx,
-			requestflag.CommandRequestValue[string](cmd, "skill-id"),
+			cmd.Value("skill-id").(string),
 			params,
 			options...,
 		)
@@ -247,7 +233,7 @@ func handleBetaSkillsVersionsList(ctx context.Context, cmd *cli.Command) error {
 	} else {
 		iter := client.Beta.Skills.Versions.ListAutoPaging(
 			ctx,
-			requestflag.CommandRequestValue[string](cmd, "skill-id"),
+			cmd.Value("skill-id").(string),
 			params,
 			options...,
 		)
@@ -275,7 +261,7 @@ func handleBetaSkillsVersionsDelete(ctx context.Context, cmd *cli.Command) error
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 	params := anthropic.BetaSkillVersionDeleteParams{
-		SkillID: requestflag.CommandRequestValue[string](cmd, "skill-id"),
+		SkillID: cmd.Value("skill-id").(string),
 	}
 
 	options, err := flagOptions(
@@ -292,7 +278,7 @@ func handleBetaSkillsVersionsDelete(ctx context.Context, cmd *cli.Command) error
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Beta.Skills.Versions.Delete(
 		ctx,
-		requestflag.CommandRequestValue[string](cmd, "version"),
+		cmd.Value("version").(string),
 		params,
 		options...,
 	)
