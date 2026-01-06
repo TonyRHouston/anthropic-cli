@@ -22,16 +22,19 @@ var completionsCreate = cli.Command{
 		&requestflag.Flag[int64]{
 			Name:     "max-tokens-to-sample",
 			Usage:    "The maximum number of tokens to generate before stopping.\n\nNote that our models may stop _before_ reaching this maximum. This parameter only specifies the absolute maximum number of tokens to generate.",
+			Required: true,
 			BodyPath: "max_tokens_to_sample",
 		},
 		&requestflag.Flag[string]{
 			Name:     "model",
 			Usage:    "The model that will complete your prompt.\\n\\nSee [models](https://docs.anthropic.com/en/docs/models-overview) for additional details and options.",
+			Required: true,
 			BodyPath: "model",
 		},
 		&requestflag.Flag[string]{
 			Name:     "prompt",
 			Usage:    "The prompt that you want Claude to complete.\n\nFor proper response generation you will need to format your prompt using alternating `\\n\\nHuman:` and `\\n\\nAssistant:` conversational turns. For example:\n\n```\n\"\\n\\nHuman: {userQuestion}\\n\\nAssistant:\"\n```\n\nSee [prompt validation](https://docs.claude.com/en/api/prompt-validation) and our guide to [prompt design](https://docs.claude.com/en/docs/intro-to-prompting) for more details.",
+			Required: true,
 			BodyPath: "prompt",
 		},
 		&requestflag.Flag[map[string]string]{

@@ -50,8 +50,9 @@ var betaFilesDelete = cli.Command{
 	Usage: "Delete File",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "file-id",
-			Usage: "ID of the File.",
+			Name:     "file-id",
+			Usage:    "ID of the File.",
+			Required: true,
 		},
 		&requestflag.Flag[[]string]{
 			Name:       "beta",
@@ -68,8 +69,9 @@ var betaFilesDownload = cli.Command{
 	Usage: "Download File",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "file-id",
-			Usage: "ID of the File.",
+			Name:     "file-id",
+			Usage:    "ID of the File.",
+			Required: true,
 		},
 		&requestflag.Flag[[]string]{
 			Name:       "beta",
@@ -86,8 +88,9 @@ var betaFilesRetrieveMetadata = cli.Command{
 	Usage: "Get File Metadata",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "file-id",
-			Usage: "ID of the File.",
+			Name:     "file-id",
+			Usage:    "ID of the File.",
+			Required: true,
 		},
 		&requestflag.Flag[[]string]{
 			Name:       "beta",
@@ -106,6 +109,7 @@ var betaFilesUpload = cli.Command{
 		&requestflag.Flag[string]{
 			Name:     "file",
 			Usage:    "The file to upload",
+			Required: true,
 			BodyPath: "file",
 		},
 		&requestflag.Flag[[]string]{

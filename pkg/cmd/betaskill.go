@@ -44,8 +44,9 @@ var betaSkillsRetrieve = cli.Command{
 	Usage: "Get Skill",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "skill-id",
-			Usage: "Unique identifier for the skill.\n\nThe format and length of IDs may change over time.",
+			Name:     "skill-id",
+			Usage:    "Unique identifier for the skill.\n\nThe format and length of IDs may change over time.",
+			Required: true,
 		},
 		&requestflag.Flag[[]string]{
 			Name:       "beta",
@@ -92,8 +93,9 @@ var betaSkillsDelete = cli.Command{
 	Usage: "Delete Skill",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "skill-id",
-			Usage: "Unique identifier for the skill.\n\nThe format and length of IDs may change over time.",
+			Name:     "skill-id",
+			Usage:    "Unique identifier for the skill.\n\nThe format and length of IDs may change over time.",
+			Required: true,
 		},
 		&requestflag.Flag[[]string]{
 			Name:       "beta",

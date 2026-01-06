@@ -20,8 +20,9 @@ var betaSkillsVersionsCreate = cli.Command{
 	Usage: "Create Skill Version",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "skill-id",
-			Usage: "Unique identifier for the skill.\n\nThe format and length of IDs may change over time.",
+			Name:     "skill-id",
+			Usage:    "Unique identifier for the skill.\n\nThe format and length of IDs may change over time.",
+			Required: true,
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "file",
@@ -43,12 +44,14 @@ var betaSkillsVersionsRetrieve = cli.Command{
 	Usage: "Get Skill Version",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "skill-id",
-			Usage: "Unique identifier for the skill.\n\nThe format and length of IDs may change over time.",
+			Name:     "skill-id",
+			Usage:    "Unique identifier for the skill.\n\nThe format and length of IDs may change over time.",
+			Required: true,
 		},
 		&requestflag.Flag[string]{
-			Name:  "version",
-			Usage: "Version identifier for the skill.\n\nEach version is identified by a Unix epoch timestamp (e.g., \"1759178010641129\").",
+			Name:     "version",
+			Usage:    "Version identifier for the skill.\n\nEach version is identified by a Unix epoch timestamp (e.g., \"1759178010641129\").",
+			Required: true,
 		},
 		&requestflag.Flag[[]string]{
 			Name:       "beta",
@@ -65,8 +68,9 @@ var betaSkillsVersionsList = cli.Command{
 	Usage: "List Skill Versions",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "skill-id",
-			Usage: "Unique identifier for the skill.\n\nThe format and length of IDs may change over time.",
+			Name:     "skill-id",
+			Usage:    "Unique identifier for the skill.\n\nThe format and length of IDs may change over time.",
+			Required: true,
 		},
 		&requestflag.Flag[int64]{
 			Name:      "limit",
@@ -93,12 +97,14 @@ var betaSkillsVersionsDelete = cli.Command{
 	Usage: "Delete Skill Version",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "skill-id",
-			Usage: "Unique identifier for the skill.\n\nThe format and length of IDs may change over time.",
+			Name:     "skill-id",
+			Usage:    "Unique identifier for the skill.\n\nThe format and length of IDs may change over time.",
+			Required: true,
 		},
 		&requestflag.Flag[string]{
-			Name:  "version",
-			Usage: "Version identifier for the skill.\n\nEach version is identified by a Unix epoch timestamp (e.g., \"1759178010641129\").",
+			Name:     "version",
+			Usage:    "Version identifier for the skill.\n\nEach version is identified by a Unix epoch timestamp (e.g., \"1759178010641129\").",
+			Required: true,
 		},
 		&requestflag.Flag[[]string]{
 			Name:       "beta",

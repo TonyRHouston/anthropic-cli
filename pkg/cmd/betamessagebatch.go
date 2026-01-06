@@ -23,6 +23,7 @@ var betaMessagesBatchesCreate = cli.Command{
 		&requestflag.Flag[[]map[string]any]{
 			Name:     "request",
 			Usage:    "List of requests for prompt completion. Each is an individual request to create a Message.",
+			Required: true,
 			BodyPath: "requests",
 		},
 		&requestflag.Flag[[]string]{
@@ -40,8 +41,9 @@ var betaMessagesBatchesRetrieve = cli.Command{
 	Usage: "This endpoint is idempotent and can be used to poll for Message Batch\ncompletion. To access the results of a Message Batch, make a request to the\n`results_url` field in the response.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "message-batch-id",
-			Usage: "ID of the Message Batch.",
+			Name:     "message-batch-id",
+			Usage:    "ID of the Message Batch.",
+			Required: true,
 		},
 		&requestflag.Flag[[]string]{
 			Name:       "beta",
@@ -88,8 +90,9 @@ var betaMessagesBatchesDelete = cli.Command{
 	Usage: "Delete a Message Batch.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "message-batch-id",
-			Usage: "ID of the Message Batch.",
+			Name:     "message-batch-id",
+			Usage:    "ID of the Message Batch.",
+			Required: true,
 		},
 		&requestflag.Flag[[]string]{
 			Name:       "beta",
@@ -106,8 +109,9 @@ var betaMessagesBatchesCancel = cli.Command{
 	Usage: "Batches may be canceled any time before processing ends. Once cancellation is\ninitiated, the batch enters a `canceling` state, at which time the system may\ncomplete any in-progress, non-interruptible requests before finalizing\ncancellation.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "message-batch-id",
-			Usage: "ID of the Message Batch.",
+			Name:     "message-batch-id",
+			Usage:    "ID of the Message Batch.",
+			Required: true,
 		},
 		&requestflag.Flag[[]string]{
 			Name:       "beta",
@@ -124,8 +128,9 @@ var betaMessagesBatchesResults = cli.Command{
 	Usage: "Streams the results of a Message Batch as a `.jsonl` file.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "message-batch-id",
-			Usage: "ID of the Message Batch.",
+			Name:     "message-batch-id",
+			Usage:    "ID of the Message Batch.",
+			Required: true,
 		},
 		&requestflag.Flag[[]string]{
 			Name:       "beta",

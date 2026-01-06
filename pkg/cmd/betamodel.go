@@ -20,8 +20,9 @@ var betaModelsRetrieve = cli.Command{
 	Usage: "Get a specific model.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:  "model-id",
-			Usage: "Model identifier or alias.",
+			Name:     "model-id",
+			Usage:    "Model identifier or alias.",
+			Required: true,
 		},
 		&requestflag.Flag[[]string]{
 			Name:       "beta",
