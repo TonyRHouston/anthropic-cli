@@ -28,16 +28,6 @@ func TestBetaFilesDelete(t *testing.T) {
 	)
 }
 
-func TestBetaFilesDownload(t *testing.T) {
-	t.Skip("Prism doesn't support application/binary responses")
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"beta:files", "download",
-		"--file-id", "file_id",
-		"--beta", "string",
-	)
-}
-
 func TestBetaFilesRetrieveMetadata(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,

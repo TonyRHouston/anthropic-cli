@@ -64,25 +64,6 @@ var betaFilesDelete = cli.Command{
 	HideHelpCommand: true,
 }
 
-var betaFilesDownload = cli.Command{
-	Name:  "download",
-	Usage: "Download File",
-	Flags: []cli.Flag{
-		&requestflag.Flag[string]{
-			Name:     "file-id",
-			Usage:    "ID of the File.",
-			Required: true,
-		},
-		&requestflag.Flag[[]string]{
-			Name:       "beta",
-			Usage:      "Optional header to specify the beta version(s) you want to use.",
-			HeaderPath: "anthropic-beta",
-		},
-	},
-	Action:          handleBetaFilesDownload,
-	HideHelpCommand: true,
-}
-
 var betaFilesRetrieveMetadata = cli.Command{
 	Name:  "retrieve-metadata",
 	Usage: "Get File Metadata",
@@ -200,48 +181,6 @@ func handleBetaFilesDelete(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
 	return ShowJSON(os.Stdout, "beta:files delete", obj, format, transform)
-}
-
-func handleBetaFilesDownload(ctx context.Context, cmd *cli.Command) error {
-	client := anthropic.NewClient(getDefaultRequestOptions(cmd)...)
-	unusedArgs := cmd.Args().Slice()
-	if !cmd.IsSet("file-id") && len(unusedArgs) > 0 {
-		cmd.Set("file-id", unusedArgs[0])
-		unusedArgs = unusedArgs[1:]
-	}
-	if len(unusedArgs) > 0 {
-		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
-	}
-
-	params := anthropic.BetaFileDownloadParams{}
-
-	options, err := flagOptions(
-		cmd,
-		apiquery.NestedQueryFormatBrackets,
-		apiquery.ArrayQueryFormatComma,
-		EmptyBody,
-		false,
-	)
-	if err != nil {
-		return err
-	}
-
-	var res []byte
-	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Beta.Files.Download(
-		ctx,
-		cmd.Value("file-id").(string),
-		params,
-		options...,
-	)
-	if err != nil {
-		return err
-	}
-
-	obj := gjson.ParseBytes(res)
-	format := cmd.Root().String("format")
-	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "beta:files download", obj, format, transform)
 }
 
 func handleBetaFilesRetrieveMetadata(ctx context.Context, cmd *cli.Command) error {
