@@ -40,7 +40,7 @@ func TestMessagesCreate(t *testing.T) {
 		"--message.content", "[{text: x, type: text, cache_control: {type: ephemeral, ttl: 5m}, citations: [{cited_text: cited_text, document_index: 0, document_title: x, end_char_index: 0, start_char_index: 0, type: char_location}]}]",
 		"--message.role", "user",
 		"--model", "claude-sonnet-4-5-20250929",
-		"--metadata.user_id", "13803d75-b4b5-4c3e-b2a2-6f21399b021b",
+		"--metadata.user-id", "13803d75-b4b5-4c3e-b2a2-6f21399b021b",
 		"--service-tier", "auto",
 		"--stop-sequence", "string",
 		"--stream=false",

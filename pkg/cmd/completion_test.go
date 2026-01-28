@@ -35,7 +35,7 @@ func TestCompletionsCreate(t *testing.T) {
 		"--max-tokens-to-sample", "256",
 		"--model", "claude-opus-4-5-20251101",
 		"--prompt", "\n\nHuman: Hello, world!\n\nAssistant:",
-		"--metadata.user_id", "13803d75-b4b5-4c3e-b2a2-6f21399b021b",
+		"--metadata.user-id", "13803d75-b4b5-4c3e-b2a2-6f21399b021b",
 		"--stop-sequence", "string",
 		"--stream=false",
 		"--temperature", "1",
