@@ -47,6 +47,11 @@ var betaMessagesCreate = requestflag.WithInnerFlags(cli.Command{
 			Name:     "context-management",
 			BodyPath: "context_management",
 		},
+		&requestflag.Flag[any]{
+			Name:     "inference-geo",
+			Usage:    "Specifies the geographic region for inference processing. If not specified, the workspace's `default_inference_geo` is used.",
+			BodyPath: "inference_geo",
+		},
 		&requestflag.Flag[[]map[string]any]{
 			Name:     "mcp-server",
 			Usage:    "MCP servers to be utilized in this request",
@@ -172,7 +177,7 @@ var betaMessagesCreate = requestflag.WithInnerFlags(cli.Command{
 	"output-config": {
 		&requestflag.InnerFlag[any]{
 			Name:       "output-config.effort",
-			Usage:      "How much effort the model should put into its response. Higher effort levels may result in more thorough analysis but take longer.\n\nValid values are `low`, `medium`, or `high`.",
+			Usage:      "All possible effort levels.",
 			InnerField: "effort",
 		},
 		&requestflag.InnerFlag[map[string]any]{
@@ -298,7 +303,7 @@ var betaMessagesCountTokens = requestflag.WithInnerFlags(cli.Command{
 	"output-config": {
 		&requestflag.InnerFlag[any]{
 			Name:       "output-config.effort",
-			Usage:      "How much effort the model should put into its response. Higher effort levels may result in more thorough analysis but take longer.\n\nValid values are `low`, `medium`, or `high`.",
+			Usage:      "All possible effort levels.",
 			InnerField: "effort",
 		},
 		&requestflag.InnerFlag[map[string]any]{

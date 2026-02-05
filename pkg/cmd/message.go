@@ -38,6 +38,11 @@ var messagesCreate = requestflag.WithInnerFlags(cli.Command{
 			Required: true,
 			BodyPath: "model",
 		},
+		&requestflag.Flag[any]{
+			Name:     "inference-geo",
+			Usage:    "Specifies the geographic region for inference processing. If not specified, the workspace's `default_inference_geo` is used.",
+			BodyPath: "inference_geo",
+		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "metadata",
 			BodyPath: "metadata",
@@ -118,6 +123,11 @@ var messagesCreate = requestflag.WithInnerFlags(cli.Command{
 		},
 	},
 	"output-config": {
+		&requestflag.InnerFlag[any]{
+			Name:       "output-config.effort",
+			Usage:      "All possible effort levels.",
+			InnerField: "effort",
+		},
 		&requestflag.InnerFlag[map[string]any]{
 			Name:       "output-config.format",
 			InnerField: "format",
@@ -181,6 +191,11 @@ var messagesCountTokens = requestflag.WithInnerFlags(cli.Command{
 		},
 	},
 	"output-config": {
+		&requestflag.InnerFlag[any]{
+			Name:       "output-config.effort",
+			Usage:      "All possible effort levels.",
+			InnerField: "effort",
+		},
 		&requestflag.InnerFlag[map[string]any]{
 			Name:       "output-config.format",
 			InnerField: "format",
