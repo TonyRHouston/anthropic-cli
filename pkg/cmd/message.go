@@ -39,6 +39,11 @@ var messagesCreate = requestflag.WithInnerFlags(cli.Command{
 			BodyPath: "model",
 		},
 		&requestflag.Flag[any]{
+			Name:     "container",
+			Usage:    "Container identifier for reuse across requests.",
+			BodyPath: "container",
+		},
+		&requestflag.Flag[any]{
 			Name:     "inference-geo",
 			Usage:    "Specifies the geographic region for inference processing. If not specified, the workspace's `default_inference_geo` is used.",
 			BodyPath: "inference_geo",
@@ -55,6 +60,11 @@ var messagesCreate = requestflag.WithInnerFlags(cli.Command{
 			Name:     "service-tier",
 			Usage:    "Determines whether to use priority capacity (if available) or standard capacity for this request.\n\nAnthropic offers different levels of service for your API requests. See [service-tiers](https://docs.claude.com/en/api/service-tiers) for details.",
 			BodyPath: "service_tier",
+		},
+		&requestflag.Flag[any]{
+			Name:     "speed",
+			Usage:    "The inference speed mode for this request. `\"fast\"` enables high output-tokens-per-second inference.",
+			BodyPath: "speed",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "stop-sequence",
@@ -155,6 +165,11 @@ var messagesCountTokens = requestflag.WithInnerFlags(cli.Command{
 		&requestflag.Flag[map[string]any]{
 			Name:     "output-config",
 			BodyPath: "output_config",
+		},
+		&requestflag.Flag[any]{
+			Name:     "speed",
+			Usage:    "The inference speed mode for this request. `\"fast\"` enables high output-tokens-per-second inference.",
+			BodyPath: "speed",
 		},
 		&requestflag.Flag[any]{
 			Name:     "system",
