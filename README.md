@@ -46,6 +46,7 @@ cdp messages create \
   --max-tokens 1024 \
   --message '{content: [{text: x, type: text, cache_control: {type: ephemeral, ttl: 5m}, citations: [{cited_text: cited_text, document_index: 0, document_title: x, end_char_index: 0, start_char_index: 0, type: char_location}]}], role: user}' \
   --model claude-sonnet-4-5-20250929 \
+  --cache-control '{type: ephemeral, ttl: 5m}' \
   --container container \
   --inference-geo inference_geo \
   --metadata '{user_id: 13803d75-b4b5-4c3e-b2a2-6f21399b021b}' \

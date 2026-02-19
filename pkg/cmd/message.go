@@ -38,6 +38,10 @@ var messagesCreate = requestflag.WithInnerFlags(cli.Command{
 			Required: true,
 			BodyPath: "model",
 		},
+		&requestflag.Flag[map[string]any]{
+			Name:     "cache-control",
+			BodyPath: "cache_control",
+		},
 		&requestflag.Flag[any]{
 			Name:     "container",
 			Usage:    "Container identifier for reuse across requests.",
@@ -120,6 +124,17 @@ var messagesCreate = requestflag.WithInnerFlags(cli.Command{
 			InnerField: "role",
 		},
 	},
+	"cache-control": {
+		&requestflag.InnerFlag[string]{
+			Name:       "cache-control.type",
+			InnerField: "type",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "cache-control.ttl",
+			Usage:      "The time-to-live for the cache control breakpoint.\n\nThis may be one the following values:\n- `5m`: 5 minutes\n- `1h`: 1 hour\n\nDefaults to `5m`.",
+			InnerField: "ttl",
+		},
+	},
 	"metadata": {
 		&requestflag.InnerFlag[any]{
 			Name:       "metadata.user-id",
@@ -158,6 +173,10 @@ var messagesCountTokens = requestflag.WithInnerFlags(cli.Command{
 			BodyPath: "model",
 		},
 		&requestflag.Flag[map[string]any]{
+			Name:     "cache-control",
+			BodyPath: "cache_control",
+		},
+		&requestflag.Flag[map[string]any]{
 			Name:     "output-config",
 			BodyPath: "output_config",
 		},
@@ -193,6 +212,17 @@ var messagesCountTokens = requestflag.WithInnerFlags(cli.Command{
 		&requestflag.InnerFlag[string]{
 			Name:       "message.role",
 			InnerField: "role",
+		},
+	},
+	"cache-control": {
+		&requestflag.InnerFlag[string]{
+			Name:       "cache-control.type",
+			InnerField: "type",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "cache-control.ttl",
+			Usage:      "The time-to-live for the cache control breakpoint.\n\nThis may be one the following values:\n- `5m`: 5 minutes\n- `1h`: 1 hour\n\nDefaults to `5m`.",
+			InnerField: "ttl",
 		},
 	},
 	"output-config": {
