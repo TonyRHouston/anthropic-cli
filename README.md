@@ -58,7 +58,7 @@ cdp messages create \
   --temperature 1 \
   --thinking '{budget_tokens: 1024, type: enabled}' \
   --tool-choice '{type: auto, disable_parallel_tool_use: true}' \
-  --tool '{name: name, allowed_callers: [direct], cache_control: {type: ephemeral, ttl: 5m}, defer_loading: true, description: Get the current weather in a given location, eager_input_streaming: true, input_examples: [{foo: bar}], strict: true, type: custom}' \
+  --tool '{input_schema: {type: object, properties: {location: bar, unit: bar}, required: [location]}, name: name, allowed_callers: [direct], cache_control: {type: ephemeral, ttl: 5m}, defer_loading: true, description: Get the current weather in a given location, eager_input_streaming: true, input_examples: [{foo: bar}], strict: true, type: custom}' \
   --top-k 5 \
   --top-p 0.7
 ```

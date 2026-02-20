@@ -28,7 +28,7 @@ func TestMessagesCreate(t *testing.T) {
 		"--temperature", "1",
 		"--thinking", "{budget_tokens: 1024, type: enabled}",
 		"--tool-choice", "{type: auto, disable_parallel_tool_use: true}",
-		"--tool", "{name: name, allowed_callers: [direct], cache_control: {type: ephemeral, ttl: 5m}, defer_loading: true, description: Get the current weather in a given location, eager_input_streaming: true, input_examples: [{foo: bar}], strict: true, type: custom}",
+		"--tool", "{input_schema: {type: object, properties: {location: bar, unit: bar}, required: [location]}, name: name, allowed_callers: [direct], cache_control: {type: ephemeral, ttl: 5m}, defer_loading: true, description: Get the current weather in a given location, eager_input_streaming: true, input_examples: [{foo: bar}], strict: true, type: custom}",
 		"--top-k", "5",
 		"--top-p", "0.7",
 	)
@@ -58,7 +58,7 @@ func TestMessagesCreate(t *testing.T) {
 		"--temperature", "1",
 		"--thinking", "{budget_tokens: 1024, type: enabled}",
 		"--tool-choice", "{type: auto, disable_parallel_tool_use: true}",
-		"--tool", "{name: name, allowed_callers: [direct], cache_control: {type: ephemeral, ttl: 5m}, defer_loading: true, description: Get the current weather in a given location, eager_input_streaming: true, input_examples: [{foo: bar}], strict: true, type: custom}",
+		"--tool", "{input_schema: {type: object, properties: {location: bar, unit: bar}, required: [location]}, name: name, allowed_callers: [direct], cache_control: {type: ephemeral, ttl: 5m}, defer_loading: true, description: Get the current weather in a given location, eager_input_streaming: true, input_examples: [{foo: bar}], strict: true, type: custom}",
 		"--top-k", "5",
 		"--top-p", "0.7",
 	)
@@ -75,7 +75,7 @@ func TestMessagesCountTokens(t *testing.T) {
 		"--system", "[{text: Today's date is 2024-06-01., type: text, cache_control: {type: ephemeral, ttl: 5m}, citations: [{cited_text: cited_text, document_index: 0, document_title: x, end_char_index: 0, start_char_index: 0, type: char_location}]}]",
 		"--thinking", "{budget_tokens: 1024, type: enabled}",
 		"--tool-choice", "{type: auto, disable_parallel_tool_use: true}",
-		"--tool", "{name: name, allowed_callers: [direct], cache_control: {type: ephemeral, ttl: 5m}, defer_loading: true, description: Get the current weather in a given location, eager_input_streaming: true, input_examples: [{foo: bar}], strict: true, type: custom}",
+		"--tool", "{input_schema: {type: object, properties: {location: bar, unit: bar}, required: [location]}, name: name, allowed_callers: [direct], cache_control: {type: ephemeral, ttl: 5m}, defer_loading: true, description: Get the current weather in a given location, eager_input_streaming: true, input_examples: [{foo: bar}], strict: true, type: custom}",
 	)
 
 	// Check that inner flags have been set up correctly
@@ -95,6 +95,6 @@ func TestMessagesCountTokens(t *testing.T) {
 		"--system", "[{text: Today's date is 2024-06-01., type: text, cache_control: {type: ephemeral, ttl: 5m}, citations: [{cited_text: cited_text, document_index: 0, document_title: x, end_char_index: 0, start_char_index: 0, type: char_location}]}]",
 		"--thinking", "{budget_tokens: 1024, type: enabled}",
 		"--tool-choice", "{type: auto, disable_parallel_tool_use: true}",
-		"--tool", "{name: name, allowed_callers: [direct], cache_control: {type: ephemeral, ttl: 5m}, defer_loading: true, description: Get the current weather in a given location, eager_input_streaming: true, input_examples: [{foo: bar}], strict: true, type: custom}",
+		"--tool", "{input_schema: {type: object, properties: {location: bar, unit: bar}, required: [location]}, name: name, allowed_callers: [direct], cache_control: {type: ephemeral, ttl: 5m}, defer_loading: true, description: Get the current weather in a given location, eager_input_streaming: true, input_examples: [{foo: bar}], strict: true, type: custom}",
 	)
 }
