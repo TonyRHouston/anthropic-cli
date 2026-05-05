@@ -52,6 +52,9 @@ func getDefaultRequestOptions(cmd *cli.Command) []option.RequestOption {
 	if cmd.IsSet("auth-token") {
 		opts = append(opts, option.WithAuthToken(cmd.String("auth-token")))
 	}
+	if cmd.IsSet("webhook-key") {
+		opts = append(opts, option.WithWebhookKey(cmd.String("webhook-key")))
+	}
 
 	// Override base URL if the --base-url flag is provided
 	if baseURL := cmd.String("base-url"); baseURL != "" {
